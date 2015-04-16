@@ -1,20 +1,16 @@
 package classes.tri;
 import classes.math.NVector;
-public class TriPoint extends NVector{
+public class TriPoint extends TriVector{
 	
 	public Color colour;
 	
 	public TriPoint(double x, double y, double z, Color c)
 	{
-		super(3);
+		super(x,y,z);
 		colour = c;
 	}
-	
-	// Useful wrapper functions, for old time's sake ^^
-	public void setX(double x){setElement(0,x);}
-	public void setY(double y){setElement(1,y);}
-	public void setZ(double z){setElement(2,z);}
-	public double getX(){getElement(0);}
-	public double getY(){getElement(1);}
-	public double getZ(){getElement(2);}
+	public TriPoint(TriVector v, Color c)
+	{
+		this(v.getX(), v.getY(), v.getZ(), c);
+	}
 }
