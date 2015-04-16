@@ -1,4 +1,5 @@
-package classes.Tri;
+package classes.tri;
+import classes.math.NVector;
 public class TriVector extends NVector {
 	
 	public TriVector(double x, double y, double z)

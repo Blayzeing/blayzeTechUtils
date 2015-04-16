@@ -1,4 +1,5 @@
 package classes.tri;
+import java.awt.Graphics2D;
 public class TriCamera {
 	
 	public TriVector position, rotation, lens;
