@@ -10,10 +10,14 @@ public class NVector
 	private double[] elements;
 	private int length;
 	
+	public NVector (double[] elements)
+	{
+		this.elements = elements;
+		length = elements.length;
+	}
 	public NVector (int len)
 	{
-		elements = new double[len];
-		length = len;
+		this(new double[len]);
 	}
 	
 	// GETTERS AND SETTERS
