@@ -1,10 +1,14 @@
 package classes.math;
-public class NMatrix {
+/**
+ * A Matrix class for N-by-M matrices
+ */
+
+public class NMMatrix {
 	
-	private double[][] elements;// [row][column]
+	private double[][] elements;// [row][column]   ???? MEEH.
 	private int rows, columns;
 	
-	public NMatrix (int rows, int columns)
+	public NMMatrix (int rows, int columns)
 	{
 		elements = new double[rows][columns];
 		this.rows = rows;
@@ -32,12 +36,6 @@ public class NMatrix {
 		}
 	}
 	
-	public void setIdentity ()
-	{
-		if(rows != columns) return();
-		for(int i = 0; i<rows; i++)
-			elements[i][i] = 1; 
-	}
 	public void setZero ()
 	{
 		for(int i = 0; i<rows; i++)
@@ -49,12 +47,6 @@ public class NMatrix {
 		}
 	}
 
-	public static NMatrix getIdentity ()
-	{
-		NMatrix m = new NMatrix();
-		m.setIdentity();
-		return m;
-	}
 	public static NMatrix getZero ()
 	{
 		NMatrix m = new NMatrix();
