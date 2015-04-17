@@ -78,6 +78,20 @@ public class NMMatrix {
 					setElement(i,o, values[o][i]);
 		}
 	}
+
+	// Maths functions
+	//	Standard (instance)
+	public void zero()
+	{
+		int len = width * height;
+		for(int i = 0; i<len; i++)
+			elements[(int)(i/height)][i%width] = 0;
+	}
+	public NMMatrix returnZeroed()
+	{
+		return (new NMMatrix(width,height));
+	}
+	//	Static
 	
 	// Utilities
 	/**
