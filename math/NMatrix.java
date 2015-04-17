@@ -31,6 +31,34 @@ public class NMatrix {
 			elements[i][j] = value;
 		}
 	}
-}
+	
+	public void setIdentity ()
+	{
+		if(rows != columns) return();
+		for(int i = 0; i<rows; i++)
+			elements[i][i] = 1; 
+	}
+	public void setZero ()
+	{
+		for(int i = 0; i<rows; i++)
+		{
+			for(int o = 0; o<columns; o++)
+			{
+				elements[i][j] = 0;
+			}
+		}
+	}
 
-/// CHANGE YER PASSWORDS STILL
+	public static NMatrix getIdentity ()
+	{
+		NMatrix m = new NMatrix();
+		m.setIdentity();
+		return m;
+	}
+	public static NMatrix getZero ()
+	{
+		NMatrix m = new NMatrix();
+		return (new NMatrix());
+	}	
+	public void 
+}
