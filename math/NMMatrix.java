@@ -1,5 +1,6 @@
 package classes.math;
 import java.util.Arrays;
+import classes.math.NVector;
 /**
  * A Matrix class for N-by-M matrices
  */
@@ -91,6 +92,14 @@ public class NMMatrix {
 	{
 		return (new NMMatrix(width,height));
 	}
+	public NMMatrix scale(double s)
+	{
+		NMMatrix out = this.copy();
+		for(int i = 0; i<height; i++)
+			for(int o = 0; o<width; o++)
+				out.setElement(o,i,elements[i][o] * s);
+		return out;
+	}
 	//	Static
 	
 	// Utilities
@@ -162,6 +171,9 @@ public class NMMatrix {
 		System.out.println(a);
 		System.out.println("Setting" + a + " with " + m + " gives");
 		a.setElements(m.to2DArray());
+		System.out.println(a);
+		System.out.println("Scaling" + a + "by 2:");
+		a = a.scale(2);
 		System.out.println(a);
 	}
 }
