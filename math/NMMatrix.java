@@ -94,12 +94,20 @@ public class NMMatrix {
 	}
 	public NMMatrix scale(double s)
 	{
-		NMMatrix out = this.copy();
+		NMMatrix out = new NMMatrix(width, height);
 		for(int i = 0; i<height; i++)
 			for(int o = 0; o<width; o++)
 				out.setElement(o,i,elements[i][o] * s);
 		return out;
 	}
+	public NMatrix add(NMatrix m)
+	{
+		NMMatrix out = new NMMatrix(width, height);
+		if(width == m.getWidth() && height == m.getHeight())
+		{
+			for(int i = 0; i<height; i++)
+				for(int o = 0; o<width; o++)
+					
 	//	Static
 	
 	// Utilities
