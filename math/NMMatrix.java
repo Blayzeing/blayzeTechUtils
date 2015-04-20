@@ -191,9 +191,15 @@ public class NMMatrix {
 		System.out.println("Scaling" + a + "by 2:");
 		a = a.scale(2);
 		System.out.println(a);
-		System.out.println("Getting leftmost columnn from" + m);
-		System.out.println(m.getColumn(0));
+		//TODO: randomize
+		double[][] ca = {{5,7,2},{1,6,3}};
+		double[][] da = {{1,2,9},{8,4,3}};
+		NMMatrix c = new NMMatrix(ca);
+		NMMatrix d = new NMMatrix(da);
+		System.out.println("Getting leftmost columnn from" + c);
+		System.out.println(c.getColumn(0));
 		System.out.println("Getting topmost row...");
-		System.out.println(m.getRow(0));
+		System.out.println(c.getRow(0));
+		System.out.println("Adding"+c+"and"+d+"equals"+c.add(d));
 	}
 }
