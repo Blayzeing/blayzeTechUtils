@@ -115,6 +115,32 @@ public class NMMatrix {
 		}// Maybe throw an exception here?
 		return out;
 	}
+	public NMMatrix subtract(NMMatrix)
+	{
+		NMMatrix out = new NMMatrix(width, height);
+		if(isSameSize(m))
+		{
+			for(int i = 0; i<height; i++)
+				for(int o = 0; o<width; o++)
+					out.setElement(o,i,elements[i][o] - m.getElement(o,i));
+		}// Again, maybe throw an exception
+		return out;
+	}
+	public NMMatrix multiply(NMMatrix m)
+	{
+		NMMatrix out = new NMMatrix(width, height);
+		if(this.height == m.getWidth())
+		{
+			for(int i = 0; i<width; i++)
+				for(int o = 0; o<height; o++)
+				{
+					NVector a = getRow(o);
+					NVector b = m.getColumn(i);
+					out.setElement(i,o,a.dot(b));
+				}
+		}
+		return out;
+	}
 					
 	//	Static
 	
