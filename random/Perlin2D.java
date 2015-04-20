@@ -52,11 +52,11 @@ public class Perlin2D
 		 double n0, n1, ix0, ix1, value;
 		 n0 = dotGridGradient(x0, y0, x, y);
 		 n1 = dotGridGradient(x1, y0, x, y);
-		 ix0 = lerp(n0, n1, (3 - 2*sx)*sx*sx);// Apply cubic interpolation
+		 ix0 = lerp(n0, n1, sx);// (3 - 2*sx)*sx*sx);// Apply cubic interpolation (Uncomment and replace with sx for potentially quadratic?
 		 n0 = dotGridGradient(x0, y1, x, y);
 		 n1 = dotGridGradient(x1, y1, x, y);
-		 ix1 = lerp(n0, n1, (3 - 2*sx)*sx*sx);// Apply cubic interpolation
-		 value = lerp(ix0, ix1, (3 - 2*sy)*sy*sy);// Apply cubic interpolation
+		 ix1 = lerp(n0, n1, sx);//  (3 - 2*sx)*sx*sx);// Apply cubic interpolation
+		 value = lerp(ix0, ix1, sy);//  (3 - 2*sy)*sy*sy);// Apply cubic interpolation
 	 
 		 //return value;
 		 return(value);
@@ -112,7 +112,7 @@ public class Perlin2D
 	// STATIC METHODS
 	private static double lerp (double a, double b,  double w)
 	{
-		return((1.0-w) * a + w * b);
+		return((1.0-(3 - 2*w)*w*w) * a + (3 - 2*w)*w*w * b);
 	}
 	
 	public static void main (String[] args)
