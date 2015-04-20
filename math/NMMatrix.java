@@ -100,13 +100,21 @@ public class NMMatrix {
 				out.setElement(o,i,elements[i][o] * s);
 		return out;
 	}
-	public NMatrix add(NMatrix m)
+	public boolean isSameSize(NMMatrix m)
+	{
+		return (width == m.getWidth() && height == m.getHeight());
+	}
+	public NMMatrix add(NMMatrix m)
 	{
 		NMMatrix out = new NMMatrix(width, height);
-		if(width == m.getWidth() && height == m.getHeight())
+		if(isSameSize(m))
 		{
 			for(int i = 0; i<height; i++)
 				for(int o = 0; o<width; o++)
+					out.setElement(o,i,elements[i][o] + m.getElement(o,i));
+		}// Maybe throw an exception here?
+		return out;
+	}
 					
 	//	Static
 	
@@ -183,5 +191,9 @@ public class NMMatrix {
 		System.out.println("Scaling" + a + "by 2:");
 		a = a.scale(2);
 		System.out.println(a);
+		System.out.println("Getting leftmost columnn from" + m);
+		System.out.println(m.getColumn(0));
+		System.out.println("Getting topmost row...");
+		System.out.println(m.getRow(0));
 	}
 }
