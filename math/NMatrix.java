@@ -5,12 +5,12 @@ import classes.math.NVector;
  * A Matrix class for N-by-M matrices
  */
 
-public class NMMatrix {
+public class NMatrix {
 	
 	private double[][] elements;
 	private int width, height;
 	
-	public NMMatrix (double[][] elements)
+	public NMatrix (double[][] elements)
 	{
 		if(checkSensible(elements))
 		{
@@ -19,7 +19,7 @@ public class NMMatrix {
 			width = elements[0].length;
 		}
 	}
-	public NMMatrix (int width, int height)
+	public NMatrix (int width, int height)
 	{
 		this(new double[height][width]);
 	}
@@ -88,25 +88,25 @@ public class NMMatrix {
 		for(int i = 0; i<len; i++)
 			elements[(int)(i/height)][i%width] = 0;
 	}
-	public NMMatrix returnZeroed()
+	public NMatrix returnZeroed()
 	{
-		return (new NMMatrix(width,height));
+		return (new NMatrix(width,height));
 	}
-	public NMMatrix scale(double s)
+	public NMatrix scale(double s)
 	{
-		NMMatrix out = new NMMatrix(width, height);
+		NMatrix out = new NMatrix(width, height);
 		for(int i = 0; i<height; i++)
 			for(int o = 0; o<width; o++)
 				out.setElement(o,i,elements[i][o] * s);
 		return out;
 	}
-	public boolean isSameSize(NMMatrix m)
+	public boolean isSameSize(NMatrix m)
 	{
 		return (width == m.getWidth() && height == m.getHeight());
 	}
-	public NMMatrix add(NMMatrix m)
+	public NMatrix add(NMatrix m)
 	{
-		NMMatrix out = new NMMatrix(width, height);
+		NMatrix out = new NMatrix(width, height);
 		if(isSameSize(m))
 		{
 			for(int i = 0; i<height; i++)
@@ -115,9 +115,9 @@ public class NMMatrix {
 		}// Maybe throw an exception here?
 		return out;
 	}
-	public NMMatrix subtract(NMMatrix)
+	public NMatrix subtract(NMatrix)
 	{
-		NMMatrix out = new NMMatrix(width, height);
+		NMatrix out = new NMatrix(width, height);
 		if(isSameSize(m))
 		{
 			for(int i = 0; i<height; i++)
@@ -126,9 +126,9 @@ public class NMMatrix {
 		}// Again, maybe throw an exception
 		return out;
 	}
-	public NMMatrix multiply(NMMatrix m)
+	public NMatrix multiply(NMatrix m)
 	{
-		NMMatrix out = new NMMatrix(width, height);
+		NMatrix out = new NMatrix(width, height);
 		if(this.height == m.getWidth())
 		{
 			for(int i = 0; i<width; i++)
@@ -148,9 +148,9 @@ public class NMMatrix {
 	/**
 	 * Returns a deep copy of this matrix
 	 */
-	public NMMatrix copy()
+	public NMatrix copy()
 	{
-		return(new NMMatrix(this.to2DArray()));
+		return(new NMatrix(this.to2DArray()));
 	}
 	public String toString()
 	{
@@ -188,7 +188,7 @@ public class NMMatrix {
 	
 	public static void main (String[] args)
 	{
-		System.out.println("\nNMMatrix Test (see source):\n");
+		System.out.println("\nNMatrix Test (see source):\n");
 		double[][] rectTest1 = {{1,2,3,4,5},
 								{1,2,3,4},
 								{1,2,3,4,5}};
@@ -197,7 +197,7 @@ public class NMMatrix {
 								{1,2,3,4,5}};
 		System.out.println("rectTest1 test: " + checkRect(rectTest1) + "  [should be false]");
 		System.out.println("rectTest2 test: " + checkRect(rectTest2) + "   [should be true]");
-		NMMatrix m = new NMMatrix(rectTest2);
+		NMatrix m = new NMatrix(rectTest2);
 		System.out.println("toString():" + m);
 		System.out.println("Deep copy of Array:");
 		System.out.println("Original's element's identity hash:   " + System.identityHashCode(m.elements));
@@ -206,8 +206,8 @@ public class NMMatrix {
 		System.out.println("Original's identity hash: " + System.identityHashCode(m));
 		System.out.println("Copy's identity hash:     " + System.identityHashCode(m.copy()));
 		System.out.println("setElementsTo():");
-		NMMatrix a = new NMMatrix(new double[][]{new double[]{8,3},new double[]{2,6}});
-		NMMatrix b = new NMMatrix(new double[][]{new double[]{7,9}});
+		NMatrix a = new NMatrix(new double[][]{new double[]{8,3},new double[]{2,6}});
+		NMatrix b = new NMatrix(new double[][]{new double[]{7,9}});
 		System.out.println("Setting" + a + " with " + b + " gives");
 		a.setElements(b.to2DArray());
 		System.out.println(a);
@@ -220,8 +220,8 @@ public class NMMatrix {
 		//TODO: randomize
 		double[][] ca = {{5,7,2},{1,6,3}};
 		double[][] da = {{1,2,9},{8,4,3}};
-		NMMatrix c = new NMMatrix(ca);
-		NMMatrix d = new NMMatrix(da);
+		NMatrix c = new NMatrix(ca);
+		NMatrix d = new NMatrix(da);
 		System.out.println("Getting leftmost columnn from" + c);
 		System.out.println(c.getColumn(0));
 		System.out.println("Getting topmost row...");
