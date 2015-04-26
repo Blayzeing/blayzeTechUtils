@@ -104,6 +104,16 @@ public class NMatrix {
 	{
 		return (width == m.getWidth() && height == m.getHeight());
 	}
+	public boolean equals(NMatrix m)
+	{
+		if(!isSameSize(m))
+			return false;
+		for(int i = 0; i<height; i++)
+			for(int o = 0; o<width; o++)
+				if(m.getElement(o,i) != elements[i][o])
+					return false;
+		return true;
+	}
 	public NMatrix add(NMatrix m)
 	{
 		NMatrix out = new NMatrix(width, height);
@@ -115,7 +125,7 @@ public class NMatrix {
 		}// Maybe throw an exception here?
 		return out;
 	}
-	public NMatrix subtract(NMatrix)
+	public NMatrix subtract(NMatrix m)
 	{
 		NMatrix out = new NMatrix(width, height);
 		if(isSameSize(m))
