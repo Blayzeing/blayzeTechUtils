@@ -153,6 +153,34 @@ public class NMatrix {
 	}
 					
 	//	Static
+	public static void zero (NMatrix m)
+	{
+		m.zero();
+	}
+	public static boolean isSameSize (NMatrix a, NMatrix b)
+	{
+		return(a.isSameSize(b));
+	}
+	public static boolean equals (NMatrix a, NMatrix b)
+	{
+		return(a.equals(b));
+	}
+	public static NMatrix scale (NMatrix m, double s)
+	{
+		return(m.copy().scale(s));
+	}
+	public static NMatrix add (NMatrix a, NMatrix b)
+	{
+		return(a.add(b));
+	}
+	public static NMatrix subtract (NMatrix a, NMatrix b)
+	{
+		return(a.subtract(b));
+	}
+	public static NMatrix multiply (NMatrix a, NMatrix b)
+	{
+		return(a.multiply(b));
+	}
 	
 	// Utilities
 	/**

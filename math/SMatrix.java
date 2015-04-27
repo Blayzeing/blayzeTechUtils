@@ -8,21 +8,20 @@ public class SMatrix extends NMMatrix{
 	{
 		super(size,size);
 	}
-	public SMatrix (double[][] elements)
-	{
-		
 	
+	// FUNCTIONS -- DYNAMIC
 	public void setIdentity ()
 	{
-		/*if(rows != columns) return();
-		for(int i = 0; i<rows; i++)
-			elements[i][i] = 1; */
+		zero();
+		for(int i = 0; i<width; i++)
+			elements[i][i] = 1;
 	}
-
 	public static NMMatrix getIdentity ()
 	{
 		NMMatrix m = new NMMatrix();
 		m.setIdentity();
 		return m;
 	}
+
+	// FUNCTIONS -- STATIC
 }
