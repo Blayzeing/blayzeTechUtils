@@ -4,23 +4,39 @@ package classes.math;
  */
 public class SMatrix extends NMMatrix{
 	
+	private int size;
+	
 	public SMatrix (int size)
 	{
 		super(size,size);
+		this.size = size;
 	}
 	
 	// FUNCTIONS -- DYNAMIC
 	public void setIdentity ()
 	{
 		zero();
-		for(int i = 0; i<width; i++)
+		for(int i = 0; i<size; i++)
 			elements[i][i] = 1;
 	}
-	public static NMMatrix getIdentity ()
+	public SMatrix getIdentity ()
 	{
-		NMMatrix m = new NMMatrix();
+		SMatrix m = new SMatrix(width);
 		m.setIdentity();
 		return m;
+	}
+	public double getDet()
+	{
+		// To break recursion
+		if(size == 1)
+			return elements[0][0];
+		double output = 0;
+		for(int i = 0; i<size; i++)
+		{
+			double multiplier = (i%2)*-2+1;
+			SMatrix subMatrix = new SMatrix(size-1);
+			
+		}
 	}
 
 	// FUNCTIONS -- STATIC

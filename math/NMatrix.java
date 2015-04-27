@@ -7,7 +7,7 @@ import classes.math.NVector;
 
 public class NMatrix {
 	
-	private double[][] elements;
+	protected double[][] elements;// Using protected for speed in SMatrix
 	private int width, height;
 	
 	public NMatrix (double[][] elements)
@@ -46,6 +46,24 @@ public class NMatrix {
 	public NVector getRow (int r)
 	{
 		return (new NVector(elements[r]));
+	}
+	public NMatrix getSubMatrix (int x, int y, int width, int height)
+	{
+		if(x+width > this.width)
+			width = this.width - x;
+		if(y+height > this.height)
+			height = this.height - y;
+		NMatrix out = new NMatrix(width,height);
+		for(int i = x; i<x+width; i++)
+			for(int o = y; o<y+height; i++)
+			{
+				out.setElement(i-x, o-y, elements[o][i]);
+			}
+		return out;
+	}
+	public NMatrix getSubMatrixFromPoints (int x1, int y1, int x2, int y2)
+	{
+		return(getSubMatrix(x1,y1,x2-x1,y2-y1));
 	}
 	
 	// Setters
