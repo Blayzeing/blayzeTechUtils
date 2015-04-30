@@ -34,9 +34,21 @@ public class SMatrix extends NMMatrix{
 		for(int i = 0; i<size; i++)
 		{
 			double multiplier = (i%2)*-2+1;
-			SMatrix subMatrix = new SMatrix(size-1);
-			
+			int subSize = size-1;
+			SMatrix subMatrix = new SMatrix(subSize);
+			int subCol = 0;
+			for(col = 0; col<subSize; col++)
+			{
+				for(int o = 0; o<Subsize; o++)
+					subMatrix.setElement(col,o,elements[o+1][subCol]);
+				if(col+1 == i)
+					subCol += 2;
+				else
+					subCol++;
+			}
+			output = output + multiplier * subMatrix.getDet();
 		}
+		return output;
 	}
 
 	// FUNCTIONS -- STATIC
