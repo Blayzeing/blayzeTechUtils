@@ -47,7 +47,7 @@ public class NMatrix {
 	{
 		return (new NVector(elements[r]));
 	}
-	public NMatrix getSubMatrix (int x, int y, int width, int height)
+	public NMatrix getSubMatrix (int x, int y, int width, int height)//TODO: TEST
 	{
 		if(x+width > this.width)
 			width = this.width - x;
@@ -61,12 +61,18 @@ public class NMatrix {
 			}
 		return out;
 	}
-	public NMatrix getSubMatrixFromPoints (int x1, int y1, int x2, int y2)
+	public NMatrix getSubMatrixFromPoints (int x1, int y1, int x2, int y2)//TODO: TEST
 	{
 		return(getSubMatrix(x1,y1,x2-x1,y2-y1));
 	}
 	
 	// Setters
+	/**
+	 * Sets a particular element of the matrix to a given double value
+	 * @param	x	int	The x-coordinate to set
+	 * @param	y	int	The y-coordinate to set
+	 * @param	value	double	The value to set the element to
+	 */
 	public void setElement (int x, int y, double value)
 	{
 		try{
@@ -100,12 +106,64 @@ public class NMatrix {
 
 	// Maths functions
 	//	Standard (instance)
+	//		In-place methods
+	/** Method to zero every element in-place */
 	public void zero()
 	{
 		int len = width * height;
 		for(int i = 0; i<len; i++)
 			elements[(int)(i/height)][i%width] = 0;
 	}
+	/**
+	 * Method to randomize every element in-place between max and min
+	 * @param	max	double The maximum value
+	 * @param	min double The minimum value
+	 */
+	public void randomize(double max, double min)
+	{
+		for(int i = 0; i<height; i++)
+			for(int o = 0; o<width; o++)
+				elements[i][o] = Math.random() * (max-min) + min;
+	}
+	/**
+	 * Method to randomize every element in-place between max and 0
+	 * @param	max	double The maximum value
+	 */
+	public void randomize(double max)
+	{
+		randomize(max,0.0);
+	}
+	/** Method to randomize every element in-place between 1 and 0 */
+	public void randomize()
+	{
+		randomize(1.0);
+	}
+	/**
+	 * Method to randomize every element in-place between max and min, rounded to the nearest int
+	 * @param	max	double The maximum value
+	 * @param	min double The minimum value
+	 */
+	public void randomizeInt(int max, int min)
+	{
+		for(int i = 0; i<height; i++)
+			for(int o = 0; o<width; o++)
+				elements[i][o] = Math.round(Math.random() * (max-min) + min);
+	}
+	/**
+	 * Method to randomize every element in-place between max and 0, rounded to the nearest int
+	 * @param	max	double The maximum value
+	 */
+	public void randomizeInt(int max)
+	{
+		randomizeInt(max,0);
+	}
+	/** Method to randomize every element in-place between 1 and 0, rounded to the nearest int */
+	public void randomizeInt()
+	{
+		randomizeInt(1);
+	}
+	
+	//		Returning methods
 	public NMatrix returnZeroed()
 	{
 		return (new NMatrix(width,height));
@@ -169,7 +227,7 @@ public class NMatrix {
 		}
 		return out;
 	}
-					
+	
 	//	Static
 	public static void zero (NMatrix m)
 	{
@@ -215,9 +273,16 @@ public class NMatrix {
 			out += Arrays.toString(a) + "\n";
 		return out;
 	}
-	/**
-	 * Returns a 2D array of the elements of this matrix (deep)
-	 */
+	/** Returns this matrix in a format that can be copy/pasted into wolframAlpha */
+	public String toStringWolfram()
+	{
+		String out = "\n[";
+		for (int i = 0; i<elements.length; i++)
+			out += Arrays.toString(elements[i]) + (i != elements.length-1 ? "," : "");
+		out += "]";
+		return out;
+	}
+	/** Returns a 2D array of the elements of this matrix (deep) */
 	public double[][] to2DArray ()
 	{
 		double[][] out = new double[height][width];

@@ -98,26 +98,35 @@ public class NVector
 		}
 		return(out);
 	}
-	public void randomize()
-	{
-		for(int i = 0; i<length; i++)
-		{
-			elements[i] = Math.random();
-		}
-	}
-	public void randomize(double max)
-	{
-		for(int i = 0; i<length; i++)
-		{
-			elements[i] = Math.random() * max;
-		}
-	}
 	public void randomize(double max, double min)
 	{
 		for(int i = 0; i<length; i++)
 		{
 			elements[i] = Math.random() * (max - min) + min;
 		}
+	}
+	public void randomize(double max)
+	{
+		randomize(max,0.0);
+	}
+	public void randomize()
+	{
+		randomize(1.0,0.0);
+	}
+	public void randomizeInt(int max, int min)
+	{
+		for(int i = 0; i<length; i++)
+		{
+			elements[i] = Math.round(Math.random() * (max - min) + min);
+		}
+	}
+	public void randomizeInt(int max)
+	{
+		randomize(max,0);
+	}
+	public void randomizeInt()
+	{
+		randomize(1,0);
 	}
 	public double getMagnitude()
 	{
@@ -196,8 +205,8 @@ public class NVector
 		int ran = (int)Math.floor(Math.random() * 100);
 		NVector a = new NVector(ran);
 		NVector b = new NVector(ran);
-		a.randomize(5,-5);
-		b.randomize(5,-5);
+		a.randomizeInt(5,-5);
+		b.randomizeInt(5,-5);
 		System.out.println("VECTOR CLASS FUNCTIONALITY TEST:\n");
 		System.out.println("Vector A: \n" + a);
 		System.out.println("Vector B: \n" + b);
@@ -208,7 +217,7 @@ public class NVector
 		System.out.println(a.scale(scalar));
 		System.out.println("Dot product: " + a.dot(b));
 		NVector c = new NVector((int)Math.floor(Math.random() * 10));
-		c.randomize(5,-5);
+		c.randomizeInt(5,-5);
 		System.out.println("Vector C: \n" + c);
 		System.out.println("C's magnitude: " + c.getMagnitude());
 		System.out.println("C's magnitude squared: " + c.getMagnitudeSquared());

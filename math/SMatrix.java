@@ -25,6 +25,10 @@ public class SMatrix extends NMatrix{
 		m.setIdentity();
 		return m;
 	}
+	/**
+	 * Returns the determinate of this matrix.
+	 * @return	String	This matrix's determinate
+	 */
 	public double getDet()
 	{
 		// To break recursion
@@ -33,20 +37,23 @@ public class SMatrix extends NMatrix{
 		double output = 0;
 		for(int i = 0; i<size; i++)
 		{
-			double multiplier = (i%2)*-2+1;
+			double multiplier = (i%2)*-2+1;//calculate multiplier coefficient
+			//Create new subMatrix
 			int subSize = size-1;
 			SMatrix subMatrix = new SMatrix(subSize);
-			int subCol = 0;
-			for(int col = 0; col<subSize; col++)
+			//Iterate through the subMatrix, getting variables from the superMatrix
+			for(int row = 0; row<subSize; row++)
 			{
-				for(int o = 0; o<subSize; o++)
-					subMatrix.setElement(col,o,elements[o+1][subCol]);
-				if(col+1 == i)
-					subCol += 2;
-				else
+				int subCol = 0;// Store a separate value to be able to skip over the current column.
+				for(int col = 0; col<subSize; col++)
+				{
+					if(col == i)//Skip the column if it's at i (vertical skip)
+						subCol ++;
+					subMatrix.setElement(col,row,elements[row+1][subCol]);
 					subCol++;
+				}
 			}
-			output = output + multiplier * subMatrix.getDet();
+			output = output + multiplier * elements[0][i] * subMatrix.getDet();
 		}
 		return output;
 	}
@@ -57,9 +64,12 @@ public class SMatrix extends NMatrix{
 	public static void main (String[] args)
 	{
 		SMatrix m = new SMatrix(2);
-		m.setElements(new double[][]{new double[]{5,2},
-					     new double[]{3,1}});
-		System.out.println("Finding the determinant of m: " + m);
-		System.out.println("Det(m) = " + m.getDet());
+		m.randomizeInt(9,0);
+		System.out.println("Finding the determinant of matrix: " + m);
+		System.out.println("Det(m) = " + m.getDet() + "\n");
+		SMatrix m4 = new SMatrix(10);
+		m4.randomizeInt(20,-20);
+		System.out.println("Finding the determinant of matrix: " + m4);
+		System.out.println("Det(m) = " + m4.getDet());
 	}
 }
