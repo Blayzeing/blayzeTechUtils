@@ -16,7 +16,6 @@ public class BufferedDrawingPanel extends JPanel{
 	{
 		super.paintComponent(g);
 		((Graphics2D)g).drawImage(buffer,0,0,getWidth(),getHeight(),null);
-		System.out.println("GOT HERE");
 	}
 
 	public BufferedImage getImageReference()

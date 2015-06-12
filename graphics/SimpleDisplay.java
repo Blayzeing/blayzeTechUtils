@@ -76,13 +76,14 @@ public class SimpleDisplay extends JFrame{
 	{
 		Graphics2D g = getGraphics2D();
 		Color oldColor = g.getColor();
+		g.setStroke(new BasicStroke(2));
 		g.setColor(lineColor);
-		for(int i = 1; i < width/spacing; i++)
+		for(int i = 1; i < width/spacing+1; i++)
 			g.drawLine(i*spacing, 0, i*spacing, height);
-		for(int i = 1; i < height/spacing; i++)
+		for(int i = 1; i < height/spacing+1; i++)
 			g.drawLine(0, i*spacing, width, i*spacing);
-		//canvas.repaint();
 		g.setColor(oldColor);
+		g.setStroke(new BasicStroke(1));
 	}
 	public void drawGrid(int spacing)
 	{
