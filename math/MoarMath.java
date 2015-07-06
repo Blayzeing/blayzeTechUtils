@@ -22,7 +22,14 @@ public class MoarMath
 		double dot = x1 * x2 + y1 * y2;
 		return (Math.acos(dot/(Math.hypot(x1,y1)*Math.hypot(x2,y2))));
 	}
-	
+	/**
+	 * Returns the intersection point of two lines (in vector form [x,y]+r[xdiff,ydiff])
+	 */
+	public static double[] vectorIntersect(double x1, double y1, double xdiff1, double ydiff1, double x2, double y2, double xdiff2, double ydiff2)
+	{
+		//TODO: Maths here that works out the interesect of the two lines
+		return (new double[]{0,0});
+	}
 	
 	public static void main (String[] args)
 	{
