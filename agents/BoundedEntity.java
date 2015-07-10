@@ -25,25 +25,30 @@ public class BoxBoundedEntity extends AbstractEntity{
 		//Check that the origin is not inside the bound
 		if(x1 > getX() && x1 < getX() + width && y1 > getY() && y2 < getY() + height)
 			return 0;
+		double[] intPoint;
 		//Scan left edge
 		if(x1 < getX() && x2 > getX())
 		{
-			
+			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX(), getY() + height, x1,y1,x2,y2);
+			closest = Math.min(Math.hypot(x1-intPoint[0], y1-intPoint[1]), closest);
 		}
 		//Scan up edge
 		if(y1 < getY() && y2 > getY())
 		{
-			
+			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX() + width, getY(), x1,y1,x2,y2);
+			closest = Math.min(Math.hypot(x1-intPoint[0], y1-intPoint[1]), closest);
 		}
 		//Scan right edge
 		if(x1 > getX() + width && x2 < getX() + width)
 		{
-			
+			intPoint = MoarMath.lineIntersectNoSkew(getX() + width, getY(), getX() + width, getY() + height, x1,y1,x2,y2);
+			closest = Math.min(Math.hypot(x1-intPoint[0], y1-intPoint[1]), closest);
 		}
 		//Scan down edge
 		if(y1 > getY() + height && y2 < getY() + height)
 		{
-			
+			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY() + height, getX() + width, getY() + height, x1,y1,x2,y2);
+			closest = Math.min(Math.hypot(x1-intPoint[0], y1-intPoint[1]), closest);
 		}
 		return closest;
 	}
