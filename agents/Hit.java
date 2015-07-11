@@ -2,20 +2,17 @@ package classes.agents;
 
 public class Hit {
 	private boolean contact = false;
-	public double distance;
+	private double x,y;
 	
-	public Hit(boolean madeContact, double distanceFromOrigin)
+	public Hit(boolean madeContact, double x, double y)
 	{
 		contact = madeContact;
-		distance = distanceFromOrigin;
+		this.x = x;
+		this.y = y;
 	}
 	
 	public boolean hadContact()
 	{
 		return contact;
-	}
-	public double distance()
-	{
-		return distance;
 	}
 }
