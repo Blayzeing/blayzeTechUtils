@@ -11,7 +11,7 @@ public class DistancedHit extends Hit {
 		
 	private double distance = 0;
 	
-	public DistanceHit (boolean madeContact, double x, double y, double distance)
+	public DistancedHit (boolean madeContact, double x, double y, double distance)
 	{
 		super(madeContact, x, y);
 		this.distance = distance;

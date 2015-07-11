@@ -3,6 +3,9 @@ package classes.agents;
 import classes.agents.AbstractEntity;
 import classes.agents.DistancedHit;
 import classes.math.MoarMath;
+import classes.graphics.SimpleDisplay;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 public class BoxBoundedEntity extends AbstractEntity{
 	
@@ -14,20 +17,20 @@ public class BoxBoundedEntity extends AbstractEntity{
 		this.width = width;
 		this.height = height;
 	}
-	public BoundedEntity (Rectangle bounds)
+	/*public BoxBoundedEntity (Rectangle bounds)
 	{
 		this(bounds.x, bounds.y, bounds.width, bounds.height);
-	}
+	}*/
 	
-	public Hit hitScan(double x1, double y1, double x2, double y2)
+	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		double closest = Math.hypot(x1-x2, y1-y2);
 		//Check that the origin is not inside the bound
-		if(x1 > getX() && x1 < getX() + width && y1 > getY() && y2 < getY() + height)
-			return 0;
+		if(x1 > getX() && x1 < getX() + width && y1 > getY() && y1 < getY() + height)
+			return (new DistancedHit(true, x1, y1, 0));
 		double[] intPoint;
 		double distance;
-		double[] closestIntPoint = null;
+		double[] closestIntPoint = new double[]{x2,y2};
 		boolean contact = false;
 		//Scan left edge
 		if(x1 < getX() && x2 > getX())
@@ -35,7 +38,7 @@ public class BoxBoundedEntity extends AbstractEntity{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX(), getY() + height, x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(distance < closest)
+			if(intPoint[1] > getY() && intPoint[1] < getY() + height && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
@@ -47,18 +50,19 @@ public class BoxBoundedEntity extends AbstractEntity{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX() + width, getY(), x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(distance < closest)
+			if(intPoint[0] > getX() && intPoint[0] < getX() + width && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
-			}		}
+			}
+		}
 		//Scan right edge
 		if(x1 > getX() + width && x2 < getX() + width)
 		{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX() + width, getY(), getX() + width, getY() + height, x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(distance < closest)
+			if(intPoint[1] > getY() && intPoint[1] < getY() + height && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
@@ -70,7 +74,7 @@ public class BoxBoundedEntity extends AbstractEntity{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY() + height, getX() + width, getY() + height, x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(distance < closest)
+			if(intPoint[0] > getX() && intPoint[0] < getX() + width && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
@@ -102,7 +106,7 @@ public class BoxBoundedEntity extends AbstractEntity{
 	}
 	public Point getTopRightCorner()
 	{
-		return (new Point(getX() + width, getY());
+		return (new Point(getX() + width, getY()));
 	}
 	public Point getBottomRightCorner()
 	{
@@ -113,8 +117,29 @@ public class BoxBoundedEntity extends AbstractEntity{
 		return (new Point(getX(), getY() + height));
 	}
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws InterruptedException
 	{
+		BoxBoundedEntity b = new BoxBoundedEntity(130, 90, 100, 100);
+		SimpleDisplay d = new SimpleDisplay(550,400, true, true);
+//		SimpleDisplay d2 = new SimpleDisplay(550, 400, true, true);
+		Graphics2D g = d.getGraphics2D();
+//		Graphics2D g2 = d2.getGraphics2D();
+		g.setColor(Color.RED);
 		
+		while(true)
+		{
+			Thread.sleep(10);
+			double startx = Math.random() * 550;
+			double starty = Math.random() * 400;
+			double angle = Math.random() * Math.PI * 2 - Math.PI;
+			double endy = starty + Math.sin(angle) * 500;
+			double endx = startx + Math.cos(angle) * 500;
+			DistancedHit out = b.hitScan(startx, starty, endx, endy);
+			if(out.madeContact())
+				g.drawLine((int)startx, (int)starty, (int)out.getX(), (int)out.getY());
+			else
+				g.drawLine((int)startx, (int)starty, (int)endx, (int)endy);
+			d.repaint();
+		}
 	}
 }

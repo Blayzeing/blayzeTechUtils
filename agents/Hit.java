@@ -11,7 +11,15 @@ public class Hit {
 		this.y = y;
 	}
 	
-	public boolean hadContact()
+	public double getX()
+	{
+		return x;
+	}
+	public double getY()
+	{
+		return y;
+	}
+	public boolean madeContact()
 	{
 		return contact;
 	}
