@@ -1,6 +1,6 @@
 package classes.agents;
 
-import classes.agents.AbstractEntity;
+import classes.agents.AbstractBoxBoundedEntity;
 import classes.agents.DistancedHit;
 import classes.math.MoarMath;
 import classes.graphics.SimpleDisplay;
@@ -8,27 +8,24 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public class OuterBoxBoundedEntity extends AbstractEntity{
-	
-	private double width, height;
+public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
 	
 	public OuterBoxBoundedEntity (double x, double y, double width, double height)
 	{
-		super(x,y);
-		this.width = width;
-		this.height = height;
+		super(x,y,width,height);
 	}
 	public OuterBoxBoundedEntity (Rectangle bounds)
 	{
 		this(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 	}
-
+	
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		double closest = Math.hypot(x1-x2, y1-y2);
 		//Check that the origin is not outside the bounds
-		if(x1 < getX() || x1 > getX() + width || y1 < getY() || y1 > getY() + height)
+		if(x1 < getX() || x1 > getX() + getWidth() || y1 < getY() || y1 > getY() + getHeight())
 			return (new DistancedHit(true, x1, y1, 0));
+
 		double[] intPoint;
 		double distance;
 		double[] closestIntPoint = new double[]{x2,y2};
@@ -37,9 +34,9 @@ public class OuterBoxBoundedEntity extends AbstractEntity{
 		if(x2 < getX() && x1 > getX())
 		{
 			contact = true;
-			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX(), getY() + height, x1,y1,x2,y2);
+			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX(), getY() + getHeight(), x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(intPoint[1] > getY() && intPoint[1] < getY() + height && distance < closest)
+			if(intPoint[1] > getY() && intPoint[1] < getY() + getHeight() && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
@@ -49,73 +46,39 @@ public class OuterBoxBoundedEntity extends AbstractEntity{
 		if(y2 < getY() && y1 > getY())
 		{
 			contact = true;
-			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX() + width, getY(), x1,y1,x2,y2);
+			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX() + getWidth(), getY(), x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(intPoint[0] > getX() && intPoint[0] < getX() + width && distance < closest)
+			if(intPoint[0] > getX() && intPoint[0] < getX() + getWidth() && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
 			}
 		}
 		//Scan right edge
-		if(x2 > getX() + width && x1 < getX() + width)
+		if(x2 > getX() + getWidth() && x1 < getX() + getWidth())
 		{
 			contact = true;
-			intPoint = MoarMath.lineIntersectNoSkew(getX() + width, getY(), getX() + width, getY() + height, x1,y1,x2,y2);
+			intPoint = MoarMath.lineIntersectNoSkew(getX() + getWidth(), getY(), getX() + getWidth(), getY() + getHeight(), x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(intPoint[1] > getY() && intPoint[1] < getY() + height && distance < closest)
+			if(intPoint[1] > getY() && intPoint[1] < getY() + getHeight() && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
 			}
 		}
 		//Scan down edge
-		if(y2 > getY() + height && y1 < getY() + height)
+		if(y2 > getY() + getHeight() && y1 < getY() + getHeight())
 		{
 			contact = true;
-			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY() + height, getX() + width, getY() + height, x1,y1,x2,y2);
+			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY() + getHeight(), getX() + getWidth(), getY() + getHeight(), x1,y1,x2,y2);
 			distance = Math.hypot(x1-intPoint[0], y1-intPoint[1]);
-			if(intPoint[0] > getX() && intPoint[0] < getX() + width && distance < closest)
+			if(intPoint[0] > getX() && intPoint[0] < getX() + getWidth() && distance < closest)
 			{
 				closest = distance;
 				closestIntPoint = intPoint;
 			}
 		}
 		return(new DistancedHit(contact, closestIntPoint[0], closestIntPoint[1], closest));
-	}
-
-	public void setWidth(double w)
-	{
-		width = w;
-	}
-	public void setHeight(double h)
-	{
-		height = h;
-	}
-
-	public double getWidth()
-	{
-		return width;
-	}
-	public double getHeight()
-	{
-		return height;
-	}
-	public Point getTopLeftCorner()
-	{
-		return (new Point(getX(), getY()));
-	}
-	public Point getTopRightCorner()
-	{
-		return (new Point(getX() + width, getY()));
-	}
-	public Point getBottomRightCorner()
-	{
-		return (new Point(getX() + width, getY() + height));
-	}
-	public Point getBottomLeftCorner()
-	{
-		return (new Point(getX(), getY() + height));
 	}
 
 	public static void main(String[] args) throws InterruptedException
