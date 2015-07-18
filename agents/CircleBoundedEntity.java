@@ -49,24 +49,24 @@ public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
 
 		// Now, with the two inter sectional points found, we must return the one closest to this agent:
 		double[] intPoint = new double[]{int1X, int1Y};
-		double intDistance1 = Math.hypot(x1 + this.getX() - int1X, y1 + this.getY() - int1Y);
-		double intDistance2 = Math.hypot(x1 + this.getX() - int2X, y1 + this.getY() - int2Y);
-		
+		double intDistance1 = Math.hypot(x1 - int1X, y1 - int1Y);
+		double intDistance2 = Math.hypot(x1 - int2X, y1 - int2Y);
+
 		// Make sure the line isn't outside of the circle, first check that the line ends after the intersection,
 		// Second check that the line is pointing toward the circle instead of away by finding the angle between
 		// origin to P1 and P1 to P2, if >90 then it's toward the circle
 		if(intDistance1 > distance && intDistance2 > distance)
-			return (new DistancedHit(false, x2, y2, distance));
-		else
 		{
+			return (new DistancedHit(false, x2, y2, distance));
+		}else{
 			if (intDistance1 < intDistance2)
-				if(MoarMath.angleBetween(xdiff, ydiff, int1X - x1 + this.getX(), int1Y - y1 + this.getY()) < Math.PI/2)
+				if(MoarMath.angleBetween(xdiff, ydiff, int1X - getX(), int1Y - getY()) < Math.PI/2)
 					return (new DistancedHit(true, int1X, int1Y, intDistance1));
 				else
 					return (new DistancedHit(false, x2, y2, distance));
 
 			else
-				if(MoarMath.angleBetween(xdiff, ydiff, int2X - x1 + this.getX(), int2Y - y1 + this.getY()) < Math.PI/2)
+				if(MoarMath.angleBetween(xdiff, ydiff, int2X - getX(), int2Y - getY()) < Math.PI/2)
 					return (new DistancedHit(true, int2X, int2Y, intDistance2));
 				else
 					return (new DistancedHit(false, x2, y2, distance));
