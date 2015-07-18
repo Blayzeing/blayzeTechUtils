@@ -21,4 +21,9 @@ public class DistancedHit extends Hit {
 	{
 		return distance;
 	}
+
+	public String toString()
+	{
+		return (super.toString() + "  d: " + distance);
+	}
 }

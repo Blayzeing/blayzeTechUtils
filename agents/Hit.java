@@ -23,4 +23,9 @@ public class Hit {
 	{
 		return contact;
 	}
+	
+	public String toString()
+	{
+		return ("Contact?: " + contact + "  x: " + x + "   y: " + y);
+	}
 }
