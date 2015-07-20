@@ -15,7 +15,32 @@ public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
 	}
 
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
-	{	
+	{
+		x1 -= this.getX();
+		x2 -= this.getX();
+		y1 -= this.getY();
+		y2 -= this.getY();
+		
+		double xdiff = x2 - x1;
+		double ydiff = y2 - y1;
+		double distance = Math.hypot(xdiff, ydiff);
+		double determinate = x1*y2 - x2*y1;
+		double descriminate = getRadius() * getRadius() * distance * distance - determinate * determinate;
+		
+		// Check for non-contacts and outward pointing lines
+		if(discriminate < 0) // The line does not make contact with the circle
+			return null; // TODO: Return whole line with no contact
+		if(MoarMath.angleBetween(x1,y1,x2-x1,y2-y1) < Math.PI/2 && Math.hypot(x1,y1) > getRadius())// The line is pointing away from the circle 
+			return(new DistancedHit(false, ));
+
+		// If not, then there must be an intersection, generate the two points:
+		double int1X = (determinate * ydiff + (ydiff<0? -1 : 1) * xdiff * Math.sqrt(discriminate)) / (distance*distance);
+		double int1Y = (-determinate * xdiff + Math.abs(ydiff) * Math.sqrt(discriminate)) / (distance*distance);
+		double int2X = (determinate * ydiff - (ydiff<0? -1 : 1) * xdiff * Math.sqrt(discriminate)) / (distance*distance);
+		double int2Y = (-determinate * xdiff - Math.abs(ydiff) * Math.sqrt(discriminate)) / (distance*distance);
+		
+		
+		/*
 		//Check that the line is not starting within the circle
 		if(Math.hypot(x1 - this.getX(), y1 - this.getY()) <= this.getRadius())
 			return (new DistancedHit(true, x1, y1, 0));
@@ -72,6 +97,7 @@ public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
 					return (new DistancedHit(false, x2, y2, distance));
 
 		}
+		*/
 	}
 
 	public static void main(String[] args) throws InterruptedException
