@@ -86,6 +86,8 @@ public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
 		OuterBoxBoundedEntity b = new OuterBoxBoundedEntity(130, 90, 300, 200);
 		SimpleDisplay d = new SimpleDisplay(550,400, true, true);
 		Graphics2D g = d.getGraphics2D();
+		b.draw(g);
+		d.repaint();
 		g.setColor(Color.RED);
 		
 		while(true)

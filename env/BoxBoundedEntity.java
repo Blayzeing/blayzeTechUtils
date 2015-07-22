@@ -85,6 +85,8 @@ public class BoxBoundedEntity extends AbstractBoxBoundedEntity{
 		BoxBoundedEntity b = new BoxBoundedEntity(130, 90, 100, 100);
 		SimpleDisplay d = new SimpleDisplay(550,400, true, true);
 		Graphics2D g = d.getGraphics2D();
+		b.draw(g);
+		d.repaint();
 		g.setColor(Color.RED);
 		
 		while(true)
