@@ -2,9 +2,8 @@ package classes.env;
 
 import classes.env.AbstractEntity;
 import classes.env.DistancedHit;
-import classes.math.MoarMath;
+import classes.math.Point;
 import classes.graphics.SimpleDisplay;
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
@@ -31,6 +30,35 @@ public abstract class AbstractCircleBoundedEntity extends AbstractEntity
 	{
 		return radius;
 	}
+	public double getDiameter()
+	{
+		return (radius * 2);
+	}
+	public double getWidth()
+	{
+		return (radius * 2);
+	}
+	public double getHeight()
+	{
+		return (radius*2);
+	}
+	public Point getTopLeftCorner()
+	{
+		return (new Point(getX() - radius, getY() - radius));
+	}
+	public Point getTopRightCorner()
+	{
+		return (new Point(getX() + radius, getY() - radius));
+	}
+	public Point getBottomRightCorner()
+	{
+		return (new Point(getX() + radius, getY() + radius));
+	}
+	public Point getBottomLeftCorner()
+	{
+		return (new Point(getX() - radius, getY() + radius));
+	}
+
 	public void draw(Graphics2D g)
 	{
 		g.drawOval((int)(this.getX() - radius), (int)(this.getY() - radius), (int)radius * 2, (int)radius * 2);

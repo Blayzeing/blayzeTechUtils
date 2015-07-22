@@ -1,12 +1,23 @@
 package classes.env;
 
+import classes.env.AbstractEntity;
 import classes.env.DistancedHit;
 import classes.math.StaticPoint;
+import java.awt.Graphics2D;
 
-public abstract class AbstractEnvironment {
+public class Environment {
 		
-		public ArrayList<AbstractEntity> entities = new ArrayList<AbstractEntity>();
-		
+		public ArrayList<AbstractEntity> entities; //Perhaps use binary space partitioning to divide up this list for a faster load time on larger envs?
+
+		public Environment (ArrayList<AbstractEntity> e)
+		{
+			entities = e;
+		}
+		public Environment ()
+		{
+			this(new ArrayList<AbstractEntity>());
+		}
+
 		public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 		{
 			DistancedHit closest = new DistancedHit(false, x2, y2, Math.hypot(x1-x2,y1-y2));
@@ -32,5 +43,18 @@ public abstract class AbstractEnvironment {
 		public double DistanceMeasure(StaticPoint p1, StaticPoint p2)
 		{
 			return DistanceMeasure(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+		}
+
+		public void draw(Graphics2D g)
+		{
+			for(AbstractEntity e : entities)
+			{
+				e.draw(g);
+			}
+		}
+
+		public static void main(String[] args)
+		{
+			Environment env = new Environment()
 		}
 }
