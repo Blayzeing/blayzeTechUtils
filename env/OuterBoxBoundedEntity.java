@@ -97,10 +97,8 @@ public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
 			double endy = starty + Math.sin(angle) * 500;
 			double endx = startx + Math.cos(angle) * 500;
 			DistancedHit out = b.hitScan(startx, starty, endx, endy);
-			if(out.madeContact())
-				g.drawLine((int)startx, (int)starty, (int)out.getX(), (int)out.getY());
-			else
-				g.drawLine((int)startx, (int)starty, (int)endx, (int)endy); d.repaint();
+			g.drawLine((int)startx, (int)starty, (int)out.getX(), (int)out.getY());
+			d.repaint();
 		}
 	}
 }

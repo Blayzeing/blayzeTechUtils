@@ -7,9 +7,9 @@ import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
+public class OuterCircleBoundedEntity extends AbstractCircleBoundedEntity {
 
-	public CircleBoundedEntity(double x, double y, double radius)
+	public OuterCircleBoundedEntity(double x, double y, double radius)
 	{
 		super(x,y,radius);
 	}
@@ -29,12 +29,10 @@ public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
 		
 		// Check for non-contacts and outward pointing lines
 		double startingPointDistance = Math.hypot(x1, y1);
-		if(startingPointDistance <= getRadius())// The line starts within the circle it is hit testing.
+		if(startingPointDistance > getRadius())// The line starts outside the circle
 			return(new DistancedHit(true, x1 + this.getX(), y1+ this.getY(), 0));
-		if(discriminate < 0) // The line does not make contact with the circle
-			return (new DistancedHit(false, x2 + this.getX(), y2 + this.getY(), distance));
-		if(MoarMath.angleBetween(x1,y1,x2-x1,y2-y1) < Math.PI/2 && startingPointDistance > getRadius())// The line is pointing away from the circle and starts outside of it.
-			return(new DistancedHit(false, x2 + this.getX(), y2 + this.getY(), distance));
+		/*if(MoarMath.angleBetween(x1,y1,x2-x1,y2-y1) < Math.PI/2 && startingPointDistance > getRadius())// The line is pointing away from the circle and starts outside of it.
+			return(new DistancedHit(false, x2 + this.getX(), y2 + this.getY(), distance));*/
 
 		// If not, then there must be an intersection, generate the two points:
 		double int1X = (determinate * ydiff + (ydiff<0? -1 : 1) * xdiff * Math.sqrt(discriminate)) / (distance*distance);
@@ -71,8 +69,8 @@ public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
 			double endy = starty + Math.sin(angle) * 500;
 			double endx = startx + Math.cos(angle) * 500;
 			DistancedHit out = c.hitScan(startx, starty, endx, endy);
+			//System.out.println(out);
 			g.drawLine((int)startx, (int)starty, (int)out.getX(), (int)out.getY());
-			d.repaint();
 		}
 	}
 }
