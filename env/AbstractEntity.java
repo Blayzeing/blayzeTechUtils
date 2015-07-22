@@ -1,6 +1,6 @@
 package classes.env;
 
-import classes.env.Point;
+import classes.math.Point;
 import classes.env.Hit;
 
 public abstract class AbstractEntity extends Point{

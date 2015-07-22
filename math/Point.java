@@ -1,6 +1,6 @@
-package classes.env;
+package classes.math;
 
- import classes.env.StaticPoint;
+ import classes.math.StaticPoint;
 
 /**
  * An up-datable point in 2D space.

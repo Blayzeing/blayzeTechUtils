@@ -1,4 +1,4 @@
-package classes.env;
+package classes.math;
 
 /**
  * A read-only point in 2D space.

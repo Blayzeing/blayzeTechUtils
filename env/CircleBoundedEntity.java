@@ -67,7 +67,7 @@ public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
 			Thread.sleep(10);
 			double startx = Math.random() * 550;
 			double starty = Math.random() * 400;
-			double angle = /*Math.random() * Math.PI/16 + Math.PI/2 - Math.PI/32;*/Math.random() * Math.PI * 2 - Math.PI;
+			double angle = Math.random() * Math.PI * 2 - Math.PI;
 			double endy = starty + Math.sin(angle) * 500;
 			double endx = startx + Math.cos(angle) * 500;
 			DistancedHit out = c.hitScan(startx, starty, endx, endy);

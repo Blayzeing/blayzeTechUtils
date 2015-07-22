@@ -33,9 +33,7 @@ public class OuterCircleBoundedEntity extends AbstractCircleBoundedEntity {
 			return(new DistancedHit(true, x1 + this.getX(), y1+ this.getY(), 0));
 		
 		// Everything below this point will have two intersects with the circle.
-		/*if(MoarMath.angleBetween(x1,y1,x2-x1,y2-y1) < Math.PI/2 && startingPointDistance > getRadius())// The line is pointing away from the circle and starts outside of it.
-			return(new DistancedHit(false, x2 + this.getX(), y2 + this.getY(), distance));*/
-
+		
 		// Calculate two intersect points:
 		double int1X = (determinate * ydiff + (ydiff<0? -1 : 1) * xdiff * Math.sqrt(discriminate)) / (distance*distance);
 		double int1Y = (-determinate * xdiff + Math.abs(ydiff) * Math.sqrt(discriminate)) / (distance*distance);
@@ -43,9 +41,10 @@ public class OuterCircleBoundedEntity extends AbstractCircleBoundedEntity {
 		double int2Y = (-determinate * xdiff - Math.abs(ydiff) * Math.sqrt(discriminate)) / (distance*distance);
 		
 		//Choose the correct intersect point by choosing the one whos angle between Center of circle to intersection and point1 to point2 is least
+		//  '--> Check that each reading is not more than the distance between the points.
 		double int1distance = Math.hypot(int1X - x1, int1Y - y1);
 		double int2distance = Math.hypot(int2X - x1, int2Y - y1);
-		if(MoarMath.angleBetween(int1X,int1Y,x2-x1,y2-y1) < MoarMath.angleBetween(int2X, int2Y,x2-x1,y2-y1) /*&& int1distance < distance*/)
+		if(MoarMath.angleBetween(int1X,int1Y,x2-x1,y2-y1) < MoarMath.angleBetween(int2X, int2Y,x2-x1,y2-y1) )
 		{
 			if(int1distance < distance)
 				return (new DistancedHit(true, int1X + getX(), int1Y + getY(), int1distance));
@@ -73,7 +72,7 @@ public class OuterCircleBoundedEntity extends AbstractCircleBoundedEntity {
 			Thread.sleep(10);
 			double startx = Math.random() * 550;
 			double starty = Math.random() * 400;
-			double angle = /*Math.random() * Math.PI/16 + Math.PI/2 - Math.PI/32;*/Math.random() * Math.PI * 2 - Math.PI;
+			double angle = Math.random() * Math.PI * 2 - Math.PI;
 			double endy = starty + Math.sin(angle) * 70;
 			double endx = startx + Math.cos(angle) * 70;
 			DistancedHit out = c.hitScan(startx, starty, endx, endy);
