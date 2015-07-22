@@ -1,8 +1,8 @@
-package classes.agents;
+package classes.env;
 
-import classes.agents.AbstractCircleBoundedEntity;
+import classes.env.AbstractCircleBoundedEntity;
 import classes.math.MoarMath;
-import classes.agents.DistancedHit;
+import classes.env.DistancedHit;
 import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 import java.awt.Graphics2D;

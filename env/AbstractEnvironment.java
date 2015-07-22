@@ -1,4 +1,4 @@
-package classes.agents;
+package classes.env;
 
 public abstract class AbstractEnvironment {
 		

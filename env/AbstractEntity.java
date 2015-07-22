@@ -1,7 +1,7 @@
-package classes.agents;
+package classes.env;
 
-import classes.agents.Point;
-import classes.agents.Hit;
+import classes.env.Point;
+import classes.env.Hit;
 
 public abstract class AbstractEntity extends Point{
 	
