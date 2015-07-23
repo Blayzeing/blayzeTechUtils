@@ -23,4 +23,13 @@ public abstract class AbstractEntity extends Point{
 	public abstract Point getTopRightCorner();
 	public abstract Point getBottomRightCorner();
 	public abstract Point getBottomLeftCorner();
+
+	/*public boolean equals(Object obj)
+	{
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		return true;
+	}*/
 }

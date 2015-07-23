@@ -20,6 +20,50 @@ public class Environment {//TODO: Make this extend AbstractEntity? Note that ent
 			this(new ArrayList<AbstractEntity>());
 		}
 
+		/**
+		 * Performs a hitScan on this environment bar a list of entities to clip.
+		 * Performs a hitScan on each element in this environment, and returns the shortest.
+		 * @param	x1	the x-component of the start position of the ray
+		 * @param	y1	the y-component of the start position of the ray
+		 * @param	x2	the x-component of the end position of the ray
+		 * @param	y2	the y-component of the end position of the ray
+		 * @param	clip	a list of objects for the ray to clip through when scanning the environment
+		 */
+		public DistancedHit hitScan(double x1, double y1, double x2, double y2, ArrayList<AbstractEntity> clip)
+		{
+			//TODO: Finish this
+			return (new DistancedHit(false, 0, 0, 0));
+		}
+		/**
+		 * Performs a hitScan on this environment bar an Entity to clip.
+		 * Performs a hitScan on each element in this environment, and returns the shortest.
+		 * @param	x1	the x-component of the start position of the ray
+		 * @param	y1	the y-component of the start position of the ray
+		 * @param	x2	the x-component of the end position of the ray
+		 * @param	y2	the y-component of the end position of the ray
+		 */
+		public DistancedHit hitScan(double x1, double y1, double x2, double y2, AbstractEntity clip)
+		{
+			DistancedHit closest = new DistancedHit(false, x2, y2, Math.hypot(x1-x2,y1-y2));
+			for(AbstractEntity e : entities)
+			{
+				if(e != clip)//TODO: Perhaps make this use equals? Actually yes.(? maybe. I mean, what if two identical size on topo of each other)
+				{
+					DistancedHit h = e.hitScan(x1,y1,x2,y2);
+					if(h.getDistance() < closest.getDistance())
+						closest = h;
+				}
+			}
+			return closest;
+		}
+		/**
+		 * Performs a hitScan on this environment.
+		 * Performs a hitScan on each element in this environment, and returns the shortest.
+		 * @param	x1	the x-component of the start position of the ray
+		 * @param	y1	the y-component of the start position of the ray
+		 * @param	x2	the x-component of the end position of the ray
+		 * @param	y2	the y-component of the end position of the ray
+		 */
 		public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 		{
 			DistancedHit closest = new DistancedHit(false, x2, y2, Math.hypot(x1-x2,y1-y2));
