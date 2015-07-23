@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * A mid-way class to hold all methods used by box-based entities with width and heights
+ * A mid-way class to hold all methods used by box-based entities with width and heights.
  */
 
 public abstract class AbstractBoxBoundedEntity extends AbstractEntity
