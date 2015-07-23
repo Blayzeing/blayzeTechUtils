@@ -2,6 +2,7 @@ package classes.env;
 
 import classes.env.AbstractEntity;
 import classes.env.DistancedHit;
+import classes.math.Point;
 import classes.math.MoarMath;
 import classes.graphics.SimpleDisplay;
 import java.awt.Color;
