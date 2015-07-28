@@ -15,6 +15,13 @@ public class MoarMath
 		return(1.0/(1 + Math.exp(x * -1.0)));
 	}
 	/**
+	 * Returns the sigmoid, what I previously thought was called the logit.
+	 */
+	 public static double sigmoid (double x)
+	{
+		return(1.0/(1 + Math.exp(x * -1.0)));
+	}
+	/**
 	 * Returns the angle between two vectors [x1,y1] & [x2,y2]; they are taken as direction vectors.
 	 */
 	public static double angleBetween(double x1, double y1, double x2, double y2)
