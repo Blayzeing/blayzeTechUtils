@@ -151,6 +151,16 @@ public class NVector
 		}
 		return(out);
 	}
+	public boolean equals(Object obj)
+	{
+		if (obj == null || getClass() != obj.getClass() || ((NVector)obj).getLength() != getLength()) {
+			return false;
+		}
+		for(int i = 0; i < length; i++)
+			if(elements[i] != ((NVector)obj).getElement(i))
+				return false;
+		return true;
+	}
 
 	// CLASS METHODS
 	public static NVector add(NVector a, NVector b)
@@ -223,5 +233,14 @@ public class NVector
 		System.out.println("C's magnitude squared: " + c.getMagnitudeSquared());
 		System.out.println("C normalized: \n" + c.normalize());
 		System.out.println("C normalized's magnitude: " + c.normalize().getMagnitude());
+		NVector d = new NVector(4);
+		d.setElementsTo(new double[]{1,2,3,4});
+		NVector e = new NVector(4);
+		e.setElementsTo(new double[]{1,2,3,4});
+		System.out.println("Vector D and E:\n" + c + "\n"  + d);
+		System.out.println("D.equals(E): " + d.equals(e));
+		System.out.println("E.equals(D): " + e.equals(d));
+		System.out.println("D.equals(a): " + d.equals(a));
+		System.out.println("D.equals(null): " + d.equals(null));
 	}
 }
