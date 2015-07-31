@@ -32,4 +32,8 @@ public abstract class AbstractEntity extends Point{
 		
 		return true;
 	}*/
+	public String toString()
+	{
+		return ("[Abstract Entity]\n'-> "+super.toString());
+	}
 }

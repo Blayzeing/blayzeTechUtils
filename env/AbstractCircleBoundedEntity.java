@@ -59,6 +59,11 @@ public abstract class AbstractCircleBoundedEntity extends AbstractEntity
 		return (new Point(getX() - radius, getY() + radius));
 	}
 
+	public String toString()
+	{
+		return ("[Abstract Circle Bounded Entity] radius: " + radius + "\n'-> " + super.toString());
+	}
+
 	public void draw(Graphics2D g)
 	{
 		g.drawOval((int)(this.getX() - radius), (int)(this.getY() - radius), (int)radius * 2, (int)radius * 2);

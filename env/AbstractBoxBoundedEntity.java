@@ -59,6 +59,11 @@ public abstract class AbstractBoxBoundedEntity extends AbstractEntity
 		return (new Point(getX(), getY() + height));
 	}
 
+	public String toString()
+	{
+		return ("[Abstract Box Bounded Entity] width: " + width + "  height: " + height + "\n'-> " + super.toString());
+	}
+
 	public void draw(Graphics2D g)
 	{
 		g.drawRect((int)this.getX() , (int)this.getY(), (int)width, (int)height);
