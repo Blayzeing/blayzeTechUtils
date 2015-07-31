@@ -183,6 +183,10 @@ public class NVector
 	{
 		return(v.normalize());
 	}
+	public static boolean equals(NVector a, NVector b)
+	{
+		return (a.equals(b));
+	}
 	
 	// UTILITIES
 	/**
