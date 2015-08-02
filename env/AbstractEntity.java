@@ -11,6 +11,11 @@ public abstract class AbstractEntity extends Point{
 		super(x,y);
 	}
 	
+	/**
+	 * Performs a hitScan.
+	 * Works out how the Entity interacts with the line between [(x1, y1), (x2, y2)]
+	 * @return	DistancedHit	true if collision made, x and y values are the collision position (if no collision made, x2 and y2 returned)
+	 */
 	public abstract DistancedHit hitScan(double x1, double y1, double x2, double y2);
 	public DistancedHit hitScan(Point p1, Point p2)
 	{

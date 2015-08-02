@@ -4,6 +4,7 @@ package classes.math;
  * A useful class for storing more mathematical functions.
  * Written by Blayze Millward
  */
+ import classes.math.NVector;
 
 public class MoarMath
 {
@@ -30,6 +31,25 @@ public class MoarMath
 		return (Math.acos(dot/(Math.hypot(x1,y1)*Math.hypot(x2,y2))));
 	}
 	/**
+	 * Calculates the intersection of two line segments.
+	 * Based on methods described here: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+	 * @return	double[]	the point of intersection between the two lines, null if this does not occur. If they are overlapping, XY1 is returned.
+	*/
+	public static double[] lineSegmentIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x3, double y4)
+	{
+		NVector pmq = new NVector(new double[]{x1-x2,y1-y2});
+		NVector r = new NVector(new double[]{x2-x1, y2-y1});
+		NVector s = new NVector(new double[]{x4-x3, y4-y3});
+		double rsCross = r.getElement(0) * s.getElement(1) - r.getElement(1) * s.getElement(0);
+		double pqrCross = pmq.getElement(0) * r.getElement(1) - pmq.getElement(1) * r.getElement(0);
+		if(rsCross == 0)// Lines are parallel.
+			if(pqrCross == 0)
+				return (new double[]{x1,y1});
+			else
+				return null;
+		double t = 
+	}
+	/**
 	 * Returns the intersection point of two lines defined by two points on each line; calculation
 	 * done using method shown here: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
 	 * Note that this method does not check for line skewness.
@@ -50,14 +70,6 @@ public class MoarMath
 			return(lineIntersectNoSkew(x1,y1,x2,y2,x3,y3,x4,y4));
 		else
 			return null;
-	}
-	/**
-	 * Returns the intersection point of two lines (in vector form [x,y]+r[xdiff,ydiff])
-	 */
-	public static double[] vectorIntersect(double x1, double y1, double xdiff1, double ydiff1, double x2, double y2, double xdiff2, double ydiff2)
-	{
-		//TODO: Maths here that works out the intersect of the two lines
-		return (new double[]{0,0});
 	}
 	
 	public static void main(String[] args)
