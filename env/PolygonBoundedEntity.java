@@ -10,6 +10,7 @@ import classes.math.StaticPoint;
 import java.util.ArrayList;
 import classes.env.DistancedHit;
 import classes.math.NVector;
+import classes.math.MoarMath;
 
 public class PolygonBoundedEntity extends AbstractEntity {
 
@@ -18,8 +19,11 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	private Double bottom = Double.NEGATIVE_INFINITY;
 	private Double top = Double.POSITIVE_INFINITY;
 
-	public double rotation = 0;
+	private double rotation = 0;
+	
 	private ArrayList<Point> vertices;
+	private Point[] bakedVerts;// I AM DOING THE BELOW. NONE CAN STOP ME. (Of course, this means that everything should be baked and that getting a point reference should require a bake after.
+	//Could add a baked vertices array here that updates on changes; but then might be a problem when giving out references to vertices.
 	
 	public PolygonBoundedEntity (double x, double y)
 	{
@@ -43,40 +47,79 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	 */
 	public boolean contains (double x, double y)
 	{
-		if(vertices.size() < 3)
+		return (contains(x,y,getBakedPoints()));
+	}
+	public boolean contains (double x, double y, StaticPoint[] offsetCoords)
+	{
+		if(offsetCoords.length < 3)
 			return false;
-		//TODO: containment logic here
+		int counter = 0;
+		double startx = getTopLeftCorner.getX();
+		StaticPoint lastPoint = offsetCoords[offsetCoords.length-1];
+		for(int i = 0; i<vertices.size(); i++)
+		{
+			StaticPoint thisPoint = offsetCoords[i];
+			if(MoarMath.lineSegmentIntersect(startx, y, x, y, lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY()) != null)
+				counter ++;
+		}
+		if(counter%2 == 0)// Even
+			return false;
+		else// Odd
+			return true;
 	}
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
-		// If the shape has no mass
-		if(verticies.size() < 1)
+		StaticPoint[] bakedVerts = getBakedPoints();// Bake the points so that no offset stuff is needed for changing between local and global coordinates.
+		// If the shape has no area
+		if(vertices.size() < 1)
 			return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
-		if(verticies.size() < 2)
+		if(vertices.size() < 2)
 		{
 			NVector scan = new NVector(new double[]{x2 - x1, y2 - y1});
-			NVector point = new NVector(new double[]{getX() - x1, getY() -y1});
+			NVector point = new NVector(new double[]{bakedVerts[0].getX() - x1, bakedVerts[0].getY() - y1});
 			if(scan.normalize().equals(point.normalize()))// the single vertex of this shape is on the hitScan line.
 				return (new DistancedHit(true, getX(), getY(), Math.hypot(x1-getX(), y1-getY())));
 			else
 				return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
 		}
 		// If the shape is actually an object
-		
-		//TODO: for each line, check if hitScan crosses then collision made, return intersection.
-		//				else, no collision made. (Note: Ray must go through outer bound, check if inside corner points first.
+		if(contains(x1,y1,bakedVerts))// First check if the point is inside the polygon.
+			return(new DistancedHit(false, x2, y2, 0));
+		Double shortestDistance = Math.hypot(x1-x2,y1-y2);
+		double[] closestPoint = new double[]{x2,y2};
+		boolean hit = false;
+		StaticPoint lastPoint = bakedVerts[bakedVerts.length-1];
+		for(int i = 0; i<vertices.size(); i++)
+		{
+			StaticPoint thisPoint = bakedVerts[i];
+			double[] collision = MoarMath.lineSegmentIntersect(x1,y1,x2,y2,lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY());
+			if(collision != null)
+			{
+				double distance = Math.hypot(x1-collision[0], y1-collision[1]);
+				if(distance < shortestDistance)
+				{
+					shortestDistance = distance;
+					closestPoint = collision;
+					hit = true;
+				}
+			}
+			lastPoint = thisPoint;
+		}
+		return(new DistancedHit(hit, closestPoint[0], closestPoint[1], shortestDistance));
 	}
 
 	/**
-	 * Rotates the points for this shape around the given point.
-	 * NOTE: Please note that this rotates the *Points*, if you are wanting to rotate the shape, please
-	 * change the 'rotation' property.
+	 * Rotates the points for this shape around the given point relative to the center of the shape.
 	 * @param	r	radii to rotate this shape by
 	 */
-	public void rotatePoints(double r, double x, double y)
+	/*public void rotatePoints(double r, double x, double y)
 	{
 		
 	}
+	public void rotatePoints(double r)
+	{
+		rotatePoints(r,0,0);
+	}*/
 	// Translation can be done using get and set X&Y.
 	/**
 	 * Scales this shape by the given scale vector from it's center.
@@ -91,6 +134,14 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	public void scale(double s)
 	{
 		scale(s,s);
+	}
+	public double getRotation()
+	{
+		return (rotation);
+	}
+	public void setRotation(double r)
+	{
+		rotation = r;
 	}
 
 	public Point getPointReferenceByIndex(int i)
@@ -112,8 +163,8 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	 */
 	public void addPoint(double x, double y)
 	{
-		adjustEdge(x,y)
 		vertices.add(new Point(x,y));
+		bakePoints();
 	}
 	/**
 	 * Add the given points to the shape.
@@ -122,7 +173,8 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	public void addPoints(ArrayList<StaticPoint> points)
 	{
 		for(StaticPoint p : points)
-			addPoint(p.getX(), p.getY());
+			vertices.add(p.getX(), p.getY());
+		bakePoints();
 	}
 	/**
 	 * Add the given points to the shape.
@@ -183,16 +235,29 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		clearPoints();
 		addPoints(points);
 	}
+	public void bakePoints()
+	{
+		bakedVerts = new StaticPoint[vertices.size()];
+		for(int i = 0; i<vertices.size(); i++)
+			out[i] = new Point(vertices.get(i).getX() + getX(), vertices.get(i).getY()+ getY());
+		return out;
+	}
 	/**
 	 * Delete all points.
 	 */
 	public void clearPoints()
 	{
 		vertices.clear();
+		bakedVerts = new double[0];
 		left = Double.POSITIVE_INFINITY;
 		right = Double.NEGATIVE_INFINITY;
 		bottom = Double.NEGATIVE_INFINITY;
 		top = Double.POSITIVE_INFINITY;
+	}
+
+	public Point getTopTopLeftCorner()
+	{
+		return (new Point(left + getX(), top + getY()));
 	}
 
 	private void adjustEdge(double x, double y)
