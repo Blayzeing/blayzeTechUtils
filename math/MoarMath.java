@@ -42,7 +42,7 @@ public class MoarMath
 	 * Rotates a given point about the origin.
 	 * @param	a	the angle to rotate the point by;
 	 */
-	 public static double rotate(double x, double y, double a)
+	 public static double[] rotate(double x, double y, double a)
 	{
 		return(new double[]{x * Math.cos(a) + y * -1 * Math.sin(a), x * Math.sin(a) + y * Math.cos(a)});
 	}
