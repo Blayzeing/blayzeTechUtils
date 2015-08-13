@@ -27,4 +27,8 @@ public class Point extends StaticPoint {
 	{
 		return ("[Point] x: "+x+"  y: "+y);
 	}
+	public Point clone()
+	{
+		return (new Point(x,y));
+	}
 }

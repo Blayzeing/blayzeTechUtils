@@ -27,4 +27,8 @@ package classes.math;
 	{
 		return ("[StaticPoint] x: "+x+"  y: "+y);
 	}
+	public StaticPoint clone()
+	{
+		return (new StaticPoint(x,y));
+	}
 }
