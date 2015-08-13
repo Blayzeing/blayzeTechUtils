@@ -18,12 +18,14 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	private Double right = Double.NEGATIVE_INFINITY;
 	private Double bottom = Double.NEGATIVE_INFINITY;
 	private Double top = Double.POSITIVE_INFINITY;
-
-	private double rotation = 0;
+	
+	/*  NOTE TO SELF:
+	 * Okay Blayze. So, in this class you are not going to bake the coordinates on each change, and rotation of the object as a whole
+	 * will not be an option. Only rotaton of the relative points. This will be a hybrid system. This is done so that the points don't have
+	 * to be rebaked every time an object moves, shuffling around arrays each time.
+	 */
 	
 	private ArrayList<Point> vertices;
-	private Point[] bakedVerts;// I AM DOING THE BELOW. NONE CAN STOP ME. (Of course, this means that everything should be baked and that getting a point reference should require a bake after.
-	//Could add a baked vertices array here that updates on changes; but then might be a problem when giving out references to vertices.
 	
 	public PolygonBoundedEntity (double x, double y)
 	{
@@ -47,18 +49,14 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	 */
 	public boolean contains (double x, double y)
 	{
-		return (contains(x,y,getBakedPoints()));
-	}
-	public boolean contains (double x, double y, StaticPoint[] offsetCoords)
-	{
-		if(offsetCoords.length < 3)
+		if(vertices.size() < 3)
 			return false;
 		int counter = 0;
 		double startx = getTopLeftCorner.getX();
-		StaticPoint lastPoint = offsetCoords[offsetCoords.length-1];
+		Point lastPoint = vertices.get(vertices.size()-1);
 		for(int i = 0; i<vertices.size(); i++)
 		{
-			StaticPoint thisPoint = offsetCoords[i];
+			Point thisPoint = vertices.get(i);
 			if(MoarMath.lineSegmentIntersect(startx, y, x, y, lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY()) != null)
 				counter ++;
 		}
@@ -69,29 +67,32 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	}
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
-		StaticPoint[] bakedVerts = getBakedPoints();// Bake the points so that no offset stuff is needed for changing between local and global coordinates.
 		// If the shape has no area
 		if(vertices.size() < 1)
 			return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
 		if(vertices.size() < 2)
 		{
 			NVector scan = new NVector(new double[]{x2 - x1, y2 - y1});
-			NVector point = new NVector(new double[]{bakedVerts[0].getX() - x1, bakedVerts[0].getY() - y1});
+			NVector point = new NVector(new double[]{vertices.get(o).getX() + getX() - x1, vertices.get(o).getY() + getY() - y1});
 			if(scan.normalize().equals(point.normalize()))// the single vertex of this shape is on the hitScan line.
 				return (new DistancedHit(true, getX(), getY(), Math.hypot(x1-getX(), y1-getY())));
 			else
 				return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
 		}
 		// If the shape is actually an object
-		if(contains(x1,y1,bakedVerts))// First check if the point is inside the polygon.
+		if(contains(x1,y1))// First check if the start point is inside the polygon, if so return a 0-length hitScan
 			return(new DistancedHit(false, x2, y2, 0));
+		x1 -= getX();
+		x2 -= getX();
+		y1 -= getY();
+		y2 -= getY();
 		Double shortestDistance = Math.hypot(x1-x2,y1-y2);
 		double[] closestPoint = new double[]{x2,y2};
 		boolean hit = false;
-		StaticPoint lastPoint = bakedVerts[bakedVerts.length-1];
+		Point lastPoint = vertices.get(vertices.size()-1);//bakedVerts[bakedVerts.length-1];
 		for(int i = 0; i<vertices.size(); i++)
 		{
-			StaticPoint thisPoint = bakedVerts[i];
+			Point thisPoint = vertices.get(i);
 			double[] collision = MoarMath.lineSegmentIntersect(x1,y1,x2,y2,lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY());
 			if(collision != null)
 			{
@@ -105,7 +106,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			}
 			lastPoint = thisPoint;
 		}
-		return(new DistancedHit(hit, closestPoint[0], closestPoint[1], shortestDistance));
+		return(new DistancedHit(hit, closestPoint[0]+getX(), closestPoint[1]+getY(), shortestDistance));
 	}
 
 	/**
@@ -164,7 +165,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	public void addPoint(double x, double y)
 	{
 		vertices.add(new Point(x,y));
-		bakePoints();
+		adjustEdge(x,y);
 	}
 	/**
 	 * Add the given points to the shape.
@@ -173,8 +174,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	public void addPoints(ArrayList<StaticPoint> points)
 	{
 		for(StaticPoint p : points)
-			vertices.add(p.getX(), p.getY());
-		bakePoints();
+			addPoint(p.getX(), p.getY());
 	}
 	/**
 	 * Add the given points to the shape.
@@ -235,25 +235,28 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		clearPoints();
 		addPoints(points);
 	}
-	public void bakePoints()
-	{
-		bakedVerts = new StaticPoint[vertices.size()];
-		for(int i = 0; i<vertices.size(); i++)
-			out[i] = new Point(vertices.get(i).getX() + getX(), vertices.get(i).getY()+ getY());
-		return out;
-	}
 	/**
 	 * Delete all points.
 	 */
 	public void clearPoints()
 	{
 		vertices.clear();
-		bakedVerts = new double[0];
 		left = Double.POSITIVE_INFINITY;
 		right = Double.NEGATIVE_INFINITY;
 		bottom = Double.NEGATIVE_INFINITY;
 		top = Double.POSITIVE_INFINITY;
 	}
+	/**
+	 * Must be called after a point has been changed outside of this object by reference.
+	 */
+	public void reAdjustEdges()
+	{
+		left = Double.POSITIVE_INFINITY;
+		right = Double.NEGATIVE_INFINITY;
+		bottom = Double.NEGATIVE_INFINITY;
+		top = Double.POSITIVE_INFINITY;
+		for(Point p : vertices)
+			adjustEdge(p.getX(), p.getY());
 
 	public Point getTopTopLeftCorner()
 	{
@@ -270,5 +273,11 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			bottom = y;
 		if(y<top)
 			top = y;
+	}
+
+	public void draw(Graphics2D g)
+	{
+		for ( Point p : vertices)
+			//// MEEEH. Just draw it.
 	}
 }
