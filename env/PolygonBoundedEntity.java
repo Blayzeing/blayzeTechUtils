@@ -262,6 +262,36 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	{
 		return (new Point(left + getX(), top + getY()));
 	}
+	public Point getTopRightCorner()
+	{
+		return (new Point(right + getX(), top + getY()));
+	}
+	public Point getBottomRightCorner()
+	{
+		return (new Point(right + getX(), bottom + getY()));
+	}
+	public Point getBottomLeftCorner()
+	{
+		return (new Point(left + getX(), bottom + getY()));
+	}
+	public double getWidth()
+	{
+		return (right - left);
+	}
+	public double getHeight()
+	{
+		return (bottomn - top);
+	}
+	public void draw(Graphics2D g)
+	{
+		for ( Point p : vertices)
+			//// MEEEH. Just draw it.
+	}
+
+	public String toString()
+	{
+		return("Polygon Bounded Entity] Verticies: " + vertices.size() + /* print points here */"\n'-> " + super.toString());
+	}
 
 	private void adjustEdge(double x, double y)
 	{
@@ -273,11 +303,5 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			bottom = y;
 		if(y<top)
 			top = y;
-	}
-
-	public void draw(Graphics2D g)
-	{
-		for ( Point p : vertices)
-			//// MEEEH. Just draw it.
 	}
 }
