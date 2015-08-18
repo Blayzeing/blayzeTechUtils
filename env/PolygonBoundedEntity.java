@@ -4,6 +4,7 @@ package classes.env;
  * An entity that has uses a polygon as a boundary.
  */
 
+import java.awt.Graphics2D;
 import classes.env.AbstractEntity;
 import classes.math.Point;
 import classes.math.StaticPoint;
@@ -52,7 +53,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		if(vertices.size() < 3)
 			return false;
 		int counter = 0;
-		double startx = getTopLeftCorner.getX();
+		double startx = getTopLeftCorner().getX();
 		Point lastPoint = vertices.get(vertices.size()-1);
 		for(int i = 0; i<vertices.size(); i++)
 		{
@@ -73,7 +74,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		if(vertices.size() < 2)
 		{
 			NVector scan = new NVector(new double[]{x2 - x1, y2 - y1});
-			NVector point = new NVector(new double[]{vertices.get(o).getX() + getX() - x1, vertices.get(o).getY() + getY() - y1});
+			NVector point = new NVector(new double[]{vertices.get(0).getX() + getX() - x1, vertices.get(0).getY() + getY() - y1});
 			if(scan.normalize().equals(point.normalize()))// the single vertex of this shape is on the hitScan line.
 				return (new DistancedHit(true, getX(), getY(), Math.hypot(x1-getX(), y1-getY())));
 			else
@@ -136,14 +137,14 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	{
 		scale(s,s);
 	}
-	public double getRotation()
+	/*public double getRotation()
 	{
 		return (rotation);
 	}
 	public void setRotation(double r)
 	{
 		rotation = r;
-	}
+	}*/
 
 	public Point getPointReferenceByIndex(int i)
 	{
@@ -257,8 +258,9 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		top = Double.POSITIVE_INFINITY;
 		for(Point p : vertices)
 			adjustEdge(p.getX(), p.getY());
+	}
 
-	public Point getTopTopLeftCorner()
+	public Point getTopLeftCorner()
 	{
 		return (new Point(left + getX(), top + getY()));
 	}
@@ -280,11 +282,11 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	}
 	public double getHeight()
 	{
-		return (bottomn - top);
+		return (bottom - top);
 	}
 	public void draw(Graphics2D g)
 	{
-		for ( Point p : vertices)
+	//	for ( Point p : vertices)
 			//// MEEEH. Just draw it.
 	}
 
