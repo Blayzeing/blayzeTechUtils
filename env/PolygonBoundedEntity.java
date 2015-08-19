@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import classes.env.DistancedHit;
 import classes.math.NVector;
 import classes.math.MoarMath;
+import classes.graphics.SimpleDisplay;
+import java.awt.Color;
 
 public class PolygonBoundedEntity extends AbstractEntity {
 
@@ -26,7 +28,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	 * to be rebaked every time an object moves, shuffling around arrays each time.
 	 */
 	
-	private ArrayList<Point> vertices;
+	private ArrayList<Point> vertices = new ArrayList<Point>();
 	
 	public PolygonBoundedEntity (double x, double y)
 	{
@@ -190,7 +192,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	 * Add the given points to the shape.
 	 * Note that these are added as if they came after the current points.
 	 */
-	public void addPoints(ArrayList<double[]> points)
+	public void addArrayPoints(ArrayList<double[]> points)
 	{
 		for(double[] p : points)
 			addPoint(p[0],p[1]);
@@ -199,7 +201,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	 * Add the given points to the shape.
 	 * Note that these are added as if they came after the current points.
 	 */
-	public void addPoints(double[][] points)
+	public void addArrayPoints(double[][] points)
 	{
 		for(double[] p : points)
 			addPoint(p[0],p[1]);
@@ -223,18 +225,18 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	/**
 	 * Delete all points and make given points new shape.
 	 */
-	public void setPoints(ArrayList<double[]> points)
+	public void setArrayPoints(ArrayList<double[]> points)
 	{
 		clearPoints();
-		addPoints(points);
+		addArrayPoints(points);
 	}
 	/**
 	 * Delete all points and make given points new shape.
 	 */
-	public void setPoints(double[][] points)
+	public void setArrayPoints(double[][] points)
 	{
 		clearPoints();
-		addPoints(points);
+		addArrayPoints(points);
 	}
 	/**
 	 * Delete all points.
@@ -284,10 +286,20 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	{
 		return (bottom - top);
 	}
+	public Point getGlobalPoint(int i)
+	{
+		return( new Point(vertices.get(i).getX() + this.getX(), vertices.get(i).getY() + this.getY()));
+	}
 	public void draw(Graphics2D g)
 	{
-	//	for ( Point p : vertices)
-			//// MEEEH. Just draw it.
+		Point last = getGlobalPoint(vertices.size()-1);
+		for (int i = 0; i<vertices.size(); i++)
+		{
+			Point thisPoint = getGlobalPoint(i);
+			g.drawLine((int)last.getX(), (int)last.getY(), (int)thisPoint.getX(), (int)thisPoint.getY());
+			last = thisPoint;
+		}
+			//g.drawLine(vertices.get(i).getX(), vertices.get(i).getY(), vertices.get((i+1)%vertices.size()).getX(), vertices.get((i+1)%vertices.size()));
 	}
 
 	public String toString()
@@ -305,5 +317,19 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			bottom = y;
 		if(y<top)
 			top = y;
+	}
+
+	public static void main(String[] args)
+	{
+		PolygonBoundedEntity p = new PolygonBoundedEntity(50,50, new StaticPoint[]{new StaticPoint(-20,-20),new StaticPoint(30,-15), new StaticPoint (60,70)});
+		SimpleDisplay d = new SimpleDisplay(200,200,"Containment", true, true);
+		Graphics2D g = d.getGraphics2D();
+		g.setColor(Color.BLACK);
+		p.draw(g);
+		d.repaint();
+		while(true)
+		{
+			g.setPixel(0,0,Color.RED);
+		}
 	}
 }
