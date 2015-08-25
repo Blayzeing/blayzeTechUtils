@@ -56,10 +56,13 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			return false;
 		int counter = 0;
 		double startx = getTopLeftCorner().getX();
+		startx -= 20;
 		Point lastPoint = vertices.get(vertices.size()-1);
+		lastPoint = new Point(lastPoint.getX() + getX(), lastPoint.getY() + getY());
 		for(int i = 0; i<vertices.size(); i++)
 		{
 			Point thisPoint = vertices.get(i);
+			thisPoint = new Point(thisPoint.getX() + getX(), thisPoint.getY() + getY());
 			if(MoarMath.lineSegmentIntersect(startx, y, x, y, lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY()) != null)
 				counter ++;
 		}
@@ -319,17 +322,26 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			top = y;
 	}
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws InterruptedException
 	{
 		PolygonBoundedEntity p = new PolygonBoundedEntity(50,50, new StaticPoint[]{new StaticPoint(-20,-20),new StaticPoint(30,-15), new StaticPoint (60,70)});
 		SimpleDisplay d = new SimpleDisplay(200,200,"Containment", true, true);
 		Graphics2D g = d.getGraphics2D();
 		g.setColor(Color.BLACK);
+		g.fillRect(0,0,200,200);
 		p.draw(g);
 		d.repaint();
 		while(true)
 		{
-			g.setPixel(0,0,Color.RED);
+			int x = (int)(Math.random() * 200);
+			int y = (int)(Math.random() * 200);
+			if(p.contains(x,y))
+				g.setColor(Color.RED);
+			else
+				g.setColor(Color.BLACK);
+			g.drawLine(x,y,x,y);
+			d.repaint();
+			Thread.sleep(20);
 		}
 	}
 }
