@@ -324,24 +324,28 @@ public class PolygonBoundedEntity extends AbstractEntity {
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		PolygonBoundedEntity p = new PolygonBoundedEntity(50,50, new StaticPoint[]{new StaticPoint(-20,-20),new StaticPoint(30,-15), new StaticPoint (60,70)});
+		PolygonBoundedEntity p = new PolygonBoundedEntity(50,50, new StaticPoint[]{new StaticPoint(-20,-20),new StaticPoint(30,-15), new StaticPoint (60,70), new StaticPoint(5,5)});
+		p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(20,-20)});
 		SimpleDisplay d = new SimpleDisplay(200,200,"Containment", true, true);
 		Graphics2D g = d.getGraphics2D();
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,200,200);
 		p.draw(g);
 		d.repaint();
-		while(true)
+		for(int x = 0; x < 201; x++)
 		{
-			int x = (int)(Math.random() * 200);
-			int y = (int)(Math.random() * 200);
-			if(p.contains(x,y))
-				g.setColor(Color.RED);
-			else
-				g.setColor(Color.BLACK);
-			g.drawLine(x,y,x,y);
-			d.repaint();
-			Thread.sleep(20);
+			for(int y = 0; y<201; y++)
+			{
+				if(p.contains(x,y))
+					g.setColor(Color.RED);
+				else
+					g.setColor(Color.BLACK);
+				g.drawLine(x,y,x,y);
+				d.repaint();
+			}	Thread.sleep(20);
 		}
+		g.setColor(Color.WHITE);
+		p.draw(g);
+		d.repaint();
 	}
 }
