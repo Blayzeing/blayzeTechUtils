@@ -165,7 +165,7 @@ public class FullyConnectedSigmoidLattice {
 	/**
 	 * Crosses this lattice with another.
 	 * @param	otherLattice	the lattice to cross this one with
-	 *	@param	cm				the mode to use when crossing this lattice with the other
+	 * @param	cm				the mode to use when crossing this lattice with the other
 	 * @param	info				additional information needed by each mode goes here (uniform = [this:other ratio], uniform mutation = [this:other ratio, mutation chance, random multiplier max/min])
 	 * @return	a new network that is the offspring of the network calling this function and otherLattice
 	 */
