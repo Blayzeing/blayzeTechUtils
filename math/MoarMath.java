@@ -54,6 +54,10 @@ public class MoarMath
 	*/
 	public static double[] lineSegmentIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
 	{
+		// Make sure the lines' bounds actually intersect
+		if(x1 < x3 && x2 <x3 && x1 < x4 && x2 < x4 || y1 < y3 && y2 <y3 && y1 < y4 && y2 < y4)
+			return null;
+
 		//p & q = xy1 & xy3 respectively.
 		double[] r = new double[]{x2-x1, y2-y1};
 		double[] s = new double[]{x4-x3, y4-y3};
@@ -62,12 +66,7 @@ public class MoarMath
 		double qprCross = qMinusp[0] * r[1] - qMinusp[1] * r[0];
 		
 		if(rsCross == 0)// Some kinda parallel going on here..
-		{
-			if(qprCross == 0)// Lines are parallel & Collinear
-				return (new double[]{x1,y1});
-			else
-				return null;// Just plain parallel, so not touching.
-		}
+			return null;
 		
 		double t = (qMinusp[0] * s[1] - qMinusp[1] * s[0])/rsCross;
 		double u = qprCross / rsCross;

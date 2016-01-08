@@ -56,16 +56,23 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			return false;
 		int counter = 0;
 		double startx = getTopLeftCorner().getX();
-		startx -= 20;
+		startx -= 1;// Make sure you're far enough left
 		Point lastPoint = vertices.get(vertices.size()-1);
 		lastPoint = new Point(lastPoint.getX() + getX(), lastPoint.getY() + getY());
 		for(int i = 0; i<vertices.size(); i++)
 		{
 			Point thisPoint = vertices.get(i);
 			thisPoint = new Point(thisPoint.getX() + getX(), thisPoint.getY() + getY());
-			if(MoarMath.lineSegmentIntersect(startx, y, x, y, lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY()) != null)
+			// The y comparisons at the start basically eliminate the very ends of each edge, avoiding double-collisions.
+			if(thisPoint.getY() != y && MoarMath.lineSegmentIntersect(startx, y, x, y, lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY()) != null)
 				counter ++;
+			// Special case for if trying to intersect with a horizontal line:
+			else if(thisPoint.getY() == lastPoint.getY() && thisPoint.getY() == y && x > Math.min(lastPoint.getX(), thisPoint.getX())/* THE RAY MUST BE INTERSECTING WITH THE LINE IN 1D*/)
+				counter ++;
+			lastPoint = thisPoint;
 		}
+		if(counter == 3)
+			System.out.print(counter);
 		if(counter%2 == 0)// Even
 			return false;
 		else// Odd
@@ -325,7 +332,9 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	public static void main(String[] args) throws InterruptedException
 	{
 		PolygonBoundedEntity p = new PolygonBoundedEntity(50,50, new StaticPoint[]{new StaticPoint(-20,-20),new StaticPoint(30,-15), new StaticPoint (60,70), new StaticPoint(5,5)});
-		p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(20,-20)});
+		//p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(-20,20)});
+		//p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(-20,20), new StaticPoint(0,0)});
+		p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(-20,20), new StaticPoint(0,1), new StaticPoint(0,-1)});
 		SimpleDisplay d = new SimpleDisplay(200,200,"Containment", true, true);
 		Graphics2D g = d.getGraphics2D();
 		g.setColor(Color.BLACK);
@@ -336,13 +345,14 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		{
 			for(int y = 0; y<201; y++)
 			{
-				if(p.contains(x,y))
-					g.setColor(Color.RED);
-				else
-					g.setColor(Color.BLACK);
-				g.drawLine(x,y,x,y);
-				d.repaint();
-			}	Thread.sleep(20);
+			      if(p.contains(x,y))
+			      	g.setColor(Color.RED);
+			      else
+			      	g.setColor(Color.BLACK);
+			      g.drawLine(x,y,x,y);
+			      d.repaint();
+			}
+		//	Thread.sleep(20);
 		}
 		g.setColor(Color.WHITE);
 		p.draw(g);
