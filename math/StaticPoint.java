@@ -1,4 +1,5 @@
 package classes.math;
+import classes.math.NVector;
 
 /**
  * A read-only point in 2D space.
@@ -26,6 +27,10 @@ package classes.math;
 	public String toString()
 	{
 		return ("[StaticPoint] x: "+x+"  y: "+y);
+	}
+	public NVector toNVector()
+	{
+		return (new NVector(new double[]{x,y}));
 	}
 	public StaticPoint clone()
 	{

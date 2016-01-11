@@ -59,6 +59,12 @@ public class SMatrix extends NMatrix{
 	}
 
 	// FUNCTIONS -- STATIC
+	public static SMatrix identity(int size)
+	{
+		SMatrix out = new SMatrix(size);
+		out.setIdentity();
+		return out;
+	}
 	
 	// TEST RIG
 	public static void main (String[] args)

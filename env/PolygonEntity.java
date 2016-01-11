@@ -2,11 +2,8 @@ package classes.env;
 
 /**
  * An entity that has a polygon as a boundary.
- *
- * ===========================================
- * NOTE: THIS IS NOW DEPRECATED CODE, PLEASE
- * USE POLYGONENTITY.
- * ===========================================
+ * This entity cannot be changed in size and rotation, only in location by altering it's x and y coordinates.
+ * The Transformable Polygon Entity (TPolygonEntity) must be used to allow for rotation and scale properties
  */
 
 import java.awt.Graphics2D;
@@ -20,12 +17,15 @@ import classes.math.MoarMath;
 import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 
-public class PolygonBoundedEntity extends AbstractEntity {
+public class PolygonEntity extends AbstractEntity {
 
 	private Double left = Double.POSITIVE_INFINITY;
 	private Double right = Double.NEGATIVE_INFINITY;
 	private Double bottom = Double.NEGATIVE_INFINITY;
 	private Double top = Double.POSITIVE_INFINITY;
+	private ArrayList<Point> vertices = new ArrayList<Point>();
+	/** invert allows this entity to act 'inside-out', every point outside the boundary returns as being inside */
+	public boolean invert = false;
 	
 	/*  NOTE TO SELF:
 	 * Okay Blayze. So, in this class you are not going to bake the coordinates on each change, and rotation of the object as a whole
@@ -43,18 +43,17 @@ public class PolygonBoundedEntity extends AbstractEntity {
 	 * The above will need a counter-rotation to be performed in the hitscan and contains code
 	 */
 	
-	private ArrayList<Point> vertices = new ArrayList<Point>();
 	
-	public PolygonBoundedEntity (double x, double y)
+	public PolygonEntity (double x, double y)
 	{
 		super(x,y);
 	}
-	public PolygonBoundedEntity (double x, double y, StaticPoint[] points)
+	public PolygonEntity (double x, double y, StaticPoint[] points)
 	{
 		this(x,y);
 		this.addPoints(points);
 	}
-	public PolygonBoundedEntity (double x, double y, ArrayList<StaticPoint> points)
+	public PolygonEntity (double x, double y, ArrayList<StaticPoint> points)
 	{
 		this(x,y);
 		this.addPoints(points);
@@ -86,13 +85,13 @@ public class PolygonBoundedEntity extends AbstractEntity {
 				counter ++;
 			lastPoint = thisPoint;
 		}
-		if(counter == 3)
-			System.out.print(counter);
-		if(counter%2 == 0)// Even
+		if((counter%2 == 0) ^ invert)// Even (inversion in there for outer-loops)
 			return false;
 		else// Odd
 			return true;
 	}
+	public boolean contains (Point p) { return contains(p.getX(), p.getY()); }
+	public boolean contains (StaticPoint p) { return contains(p.getX(), p.getY()); }
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		// If the shape has no area
@@ -109,7 +108,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		}
 		// If the shape is actually an object
 		if(contains(x1,y1))// First check if the start point is inside the polygon, if so return a 0-length hitScan
-			return(new DistancedHit(false, x2, y2, 0));
+			return(new DistancedHit(true, x1, y1, 0));
 		x1 -= getX();
 		x2 -= getX();
 		y1 -= getY();
@@ -117,7 +116,7 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		Double shortestDistance = Math.hypot(x1-x2,y1-y2);
 		double[] closestPoint = new double[]{x2,y2};
 		boolean hit = false;
-		Point lastPoint = vertices.get(vertices.size()-1);//bakedVerts[bakedVerts.length-1];
+		Point lastPoint = vertices.get(vertices.size()-1);
 		for(int i = 0; i<vertices.size(); i++)
 		{
 			Point thisPoint = vertices.get(i);
@@ -136,6 +135,8 @@ public class PolygonBoundedEntity extends AbstractEntity {
 		}
 		return(new DistancedHit(hit, closestPoint[0]+getX(), closestPoint[1]+getY(), shortestDistance));
 	}
+	public DistancedHit hitScan (Point p1, Point p2) { return hitScan(p1.getX(), p1.getY(), p2.getX(), p2.getY()); }
+	public DistancedHit hitScan (StaticPoint p1, StaticPoint p2) { return hitScan(p1.getX(), p1.getY(), p2.getX(), p2.getY()); }
 
 	/**
 	 * Rotates the points for this shape around the given point relative to the center of the shape.
@@ -329,12 +330,11 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			g.drawLine((int)last.getX(), (int)last.getY(), (int)thisPoint.getX(), (int)thisPoint.getY());
 			last = thisPoint;
 		}
-			//g.drawLine(vertices.get(i).getX(), vertices.get(i).getY(), vertices.get((i+1)%vertices.size()).getX(), vertices.get((i+1)%vertices.size()));
 	}
 
 	public String toString()
 	{
-		return("Polygon Bounded Entity] Verticies: " + vertices.size() + /* print points here */"\n'-> " + super.toString());
+		return("Polygon Entity] Verticies: " + vertices.size() + /* print points here? */"\n'-> " + super.toString());
 	}
 
 	private void adjustEdge(double x, double y)
@@ -351,15 +351,22 @@ public class PolygonBoundedEntity extends AbstractEntity {
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		PolygonBoundedEntity p = new PolygonBoundedEntity(50,50, new StaticPoint[]{new StaticPoint(-20,-20),new StaticPoint(30,-15), new StaticPoint (60,70), new StaticPoint(5,5)});
-		//p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(-20,20)});
-		//p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(-20,20), new StaticPoint(0,0)});
-		p = new PolygonBoundedEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(-20,20), new StaticPoint(0,1), new StaticPoint(0,-1)});
+		// Making variables
+		PolygonEntity p;
+		//p = new PolygonEntity(50,50, new StaticPoint[]{new StaticPoint(-20,-20),new StaticPoint(30,-15), new StaticPoint (60,70), new StaticPoint(5,5)});
+		//p = new PolygonEntity(100,100, new StaticPoint[]{new StaticPoint(-20,-20), new StaticPoint(20, -20), new StaticPoint(20,20), new StaticPoint(-20,20), new StaticPoint(0,1), new StaticPoint(0,-1)});
+		int pCount = (int)(Math.random() * 7 + 3);
+		StaticPoint[] points = new StaticPoint[pCount];
+		for (int i = 0; i < pCount; i++)
+			points[i] = new StaticPoint(Math.random() * 200 - 100, Math.random() * 200 - 100);
+		p = new PolygonEntity(100,100,points);
+		//p.invert = !p.invert;
+		 
+		// CONTAINTMENT TESTS:
 		SimpleDisplay d = new SimpleDisplay(200,200,"Containment", true, true);
 		Graphics2D g = d.getGraphics2D();
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,200,200);
-		p.draw(g);
 		d.repaint();
 		for(int x = 0; x < 201; x++)
 		{
@@ -372,10 +379,38 @@ public class PolygonBoundedEntity extends AbstractEntity {
 			      g.drawLine(x,y,x,y);
 			      d.repaint();
 			}
-		//	Thread.sleep(20);
 		}
 		g.setColor(Color.WHITE);
 		p.draw(g);
 		d.repaint();
+
+		// HITSCAN TESTS:
+		SimpleDisplay d2 = new SimpleDisplay(200,200,"Hitscan", true, true);
+		g = d2.getGraphics2D();
+		g.setColor(Color.BLACK);
+		g.fillRect(0,0,200,200);
+		g.setColor(Color.WHITE);
+		p.draw(g);
+		d.repaint();
+		g.setColor(Color.RED);
+		for(int i = 0; i<100; i++)
+		{
+			int x1 = (int)(Math.random() * 200);
+			int y1 = (int)(Math.random() * 200);
+			int x2 = (int)(Math.random() * 200);
+			int y2 = (int)(Math.random() * 200);
+			DistancedHit hit = p.hitScan(x1,y1,x2,y2);
+			double outX = x2;
+			double outY = y2;
+			if(hit.madeContact())
+			{
+				outX = hit.getX();
+				outY = hit.getY();
+			}
+			g.drawLine(x1, y1, (int)outX, (int)outY);
+			g.setColor(Color.BLUE);
+			g.drawLine(x1,y1,x1,y1);
+			g.setColor(Color.RED);
+		}
 	}
 }
