@@ -54,6 +54,7 @@ public class TPolygonEntity extends PolygonEntity {
 		scale.setElements(new double[][]{new double[]{xScale, 0}, new double[]{0, yScale}});
 		System.out.println(scale);
 		System.out.println(vertices.get(0).toVertMatrix());
+		System.out.println(scale.multiply(vertices.get(0).toVertMatrix()));
 	}
 
 	// Note for the below: please check that the contains code for points and static points still works using the new contains code as below

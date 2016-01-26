@@ -190,6 +190,10 @@ public class NMatrix {
 					return false;
 		return true;
 	}
+	/**
+	 * Returns a new NMatrix that is the summation of a given matrix and this.
+	 * @return	NMatrix	The summation of the given matrix and this one. Null if not the same size.
+	 */
 	public NMatrix add(NMatrix m)
 	{
 		NMatrix out = new NMatrix(width, height);
@@ -198,9 +202,15 @@ public class NMatrix {
 			for(int i = 0; i<height; i++)
 				for(int o = 0; o<width; o++)
 					out.setElement(o,i,elements[i][o] + m.getElement(o,i));
-		}// Maybe throw an exception here?
+		}else{
+			return null;
+		}
 		return out;
 	}
+	/**
+	 * Returns a new NMatrix that is the subtraction of a given matrix and this.
+	 * @return	NMatrix	This matrix minus the given. Null if not the same size.
+	 */
 	public NMatrix subtract(NMatrix m)
 	{
 		NMatrix out = new NMatrix(width, height);
@@ -209,25 +219,30 @@ public class NMatrix {
 			for(int i = 0; i<height; i++)
 				for(int o = 0; o<width; o++)
 					out.setElement(o,i,elements[i][o] - m.getElement(o,i));
-		}// Again, maybe throw an exception
-		return out;
-	}
-	public NMatrix multiply(NMatrix m)
-	{
-		NMatrix out = new NMatrix(width, height);
-		if(this.height == m.getWidth())
-		{
-			for(int i = 0; i<width; i++)
-				for(int o = 0; o<height; o++)
-				{
-					NVector a = getRow(o);
-					NVector b = m.getColumn(i);
-					out.setElement(i,o,a.dot(b));
-				}
+		}else{
+			return null;
 		}
 		return out;
 	}
-	
+	/**
+	 * Multiplies this matrix with a given matrix.
+	 * @return	NMatrix This matrix multiplied by the given, null if the matricies are noncompatable.
+	 */
+	public NMatrix multiply(NMatrix m)
+	{
+		if(this.width != m.getHeight() || this.height != m.getWidth())
+			return null;
+		NMatrix out = new NMatrix(m.getWidth(), this.height);
+		for(int i = 0; i<out.getWidth(); i++)
+			for(int o = 0; o<this.height; o++)
+			{
+				NVector a = getRow(o);
+				NVector b = m.getColumn(i);
+				out.setElement(i,o,a.dot(b));
+			}
+		return out;
+	}
+
 	//	Static
 	public static void zero (NMatrix m)
 	{
@@ -348,5 +363,12 @@ public class NMatrix {
 		System.out.println("Getting topmost row...");
 		System.out.println(c.getRow(0));
 		System.out.println("Adding"+c+"and"+d+"equals"+c.add(d));
+		System.out.println("\nMultiplication:");
+		a = new NMatrix(new double[][]{new double[]{1,2,3}});
+		b = new NMatrix(new double[][]{new double[]{2},new double[]{1},new double[]{2}});
+		System.out.println(a + "multiplied by" + b);
+		System.out.println("Equals: " + a.multiply(b));
+		System.out.println(b + "multiplied by" + a);
+		System.out.println("Equals: " + b.multiply(a));
 	}
 }

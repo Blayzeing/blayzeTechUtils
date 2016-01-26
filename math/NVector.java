@@ -223,7 +223,7 @@ public class NVector
 	}
 	public String toString()
 	{
-		return(Arrays.toString(elements));
+		return("NVector: " + Arrays.toString(elements));
 	}
 	/**
 	 * Returns a deep copy of the NVector as an array.
