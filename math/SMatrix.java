@@ -27,7 +27,7 @@ public class SMatrix extends NMatrix{
 	}
 	/**
 	 * Returns the determinate of this matrix.
-	 * @return	String	This matrix's determinate
+	 * @return	double	This matrix's determinate
 	 */
 	public double getDet()
 	{

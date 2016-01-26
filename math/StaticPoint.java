@@ -32,6 +32,14 @@ import classes.math.NVector;
 	{
 		return (new NVector(new double[]{x,y}));
 	}
+	public NMatrix toHozMatrix()
+	{
+		return (new NMatrix(new double[][]{new double[]{x,y}}));
+	}
+	public NMatrix toVertMatrix()
+	{
+		return (new NMatrix(new double[][]{new double[]{x}, new double[]{y}}));
+	}
 	public StaticPoint clone()
 	{
 		return (new StaticPoint(x,y));

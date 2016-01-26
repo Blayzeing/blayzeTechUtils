@@ -23,26 +23,9 @@ public class PolygonEntity extends AbstractEntity {
 	private Double right = Double.NEGATIVE_INFINITY;
 	private Double bottom = Double.NEGATIVE_INFINITY;
 	private Double top = Double.POSITIVE_INFINITY;
-	private ArrayList<Point> vertices = new ArrayList<Point>();
+	protected ArrayList<Point> vertices = new ArrayList<Point>();
 	/** invert allows this entity to act 'inside-out', every point outside the boundary returns as being inside */
 	public boolean invert = false;
-	
-	/*  NOTE TO SELF:
-	 * Okay Blayze. So, in this class you are not going to bake the coordinates on each change, and rotation of the object as a whole
-	 * will not be an option. Only rotaton of the relative points. This will be a hybrid system. This is done so that the points don't have
-	 * to be rebaked every time an object moves, shuffling around arrays each time.
-	 */
-
-	/* MESSAGE IN REPLY TO SELF:
-	 * Okay, I hear where you're coming from Blayze, but I really think that the benefit of having a single rotation value and calculating the new point coordinates
-	 * (relative to the centre) on the fly (if rotation is non-zero [I'd suggest a bool to keep track of if setRotation() has been called and having a resetRotation()])
-	 * This will allow for much more maleability compared to what you're suggesting. I mean, seriously? The shape will break down due to rounding errors eventually!
-	 */
-
-	/* NOTE:
-	 * The above will need a counter-rotation to be performed in the hitscan and contains code
-	 */
-	
 	
 	public PolygonEntity (double x, double y)
 	{
@@ -411,6 +394,39 @@ public class PolygonEntity extends AbstractEntity {
 			g.setColor(Color.BLUE);
 			g.drawLine(x1,y1,x1,y1);
 			g.setColor(Color.RED);
+		}
+
+		// TRANSLATION TESTS:
+		SimpleDisplay d3 = new SimpleDisplay(200,200,"Translation", true, true);
+		g = d3.getGraphics2D();
+
+		g.setColor(Color.BLACK);
+		g.fillRect(0,0,200,200);
+		PolygonEntity mvEnt = new PolygonEntity(50,100);
+		mvEnt.addPoints(new StaticPoint[]{new StaticPoint(20,20), new StaticPoint(-20,20), new StaticPoint(-20,-20), new StaticPoint(20,-20)});
+		double angle = 0.0;
+		while (true)
+		{
+			mvEnt.setX(100 + Math.cos(angle) * 60);
+			mvEnt.setY(100 + Math.sin(angle) * 60);
+			DistancedHit hit = mvEnt.hitScan(10,50,180,120);
+			DistancedHit hit2 = mvEnt.hitScan(30,190,50,10);
+			g.setColor(Color.BLACK);
+			g.fillRect(0,0,200,200);
+			g.setColor(Color.WHITE);
+			mvEnt.draw(g);
+			g.setColor(Color.RED);
+			if(hit.madeContact())
+				g.drawLine(10,50,(int)hit.getX(),(int)hit.getY());
+			else
+				g.drawLine(10,50,180,120);
+			if(hit2.madeContact())
+				g.drawLine(30,190,(int)hit2.getX(),(int)hit2.getY());
+			else
+				g.drawLine(30,190,50,10);
+			d3.repaint();
+			Thread.sleep(100);
+			angle += Math.PI/64;
 		}
 	}
 }

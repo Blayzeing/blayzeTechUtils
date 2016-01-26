@@ -1,5 +1,6 @@
 package classes.math;
 import java.util.Arrays;
+import classes.math.NMatrix;
 
 /**
  * A useful class for handling N-dimensional mathematical vectors, developed for use in neural networking by Blayze Millward.
@@ -151,6 +152,17 @@ public class NVector
 		}
 		return(out);
 	}
+	public NMatrix toHozMatrix()
+	{
+		return (new NMatrix(new double[][]{this.toArray()}));
+	}
+	public NMatrix toVertMatrix()
+	{
+		double[][] matrixContents = new double[elements.length][1];
+		for (int i = 0; i<elements.length; i++)
+			matrixContents[i] = new double[]{elements[i]};
+		return (new NMatrix(matrixContents));
+	}
 	public boolean equals(Object obj)
 	{
 		if (obj == null || getClass() != obj.getClass() || ((NVector)obj).getLength() != getLength()) {
@@ -182,6 +194,14 @@ public class NVector
 	public static NVector normalize(NVector v)
 	{
 		return(v.normalize());
+	}
+	public static NMatrix toHozMatrix(NVector v)
+	{
+		return(v.toHozMatrix());
+	}
+	public static NMatrix toVertMatrix(NVector v)
+	{
+		return(v.toVertMatrix());
 	}
 	public static boolean equals(NVector a, NVector b)
 	{
