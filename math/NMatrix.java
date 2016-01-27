@@ -226,21 +226,24 @@ public class NMatrix {
 	}
 	/**
 	 * Multiplies this matrix with a given matrix.
+	 * Faster implementation than taking each row and column as an NVector and dot producting.
 	 * @return	NMatrix This matrix multiplied by the given, null if the matricies are noncompatable.
 	 */
 	public NMatrix multiply(NMatrix m)
 	{
 		if(this.width != m.getHeight() || this.height != m.getWidth())
 			return null;
-		NMatrix out = new NMatrix(m.getWidth(), this.height);
-		for(int i = 0; i<out.getWidth(); i++)
+		double[][] contents = new double[this.height][m.getWidth()];
+		double sum;
+		for(int i = 0; i<m.getWidth(); i++)
 			for(int o = 0; o<this.height; o++)
 			{
-				NVector a = getRow(o);
-				NVector b = m.getColumn(i);
-				out.setElement(i,o,a.dot(b));
+				sum = 0.0;
+				for(int p = 0; p<this.width; p++)
+					sum += elements[o][p] * m.getElement(i,p);
+				contents[o][i] = sum;
 			}
-		return out;
+		return (new NMatrix(contents));
 	}
 
 	//	Static
