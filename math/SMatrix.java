@@ -57,6 +57,20 @@ public class SMatrix extends NMatrix{
 		}
 		return output;
 	}
+	/**
+	 * Returns the inverse of any 2x2 matrix.
+	 * This is optimised for 2x2 matrices.
+	 * @return	SMatrix	Thhis matrix's inverse, null if no inverse is preasent.
+	 */
+	public SMatrix inverse2x2()
+	{
+		double mult = (elements[0][0]*elements[1][1] - elements[0][1] * elements[1][0]);
+		if (mult == 0)
+			return null;
+		mult = 1.0/mult;
+		NMatrix out = new NMatrix(new double[][]{new double[]{elements[1][1], -1 * elements[0][1]}, new double[]{-1 * elements[1][0], elements[0][0]}});
+		return(out.scale(mult).toSquare());
+	}
 
 	// FUNCTIONS -- STATIC
 	public static SMatrix identity(int size)
@@ -64,6 +78,14 @@ public class SMatrix extends NMatrix{
 		SMatrix out = new SMatrix(size);
 		out.setIdentity();
 		return out;
+	}
+	public static double getDet(SMatrix m)
+	{
+		return (m.getDet());
+	}
+	public static SMatrix inverse2x2(SMatrix m)
+	{
+		return (m.inverse2x2());
 	}
 	
 	// TEST RIG

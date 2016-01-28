@@ -231,7 +231,7 @@ public class NMatrix {
 	 */
 	public NMatrix multiply(NMatrix m)
 	{
-		if(this.width != m.getHeight() || this.height != m.getWidth())
+		if(this.width != m.getHeight())
 			return null;
 		double[][] contents = new double[this.height][m.getWidth()];
 		double sum;
@@ -307,6 +307,13 @@ public class NMatrix {
 		for (int i = 0; i<height; i++)
 			out[i] = elements[i].clone();
 		return out;
+	}
+	public SMatrix toSquare ()
+	{
+		int size = Math.min(elements.length, elements[0].length);
+		SMatrix out = new SMatrix(size);
+		out.setElements(elements);
+		return (out);
 	}
 	
 	/**
