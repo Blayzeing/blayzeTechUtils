@@ -17,6 +17,7 @@ public class SimpleDisplay extends JFrame{
 		width = w;
 		height = h;
 		setTitle(title);
+		pack();
 		Insets insets = getInsets();
 		setSize(w+insets.left+insets.right, h+insets.top+insets.bottom);
 		canvas = new BufferedDrawingPanel(w,h);

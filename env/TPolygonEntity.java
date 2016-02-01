@@ -143,6 +143,33 @@ public class TPolygonEntity extends PolygonEntity {
 		TPolygonEntity p = new TPolygonEntity(50,100);
 		p.addPoints(new StaticPoint[]{new StaticPoint(20,20), new StaticPoint(-20,20), new StaticPoint(-10,-20), new StaticPoint(10,-20)});
 		double angle = 0.0, a2 = 0.0, a3 = 0.0;
+		//while (true)
+		//{
+		//	p.setX(100 + Math.cos(angle) * 60);
+		//	p.setY(100 + Math.sin(angle) * 60);
+		//	p.setRotation(-angle * 0.4);
+		//	p.setXscale(1+Math.cos(a2));
+		//	p.setYscale(1+Math.sin(a2));
+		//	DistancedHit hit = p.hitScan(10,50,180,120);
+		//	DistancedHit hit2 = p.hitScan(30,190,50,10);
+		//	g.setColor(Color.BLACK);
+		//	g.fillRect(0,0,200,200);
+		//	g.setColor(Color.WHITE);
+		//	p.draw(g);
+		//	g.setColor(Color.RED);
+		//	if(hit.madeContact())
+		//		g.drawLine(10,50,(int)hit.getX(),(int)hit.getY());
+		//	else
+		//		g.drawLine(10,50,180,120);
+		//	if(hit2.madeContact())
+		//		g.drawLine(30,190,(int)hit2.getX(),(int)hit2.getY());
+		//	else
+		//		g.drawLine(30,190,50,10);
+		//	d.repaint();
+		//	Thread.sleep(50);
+		//	angle += Math.PI/64;
+		//	a2 += Math.PI/50;
+		//}
 		while (true)
 		{
 			p.setX(100 + Math.cos(angle) * 60);
@@ -150,23 +177,33 @@ public class TPolygonEntity extends PolygonEntity {
 			p.setRotation(-angle * 0.4);
 			p.setXscale(1+Math.cos(a2));
 			p.setYscale(1+Math.sin(a2));
-			DistancedHit hit = p.hitScan(10,50,180,120);
-			DistancedHit hit2 = p.hitScan(30,190,50,10);
+			DistancedHit[] scans = new DistancedHit[200];
+			for(int i = 0; i<200; i++)
+				scans[i] = p.hitScan(0,i,200,i);
+			//DistancedHit hit = p.hitScan(10,50,180,120);
+			//DistancedHit hit2 = p.hitScan(30,190,50,10);
 			g.setColor(Color.BLACK);
 			g.fillRect(0,0,200,200);
 			g.setColor(Color.WHITE);
 			p.draw(g);
 			g.setColor(Color.RED);
-			if(hit.madeContact())
-				g.drawLine(10,50,(int)hit.getX(),(int)hit.getY());
-			else
-				g.drawLine(10,50,180,120);
-			if(hit2.madeContact())
-				g.drawLine(30,190,(int)hit2.getX(),(int)hit2.getY());
-			else
-				g.drawLine(30,190,50,10);
+			for(int i = 0; i<200; i++)
+			{
+				if(scans[i].madeContact())
+					g.drawLine(0,i,(int)scans[i].getX(),(int)scans[i].getY());
+				else
+					g.drawLine(0,i,200,i);
+			}
+			//if(hit.madeContact())
+			//	g.drawLine(10,50,(int)hit.getX(),(int)hit.getY());
+			//else
+			//	g.drawLine(10,50,180,120);
+			//if(hit2.madeContact())
+			//	g.drawLine(30,190,(int)hit2.getX(),(int)hit2.getY());
+			//else
+			//	g.drawLine(30,190,50,10);
 			d.repaint();
-			Thread.sleep(50);
+			Thread.sleep(500);
 			angle += Math.PI/64;
 			a2 += Math.PI/50;
 		}
