@@ -70,8 +70,10 @@ public class SimpleDisplay extends JFrame{
 	public void fill(Color c)
 	{
 		Graphics2D g = getGraphics2D();
+		Color bc = g.getColor();
 		g.setColor(c);
 		g.fillRect(0,0,width, height);
+		g.setColor(bc);
 	}
 	public void drawGrid(int spacing, Color lineColor)
 	{
