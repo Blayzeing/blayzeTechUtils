@@ -276,7 +276,7 @@ public class PolygonEntity extends AbstractEntity {
 
 	public String toString()
 	{
-		return("Polygon Entity] Verticies: " + vertices.size() + /* print points here? */"\n'-> " + super.toString());
+		return("[Polygon Entity] Verticies: " + vertices.size() + /* print points here? */"\n'-> " + super.toString());
 	}
 
 	private void adjustEdge(double x, double y)
