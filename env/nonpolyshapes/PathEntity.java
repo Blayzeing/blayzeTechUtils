@@ -1,7 +1,9 @@
-package classes.env;
+package classes.nonpolyshapes.env;
 
 /**
  * An entity that consists of a (potentially lopped) path.
+ *
+ * WORK IN PROGRESS
  */
 
 import java.util.ArrayList;

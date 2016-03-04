@@ -1,4 +1,4 @@
-package classes.env;
+package classes.nonpolyshapes.env;
 
 import classes.env.AbstractCircleBoundedEntity;
 import classes.math.MoarMath;

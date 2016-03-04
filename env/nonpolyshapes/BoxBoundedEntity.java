@@ -1,37 +1,37 @@
-package classes.env;
+package classes.nonpolyshapes.env;
 
-import classes.env.AbstractBoxBoundedEntity;
+import classes.env.AbstractEntity;
 import classes.env.DistancedHit;
+import classes.math.Point;
 import classes.math.MoarMath;
 import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
-	
-	public OuterBoxBoundedEntity (double x, double y, double width, double height)
+public class BoxBoundedEntity extends AbstractBoxBoundedEntity{
+		
+	public BoxBoundedEntity (double x, double y, double width, double height)
 	{
 		super(x,y,width,height);
 	}
-	public OuterBoxBoundedEntity (Rectangle bounds)
+	public BoxBoundedEntity (Rectangle bounds)
 	{
 		this(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 	}
-	
+
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		double closest = Math.hypot(x1-x2, y1-y2);
-		//Check that the origin is not outside the bounds
-		if(x1 < getX() || x1 > getX() + getWidth() || y1 < getY() || y1 > getY() + getHeight())
+		//Check that the origin is not inside the bound
+		if(x1 > getX() && x1 < getX() + getWidth() && y1 > getY() && y1 < getY() + getHeight())
 			return (new DistancedHit(true, x1, y1, 0));
-
 		double[] intPoint;
 		double distance;
 		double[] closestIntPoint = new double[]{x2,y2};
 		boolean contact = false;
 		//Scan left edge
-		if(x2 < getX() && x1 > getX())
+		if(x1 < getX() && x2 > getX())
 		{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX(), getY() + getHeight(), x1,y1,x2,y2);
@@ -43,7 +43,7 @@ public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
 			}
 		}
 		//Scan up edge
-		if(y2 < getY() && y1 > getY())
+		if(y1 < getY() && y2 > getY())
 		{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY(), getX() + getWidth(), getY(), x1,y1,x2,y2);
@@ -55,7 +55,7 @@ public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
 			}
 		}
 		//Scan right edge
-		if(x2 > getX() + getWidth() && x1 < getX() + getWidth())
+		if(x1 > getX() + getWidth() && x2 < getX() + getWidth())
 		{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX() + getWidth(), getY(), getX() + getWidth(), getY() + getHeight(), x1,y1,x2,y2);
@@ -67,7 +67,7 @@ public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
 			}
 		}
 		//Scan down edge
-		if(y2 > getY() + getHeight() && y1 < getY() + getHeight())
+		if(y1 > getY() + getHeight() && y2 < getY() + getHeight())
 		{
 			contact = true;
 			intPoint = MoarMath.lineIntersectNoSkew(getX(), getY() + getHeight(), getX() + getWidth(), getY() + getHeight(), x1,y1,x2,y2);
@@ -83,7 +83,7 @@ public class OuterBoxBoundedEntity extends AbstractBoxBoundedEntity{
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		OuterBoxBoundedEntity b = new OuterBoxBoundedEntity(130, 90, 300, 200);
+		BoxBoundedEntity b = new BoxBoundedEntity(130, 90, 100, 100);
 		SimpleDisplay d = new SimpleDisplay(550,400, true, true);
 		Graphics2D g = d.getGraphics2D();
 		b.draw(g);

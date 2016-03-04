@@ -121,47 +121,6 @@ public class PolygonEntity extends AbstractEntity {
 	public DistancedHit hitScan (Point p1, Point p2) { return hitScan(p1.getX(), p1.getY(), p2.getX(), p2.getY()); }
 	public DistancedHit hitScan (StaticPoint p1, StaticPoint p2) { return hitScan(p1.getX(), p1.getY(), p2.getX(), p2.getY()); }
 
-	/**
-	 * Rotates the points for this shape around the given point relative to the center of the shape.
-	 * @param	r	radii to rotate this shape by
-	 */
-	/*public void rotatePoints(double r, double x, double y)
-	{
-		
-		readjustEdges();
-	}
-	public void rotatePoints(double r)
-	{
-		rotatePoints(r,0,0);
-	}
-	This is rather confusing, but basically, this rotates the shape's points around it's centre and updates the shape's 
-	public void rotate(double r)
-	*/
-	// Translation can be done using get and set X&Y.
-	/**
-	 * Scales this shape by the given scale vector from it's center.
-	 */
-	/*public void scale(double xs, double ys)
-	{
-		for (
-		readjustEdges();
-	}*/
-	/**
-	 * Scales this shape by the given scale from it's center.
-	 */
-	/*public void scale(double s)
-	{
-		scale(s,s);
-	}
-	public double getRotation()
-	{
-		return (rotation);
-	}
-	public void setRotation(double r)
-	{
-		rotation = r;
-	}*/
-
 	public Point getPointReferenceByIndex(int i)
 	{
 		return (vertices.get(i));
