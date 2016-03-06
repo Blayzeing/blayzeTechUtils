@@ -1,6 +1,6 @@
-package classes.nonpolyshapes.env;
+package classes.env.nonpolyshapes;
 
-import classes.env.AbstractBoxBoundedEntity;
+import classes.env.nonpolyshapes.AbstractBoxBoundedEntity;
 import classes.env.DistancedHit;
 import classes.math.MoarMath;
 import classes.graphics.SimpleDisplay;
