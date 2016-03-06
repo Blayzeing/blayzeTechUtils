@@ -87,6 +87,12 @@ public class SMatrix extends NMatrix{
 	{
 		return (m.inverse2x2());
 	}
+	public SMatrix copy()
+	{
+		SMatrix out = new SMatrix(this.getWidth());
+		out.setElements(this.to2DArray());
+		return(out);
+	}
 	
 	// TEST RIG
 	public static void main (String[] args)

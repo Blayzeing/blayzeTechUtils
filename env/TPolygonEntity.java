@@ -105,6 +105,10 @@ public class TPolygonEntity extends PolygonEntity {
 		NMatrix m = transform.multiply(vertices.get(i).toVertMatrix());
 		return (new Point(m.getElement(0,0) + this.getX(), m.getElement(0,1) + this.getY()));
 	}
+	public SMatrix getTransformationMatrix ()
+	{
+		return (transform.copy());
+	}
 
 	public static void main (String[] args) throws InterruptedException
 	{
