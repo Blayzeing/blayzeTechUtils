@@ -1,6 +1,7 @@
 package classes.env;
 
 import classes.env.*;
+import classes.env.nonpolyshapes.*;
 import classes.math.StaticPoint;
 import java.awt.Graphics2D;
 import java.util.*;
