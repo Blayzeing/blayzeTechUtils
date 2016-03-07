@@ -1,4 +1,4 @@
-package classes.nonpolyshapes.env;
+package classes.env.nonpolyshapes;
 
 import classes.env.AbstractEntity;
 import classes.env.DistancedHit;
