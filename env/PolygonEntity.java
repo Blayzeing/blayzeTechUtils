@@ -42,6 +42,11 @@ public class PolygonEntity extends AbstractEntity {
 		this.addPoints(points);
 	}
 
+	public int getVertexCount()
+	{
+		return (vertices.size());
+	}
+
 	/**
 	 * Tests to see if the given coordinates are contained within this polygon.
 	 * Performed as per the ray-tracing method described on this wikipedia
@@ -73,8 +78,6 @@ public class PolygonEntity extends AbstractEntity {
 		else// Odd
 			return true;
 	}
-	public boolean contains (Point p) { return contains(p.getX(), p.getY()); }
-	public boolean contains (StaticPoint p) { return contains(p.getX(), p.getY()); }
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		// If the shape has no area

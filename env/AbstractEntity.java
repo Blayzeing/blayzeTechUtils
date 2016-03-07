@@ -1,6 +1,7 @@
 package classes.env;
 
 import classes.math.Point;
+import classes.math.StaticPoint;
 import classes.env.Hit;
 import java.awt.Graphics2D;
 
@@ -21,6 +22,15 @@ public abstract class AbstractEntity extends Point{
 	{
 		return(hitScan(p1.getX(), p1.getY(),p2.getX(),p2.getY()));
 	}
+	/** Calculates if a given point is inside the entity or not.
+	 * Returns false as default for entities that do not have collision meshes (and because I was being lazy with the nonpoly shapes)
+	 * @return	boolean		true if the point lies within this entity; False by default if no method has overwritten this
+	 */
+	public boolean contains(double x, double y)
+	{
+		return false;
+	}
+	public boolean contains( StaticPoint p) { return contains(p.getX(), p.getY()); }
 	public abstract void draw(Graphics2D g);
 	public abstract double getWidth();
 	public abstract double getHeight();
