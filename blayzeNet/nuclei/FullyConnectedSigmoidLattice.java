@@ -166,7 +166,7 @@ public class FullyConnectedSigmoidLattice {
 	 * Crosses this lattice with another.
 	 * @param	otherLattice	the lattice to cross this one with
 	 * @param	cm				the mode to use when crossing this lattice with the other
-	 * @param	info				additional information needed by each mode goes here (uniform = [this:other ratio], uniform mutation = [this:other ratio, mutation chance, random multiplier max/min])
+	 * @param	info				additional information needed by each mode goes here (uniform = [this:other ratio], uniform mutation = [this:other ratio, mutation chance, mutation max, mutation min])
 	 * @return	a new network that is the offspring of the network calling this function and otherLattice
 	 */
 	public FullyConnectedSigmoidLattice crossover(FullyConnectedSigmoidLattice otherLattice, CrossoverMode cm, double[] info)
@@ -197,7 +197,7 @@ public class FullyConnectedSigmoidLattice {
 					else
 						newGenome[i] = thisGenome[i];
 					if(Math.random() <= info[1])
-						newGenome[i] = newGenome[i] * info[2];
+						newGenome[i] = newGenome[i] + (Math.random()*(info[2]-info[3]) + info[3]);
 				}
 			break;
 		}

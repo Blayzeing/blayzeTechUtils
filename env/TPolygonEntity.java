@@ -105,6 +105,16 @@ public class TPolygonEntity extends PolygonEntity {
 		NMatrix m = transform.multiply(vertices.get(i).toVertMatrix());
 		return (new Point(m.getElement(0,0) + this.getX(), m.getElement(0,1) + this.getY()));
 	}
+	public ArrayList<Point> getAllGlobalPoints()
+	{
+		ArrayList<Point> out = new ArrayList<Point>();
+		for(Point v:vertices)
+		{
+			NMatrix m = transform.multiply(v.toVertMatrix());
+			out.add(new Point(m.getElement(0,0) + this.getX(), m.getElement(0,1) + this.getY()));
+		}
+		return out;
+	}
 	public SMatrix getTransformationMatrix ()
 	{
 		return (transform.copy());

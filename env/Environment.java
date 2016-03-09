@@ -1,6 +1,7 @@
 package classes.env;
 
 import classes.env.*;
+import classes.math.Point;
 import classes.env.nonpolyshapes.*;
 import classes.math.StaticPoint;
 import java.awt.Graphics2D;
@@ -86,6 +87,20 @@ public class Environment {//TODO: Make this extend AbstractEntity? Note that ent
 			return false;
 		}
 		public boolean contains( StaticPoint p) { return contains(p.getX(), p.getY()); }
+		public boolean contains(Point[] ps)
+		{
+			for(Point p : ps)
+				if(contains(p))
+					return true;
+			return false;
+		}
+		public boolean contains(ArrayList<Point> ps)
+		{
+			for(Point p : ps)
+				if(contains(p))
+					return true;
+			return false;
+		}
 
 		public void draw(Graphics2D g)
 		{

@@ -4,6 +4,7 @@ import classes.math.Point;
 import classes.math.StaticPoint;
 import classes.env.Hit;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 public abstract class AbstractEntity extends Point{
 	
@@ -30,7 +31,24 @@ public abstract class AbstractEntity extends Point{
 	{
 		return false;
 	}
-	public boolean contains( StaticPoint p) { return contains(p.getX(), p.getY()); }
+	public boolean contains(StaticPoint p)
+	{
+		return contains(p.getX(), p.getY());
+	}
+	public boolean contains(StaticPoint[] ps)
+	{
+		for(StaticPoint p : ps)
+			if(contains(p))
+				return true;
+		return false;
+	}
+	public boolean contains(ArrayList<StaticPoint> ps)
+	{
+		for(StaticPoint p : ps)
+			if(contains(p))
+				return true;
+		return false;
+	}
 	public abstract void draw(Graphics2D g);
 	public abstract double getWidth();
 	public abstract double getHeight();
