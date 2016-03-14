@@ -95,7 +95,12 @@ public class TPolygonEntity extends PolygonEntity {
 		// After using that, `localRes` stores the hit within the local space. Transform it back to worldspace.
 		DistancedHit localRes = super.hitScan(transformed.getElement(0,0),transformed.getElement(0,1),transformed.getElement(1,0),transformed.getElement(1,1));
 		NMatrix offset = new NMatrix(new double[][]{new double[]{this.getX()}, new double[]{this.getY()}});
+		
+
+		//NOTE TO FUTURE BLAYZE: CHECK THE BELOW IS WORKING PROPERLY.
 		NMatrix finalContact = transform.multiply(localRes.toVertMatrix().subtract(offset)).add(offset);
+
+
 		return (new DistancedHit(localRes.madeContact(), finalContact.getElement(0,0), finalContact.getElement(0,1), Math.hypot(x1-finalContact.getElement(0,0), y1-finalContact.getElement(0,1))));
 	}
 	// Returns the point in a global format, with transformations applied
