@@ -12,6 +12,7 @@ package classes.blayzeNet.nuclei;
  import java.awt.Graphics2D;
  import java.awt.Color;
  import classes.blayzeNet.nuclei.CrossoverMode;
+ import classes.blayzeNet.nuclei.MutationMode;
 
 public class FullyConnectedSigmoidLattice {
 
@@ -200,11 +201,41 @@ public class FullyConnectedSigmoidLattice {
 						newGenome[i] = newGenome[i] + (Math.random()*(info[2]-info[3]) + info[3]);
 				}
 			break;
+			default:
+			break;
 		}
 		FullyConnectedSigmoidLattice out = this.cloneWithoutWeights();
 		out.setWeights(newGenome);
 		return out;
 	}
+	/**
+	 * Returns this lattice mutated.
+	 * @param	mm	The mutation mode to use
+	 * @param	info	Additional information needed by the mutation mode (single = [mutation max, mutation min], uniform_random = [mutation rate, max, min])
+	 * @return	this lattice mutated
+	 */
+	public FullyConnectedSigmoidLattice mutate(MutationMode mm, double[] info)
+	{
+		double[] weights = this.getWeights();
+		switch(mm)
+		{
+			case SINGLE:
+				int index = (int)Math.floor(Math.random() * (double)weights.length);
+				weights[index] = weights[index] + Math.random() * (info[0]-info[1]) + info[1];
+			break;
+			case UNIFORM_RANDOM:
+				for(int i = 0; i<weights.length; i++)
+					if(Math.random() <= info[0])
+						weights[i] = weights[i] + Math.random() * (info[1]-info[2]) + info[2];
+			break;
+			default:
+			break;
+		}
+		FullyConnectedSigmoidLattice out = this.cloneWithoutWeights();
+		out.setWeights(weights);
+		return out;
+	}
+
 
 	public String toString()
 	{

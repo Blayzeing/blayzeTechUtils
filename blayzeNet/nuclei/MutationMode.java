@@ -1,5 +1,5 @@
 package classes.blayzeNet.nuclei;
 public enum MutationMode
 {
-	SINGLE;
+	SINGLE,UNIFORM_RANDOM;
 }
