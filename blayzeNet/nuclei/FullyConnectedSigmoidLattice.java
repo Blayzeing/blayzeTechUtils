@@ -256,6 +256,16 @@ public class FullyConnectedSigmoidLattice {
 		out = out + "{ "+Arrays.toString(outputBiases)+" }\n";
 		return out;
 	}
+	public void setFromString(String weights)
+	{
+		weights = weights.replaceAll("[\\[\\] ]","");
+		String[] weightStrings = weights.split(",");
+		double[] weightDoubles = new double[weightStrings.length];
+		for(int i = 0; i<weightDoubles.length; i++)
+			weightDoubles[i] = Double.valueOf(weightStrings[i]);
+		this.setWeights(weightDoubles);
+	}
+
 	public void visualise(int width, int height)
 	{
 		SimpleDisplay networkVis = new SimpleDisplay(width, height, "Network Visualiser", false, true);
