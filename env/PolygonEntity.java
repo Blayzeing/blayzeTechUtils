@@ -54,6 +54,14 @@ public class PolygonEntity extends AbstractEntity {
 	 */
 	public boolean contains (double x, double y)
 	{
+		return (privateContains(x,y));
+	}
+	/**
+	 * Containment code.
+	 * This code has been kept private so that it can be called with certainty of being this method from within hitScan
+	 */
+	private boolean privateContains (double x, double y)
+	{
 		if(vertices.size() < 3)
 			return false;
 		int counter = 0;
@@ -92,15 +100,10 @@ public class PolygonEntity extends AbstractEntity {
 			else
 				return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
 		}
-		// If the shape is actually an object
-		// The below use of "super" is a horrible hack to get around the wrong method being called in TPolygon entity (using an alternate grid). The safest way of fixing this
-		// would be to create a new "contains" method that was private, like "lockedContains" that only this method uses. Or, replacing the if statement with a full
-		// replica of the contains code. (Perhaps doing this within the loops below would increase efficiency?)
-		if(super.contains(x1,y1))// First check if the start point is inside the polygon, if so return a 0-length hitScan
-		{
-			System.out.println("It's inside");
+		// If the shape is actually an object...
+		if(privateContains(x1,y1))// First check if the start point is inside the polygon, if so return a 0-length hitScan
 			return(new DistancedHit(true, x1, y1, 0));
-		}
+		//Note the use of 'private contains above as opposed to the potentially overridden method "contains"
 		x1 -= getX();
 		x2 -= getX();
 		y1 -= getY();
