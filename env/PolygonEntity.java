@@ -282,6 +282,17 @@ public class PolygonEntity extends AbstractEntity {
 			out.add(new Point(v.getX() + this.getX(), v.getY() + this.getY()));
 		return out;
 	}
+	public Point[] getAllGlobalPointsAsArray()
+	{
+		Point[] out = new Point[vertices.size()];
+		int i = 0;
+		for(Point v:vertices)
+		{
+			out[i] = new Point(v.getX() + this.getX(), v.getY() + this.getY());
+			i++;
+		}
+		return out;
+	}
 	public void draw(Graphics2D g)
 	{
 		Point last = getGlobalPoint(vertices.size()-1);
