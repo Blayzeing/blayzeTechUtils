@@ -50,21 +50,13 @@ public abstract class AbstractEntity extends Point{
 		return false;
 	}
 	public abstract void draw(Graphics2D g);
-	public abstract double getWidth();
-	public abstract double getHeight();
-	public abstract Point getTopLeftCorner();
-	public abstract Point getTopRightCorner();
-	public abstract Point getBottomRightCorner();
-	public abstract Point getBottomLeftCorner();
+	//public abstract double getWidth();
+	//public abstract double getHeight();
+	//public abstract Point getTopLeftCorner();
+	//public abstract Point getTopRightCorner();
+	//public abstract Point getBottomRightCorner();
+	//public abstract Point getBottomLeftCorner();
 
-	/*public boolean equals(Object obj)
-	{
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		
-		return true;
-	}*/
 	public String toString()
 	{
 		return ("[Abstract Entity]\n'-> "+super.toString());
