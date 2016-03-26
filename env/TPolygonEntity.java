@@ -11,7 +11,7 @@ import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class TPolygonEntity extends PolygonEntity {
+public class TPolygonEntity extends PolygonEntity implements Transformable {
 	//Below store the transformation information:
 	private double rotation = 0;
 	private double xScale = 1;
