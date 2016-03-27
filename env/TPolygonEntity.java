@@ -120,10 +120,6 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 
 	public static void main (String[] args) throws InterruptedException
 	{
-		/*TPolygonEntity p = new TPolygonEntity(100,100, new StaticPoint[]{new StaticPoint(,3)});
-		p.setXscale(20);
-		p.setRotation(Math.PI/2);
-		*/
 		SimpleDisplay d0 = new SimpleDisplay(200,200,"Containment",true,true);
 		Graphics2D g = d0.getGraphics2D();
 		g.setColor(Color.BLACK);
