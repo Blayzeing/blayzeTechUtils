@@ -16,7 +16,7 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 	private double rotation = 0;
 	private double xScale = 1;
 	private double yScale = 1;
-	private SMatrix transform = SMatrix.identity(2), transformInverse = SMatrix.identity(2);// This stores the actual transform matrix.
+	protected SMatrix transform = SMatrix.identity(2), transformInverse = SMatrix.identity(2);// This stores the actual transform matrix.
 
 	public TPolygonEntity (double x, double y) { super(x,y); }
 	public TPolygonEntity (double x, double y, StaticPoint[] p) { super(x,y,p); }
