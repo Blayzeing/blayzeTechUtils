@@ -44,7 +44,7 @@ public class TPPolygonEntity extends TPolygonEntity {
 	}
 
 	/**
-	 * Takes an array of points as if they were in this objects euclidian plane and projects them (paying respect to parent entities) to the global plane.
+	 * Takes an array of points as if they were in this object's euclidian plane and projects them (paying respect to parent entities) to the global plane.
 	 */
 	public Point[] projectToWorld(Point[] points)
 	{
@@ -59,6 +59,23 @@ public class TPPolygonEntity extends TPolygonEntity {
 		else
 			return (parent.projectToWorld(out));
 	}
+	/**
+	 * Takes a point as if it were in this object's euclidian plane and projects it (paying respect to parent entities) to the global plane.
+	 */
+	public Point projectToWorld(Point point)
+	{
+		NMatrix m = transform.multiply(point.toVertMatrix());
+		Point out = new Point(m.getElement(0,0) + this.getX(), m.getElement(0,1) + this.getY());
+		if(parent == null)
+			return out;
+		else
+			return (parent.projectToWorld(out));
+	}
+
+	/**
+	 * Takes a point in worldspace and projects it to the local coordinate system, including this shape's transformation.
+	 */
+	public Point[] projectLocally(Point[] points)
 
 	//These methods should just wrap projectToWorld using different inputs
 	@Override
@@ -85,6 +102,44 @@ public class TPPolygonEntity extends TPolygonEntity {
 
 	public static void main(String[] args) throws InterruptedException
 	{
+		//initialTest();
+		parentingTest();
+	}
+	public static void parentingTest() throws InterruptedException
+	{
+		SimpleDisplay d = new SimpleDisplay(800,400,"Parenting",true,true);
+		Graphics2D g = d.getGraphics2D();
+		StaticPoint[] shape = new StaticPoint[]{new StaticPoint(35,0), new StaticPoint(0,9), new StaticPoint(0,-9)};
+		TPPolygonEntity[] bones = new TPPolygonEntity[15];
+		for(int i = 0; i<bones.length; i++)
+		{
+			bones[i] = new TPPolygonEntity(shape[0].getX(),0,shape);
+			if(i-1>=0)
+				bones[i].setParent(bones[i-1]);
+			bones[i].setXscale(0.94);
+			bones[i].setYscale(0.9);
+		}
+		bones[0].setX(400);
+		bones[0].setY(400);
+		bones[0].setRotation(-Math.PI/2);
+
+		// Loop
+		g.setColor(Color.BLACK);
+		while(true)
+		{
+			//Moving
+			for(int i = 1; i<bones.length; i++)
+				bones[i].setRotation(Math.min(Math.max(-Math.PI/3,  bones[i].getRotation()+(Math.random()*2-1)*Math.PI/500  ),Math.PI/3));
+			//Drawing
+			d.fill(Color.WHITE);
+			for(TPPolygonEntity b:bones)
+				b.draw(g);
+			d.repaint();
+			Thread.sleep(50);
+		}
+	}
+	public static void initialTest() throws InterruptedException
+	{
 		SimpleDisplay d = new SimpleDisplay(400,400,"Drawing",true,true);
 		Graphics2D g = d.getGraphics2D();
 		// Create the group object
@@ -97,22 +152,26 @@ public class TPPolygonEntity extends TPolygonEntity {
 		// Now lets add one more entity for fun rotation times!
 		TPPolygonEntity p3 = new TPPolygonEntity(0,0, new StaticPoint[]{new StaticPoint(70,0), new StaticPoint(65,2), new StaticPoint(65,-2)}, parentEntity);
 		// And now for some major small rotations
-		TPPolygonEntity p4 = new TPPolygonEntity(0,0, new StaticPoint[]{new StaticPoint(-10,0), new StaticPoint(0,-10), new StaticPoint(10,0), new StaticPoint(0,10)});
+		TPPolygonEntity p4 = new TPPolygonEntity(67.5,0, new StaticPoint[]{new StaticPoint(-10,0), new StaticPoint(0,-10), new StaticPoint(10,0), new StaticPoint(0,10)});
 		p4.setParent(p3);
 
+		// Loop
 		g.setColor(Color.BLACK);
 		double angle1 = 0, angle2 = 0;
+		double mult = 0.3;
 		while(true)
 		{
-			angle1 += Math.PI/20;
-			angle2 += Math.PI/50;
+			angle1 += Math.PI/20 * mult;
+			angle2 += Math.PI/50 * mult;
 			parentEntity.setX(200 + Math.cos(angle2)*100);
 			parentEntity.setY(200 + Math.sin(angle2)*100);
-			parentEntity.setRotation(parentEntity.getRotation() + Math.PI/1000);
+			//parentEntity.setRotation(parentEntity.getRotation() + Math.PI/1000);
+			//parentEntity.setYscale((Math.sin(angle1)+1)/2);
 			p1.setX(Math.cos(angle1)*30);
 			p1.setY(Math.sin(angle1)*30);
-			p2.setRotation(p2.getRotation() + Math.PI/15);
-			p3.setRotation(p3.getRotation() - Math.PI/22);
+			p2.setRotation(p2.getRotation() + Math.PI/15 * mult);
+			p3.setRotation(p3.getRotation() - Math.PI/22 * mult);
+			p4.setRotation(p4.getRotation() + Math.PI/10 * mult);
 
 			// Now draw each item
 			d.fill(Color.WHITE);
@@ -120,10 +179,9 @@ public class TPPolygonEntity extends TPolygonEntity {
 			p1.draw(g);
 			p2.draw(g);
 			p3.draw(g);
-			p4.draw(g); // TODO: Work out why this is not over p3.
+			p4.draw(g);
 			d.repaint();
 			Thread.sleep(50);
-			// TODO: Check that this works ok with different X&Y scales
 		}
 	}
 }
