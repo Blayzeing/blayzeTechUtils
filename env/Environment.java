@@ -9,10 +9,16 @@ import java.util.*;
 import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 
-public class Environment {//TODO: Make this extend AbstractEntity? Note that entities would have to be private for this to work in order to get the corners and width
+public class Environment {
 		
 		public ArrayList<AbstractEntity> entities; //Perhaps use binary space partitioning to divide up this list for a faster load time on larger envs?
 
+		//public Environment (AbstractEntity[] e)
+		//{
+		//	entities = new ArrayList<AbstractEntity>();
+		//	for(AbstractEntity ent:e)
+		//		entities.add(ent);
+		//}
 		public Environment (ArrayList<AbstractEntity> e)
 		{
 			entities = e;

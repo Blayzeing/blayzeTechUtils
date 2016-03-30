@@ -2,6 +2,12 @@ package classes.env;
 
 /**
  * An entity that has rotation and scale properties, it's *transformable*.
+ *
+ * On the subject of 0 X or Y scales (thus causing the transform to have no inverse):
+ * If there is no inverse, then this shape must be infintesimally small, as such only a point directly on this shape's location would intersect with it.
+ * So if so, then this can't contain it. Of course, this could be argued either way as it is a derivative of a self-containing set paradox, and it
+ * certainly would be helpful in the case of hitscanning an object with 0 for one of the X or Y scales, however, for convinience, I shall not be
+ * implementing that.
  */
 
 import classes.env.*;
@@ -50,8 +56,12 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 	}
 	public void resetRotation () { setRotation(0); }
 	public void resetScale () { setXscale(1); setYscale(1); }
+	public SMatrix getTransformationMatrix ()
+	{
+		return (transform.copy());
+	}
 
-	public void createTransformMatrices ()
+	private void createTransformMatrices ()
 	{
 		NMatrix scaleM = new NMatrix(new double[][]{new double[]{xScale, 0}, new double[]{0, yScale}});
 		NMatrix rotationM = new NMatrix(new double[][]{new double[]{Math.cos(rotation), -1*Math.sin(rotation)}, new double[]{Math.sin(rotation), Math.cos(rotation)}});
@@ -59,21 +69,13 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 		transformInverse = transform.inverse2x2();
 	}
 
+	// Handling of replacement code:
 	@Override
 	public boolean contains (double x, double y)
 	{
-		// If there is no inverse, then this shape must be infintesimally small, as such only a point directly on this shape's location would intersect with it.
 		if (transformInverse == null)
-		{
-			if(x == this.getX() && y == this.getY())
-				return true;
-			else
 				return false;
-		}
-		//Use the inverseTransform to transform x and y to a position as if the normal contains would be occuring
-		NMatrix transformed = transformInverse.multiply(new NMatrix(new double[][]{new double[]{x-this.getX()}, new double[]{y-this.getY()}}));
-		transformed = transformed.add(new NMatrix(new double[][]{new double[]{this.getX()}, new double[]{this.getY()}}));
-		return (super.contains(transformed.getElement(0,0),transformed.getElement(0,1)));
+		return(super.contains(x,y));
 	}
 	@Override
 	public DistancedHit hitScan (double x1, double y1, double x2, double y2)
@@ -81,41 +83,66 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 		// If there is no inverse, then this shape must be infintesimally small, as such only a point directly on this shape's location would intersect with it.
 		if (transformInverse == null)
 		{
-			if(x1 == this.getX() && y1 == this.getY())
-				return (new DistancedHit(true, getX(), getY(), Math.hypot(x1-getX(), y1-getY())));
-			else
-				return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
+			return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
 		}
+		return(super.hitScan(x1,y1,x2,y2));
+	}
 
-		//Use the inverseTransform to transform x and y to a position as if the normal contains would be occuring
-		NMatrix transformed = transformInverse.multiply(new NMatrix(new double[][]{new double[]{x1-this.getX(), x2-this.getX()}, new double[]{y1-this.getY(), y2-this.getY()}}));
-		transformed = transformed.add(new NMatrix(new double[][]{new double[]{this.getX(), this.getX()}, new double[]{this.getY(), this.getY()}}));
-		// After using that, `localRes` stores the hit within the local space. Transform it back to worldspace.
-		DistancedHit localRes = super.hitScan(transformed.getElement(0,0),transformed.getElement(0,1),transformed.getElement(1,0),transformed.getElement(1,1));
-		NMatrix offset = new NMatrix(new double[][]{new double[]{this.getX()}, new double[]{this.getY()}});
-		NMatrix finalContact = transform.multiply(localRes.toVertMatrix().subtract(offset)).add(offset);
-		return (new DistancedHit(localRes.madeContact(), finalContact.getElement(0,0), finalContact.getElement(0,1), Math.hypot(x1-finalContact.getElement(0,0), y1-finalContact.getElement(0,1))));
-	}
-	// Returns the point in a global format, with transformations applied
+	// NOTE TO SELF: Yes, those `super.x` calls below could be caluclated from within here directly, and maybe that's more efficient. But at the moment, this modular approach seems better.
+	// (One has such an alternative written above it)
 	@Override
-	public Point getGlobalPoint (int i)
+	public Point projectLocally(Point p)
 	{
-		NMatrix m = transform.multiply(vertices.get(i).toVertMatrix());
-		return (new Point(m.getElement(0,0) + this.getX(), m.getElement(0,1) + this.getY()));
-	}
-	public ArrayList<Point> getAllGlobalPoints()
-	{
-		ArrayList<Point> out = new ArrayList<Point>();
-		for(Point v:vertices)
+		if(transformInverse == null)
 		{
-			NMatrix m = transform.multiply(v.toVertMatrix());
-			out.add(new Point(m.getElement(0,0) + this.getX(), m.getElement(0,1) + this.getY()));
+			double xdiff = p.getX() - this.getX();
+			double ydiff = p.getY() - this.getY();
+			return (new Point(xdiff==0?0:xdiff*Double.POSITIVE_INFINITY, ydiff==0?0:ydiff*Double.POSITIVE_INFINITY));
+		}
+		//NMatrix transformed = transformInverse.multiply(new NMatrix(new double[][]{new double[]{p.getX()-this.getX()}, new double[]{p.getY()-this.getY()}}));
+		NMatrix transformed = transformInverse.multiply(super.projectLocally(p).toVertMatrix());
+		return (new Point(transformed.getElement(0,0), transformed.getElement(0,1)));
+	}
+	@Override
+	public Point[] projectLocally(Point[] points)
+	{
+		Point[] out = new Point[points.length];
+		if(transformInverse == null)
+		{
+			for(int i = 0; i<points.length; i++)
+			{
+				double xdiff = points[i].getX() - this.getX();
+				double ydiff = points[i].getY() - this.getY();
+				out[i] = new Point(xdiff==0?0:xdiff*Double.POSITIVE_INFINITY, ydiff==0?0:ydiff*Double.POSITIVE_INFINITY);
+			}
+			return out;
+		}
+		NMatrix transformed = null;
+		Point[] newPoints = super.projectLocally(points);
+		for(int i = 0; i<points.length; i++)
+		{
+			transformed = transformInverse.multiply(newPoints[i].toVertMatrix());
+			out[i] = new Point(transformed.getElement(0,0), transformed.getElement(0,1));
 		}
 		return out;
 	}
-	public SMatrix getTransformationMatrix ()
+
+	@Override
+	public Point projectToWorld(Point point)
 	{
-		return (transform.copy());
+		NMatrix m = transform.multiply(point.toVertMatrix());
+		return (super.projectToWorld(new Point(m.getElement(0,0), m.getElement(0,1))));
+	}
+	@Override
+	public Point[] projectToWorld(Point[] points)
+	{
+		Point[] out = new Point[points.length];
+		for(int i = 0; i<points.length; i++)
+		{
+			NMatrix m = transform.multiply(points[i].toVertMatrix());
+			out[i] = super.projectToWorld(new Point(m.getElement(0,0), m.getElement(0,1)));
+		}
+		return out;
 	}
 
 	public static void main (String[] args) throws InterruptedException
@@ -129,6 +156,9 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 		p0.setRotation(Math.PI * 2 * Math.random() - Math.PI);
 		p0.setXscale(4 * Math.random());
 		p0.setYscale(4 * Math.random());
+		p0.setYscale(0.0000000000);
+		//p0.setXscale(0);
+		System.out.println(p0.transformInverse);
 		for(int x = 0; x<200; x++)
 			for(int y = 0; y<200; y++)
 			{

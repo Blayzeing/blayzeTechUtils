@@ -54,25 +54,31 @@ public class PolygonEntity extends AbstractEntity {
 	 */
 	public boolean contains (double x, double y)
 	{
-		return (privateContains(x,y));
+		Point localPoint = projectLocally(new Point(x,y));
+		return (localContains(localPoint.getX(),localPoint.getY()));
 	}
+
 	/**
-	 * Containment code.
-	 * This code has been kept private so that it can be called with certainty of being this method from within hitScan
+	 * Local containment code.
+	 * This code assumes a shape with no translation ability (ie on this shape's local plane), and checks it's containment.
 	 */
-	private boolean privateContains (double x, double y)
+	private boolean localContains (double x, double y)
 	{
 		if(vertices.size() < 3)
 			return false;
 		int counter = 0;
-		double startx = getTopLeftCorner().getX();
+		// Get the leftmost x value
+		double startx = Double.POSITIVE_INFINITY;
+		for(Point v:vertices)
+		{
+			if(startx>v.getX())
+				startx = v.getX();
+		}
 		startx -= 1;// Make sure you're far enough left
 		Point lastPoint = vertices.get(vertices.size()-1);
-		lastPoint = new Point(lastPoint.getX() + getX(), lastPoint.getY() + getY());
 		for(int i = 0; i<vertices.size(); i++)
 		{
 			Point thisPoint = vertices.get(i);
-			thisPoint = new Point(thisPoint.getX() + getX(), thisPoint.getY() + getY());
 			// The y comparisons at the start basically eliminate the very ends of each edge, avoiding double-collisions.
 			if(thisPoint.getY() != y && MoarMath.lineSegmentIntersect(startx, y, x, y, lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY()) != null)
 				counter ++;
@@ -86,7 +92,27 @@ public class PolygonEntity extends AbstractEntity {
 		else// Odd
 			return true;
 	}
+	/**
+	 * Tests to see how far a ray would go if sent between (x1,y2) and (x2,y2).
+	 */
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
+	{
+		//First, localise the given points
+		Point[] localPoints = projectLocally(new Point[]{new Point(x1,y1), new Point(x2,y2)});
+		//Then perform the hitscan
+		DistancedHit localRes = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
+		//Then finally delocalise the returned hitscan and return it
+		Point endPoint = projectToWorld(new Point(localRes.getX(), localRes.getY()));//The final contact point
+		double outDistance = 0;
+		if(localRes.getDistance() != 0)
+			outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
+		return (new DistancedHit(localRes.madeContact(), endPoint.getX(), endPoint.getY(), outDistance));
+	}
+
+	/**
+	 * Runs a hitscan test within the local environment of the object, ignoring placement
+	 */
+	private DistancedHit localHitScan(double x1, double y1, double x2, double y2)
 	{
 		// If the shape has no area
 		if(vertices.size() < 1)
@@ -94,20 +120,15 @@ public class PolygonEntity extends AbstractEntity {
 		if(vertices.size() < 2)
 		{
 			NVector scan = new NVector(new double[]{x2 - x1, y2 - y1});
-			NVector point = new NVector(new double[]{vertices.get(0).getX() + getX() - x1, vertices.get(0).getY() + getY() - y1});
+			NVector point = new NVector(new double[]{vertices.get(0).getX() - x1, vertices.get(0).getY() - y1});
 			if(scan.normalize().equals(point.normalize()))// the single vertex of this shape is on the hitScan line.
-				return (new DistancedHit(true, getX(), getY(), Math.hypot(x1-getX(), y1-getY())));
+				return (new DistancedHit(true, vertices.get(0).getX(), vertices.get(0).getY(), Math.hypot(x1-vertices.get(0).getX(), y1-vertices.get(0).getY())));
 			else
 				return (new DistancedHit(false, x2, y2, Math.hypot(x1-x2, y1-y2)));
 		}
 		// If the shape is actually an object...
-		if(privateContains(x1,y1))// First check if the start point is inside the polygon, if so return a 0-length hitScan
+		if(localContains(x1,y1))// First check if the start point is inside the polygon, if so return a 0-length hitScan
 			return(new DistancedHit(true, x1, y1, 0));
-		//Note the use of 'private contains above as opposed to the potentially overridden method "contains"
-		x1 -= getX();
-		x2 -= getX();
-		y1 -= getY();
-		y2 -= getY();
 		Double shortestDistance = Math.hypot(x1-x2,y1-y2);
 		double[] closestPoint = new double[]{x2,y2};
 		boolean hit = false;
@@ -128,11 +149,48 @@ public class PolygonEntity extends AbstractEntity {
 			}
 			lastPoint = thisPoint;
 		}
-		return(new DistancedHit(hit, closestPoint[0]+getX(), closestPoint[1]+getY(), shortestDistance));
+		return(new DistancedHit(hit, closestPoint[0], closestPoint[1], shortestDistance));
 	}
 	public DistancedHit hitScan (Point p1, Point p2) { return hitScan(p1.getX(), p1.getY(), p2.getX(), p2.getY()); }
 	public DistancedHit hitScan (StaticPoint p1, StaticPoint p2) { return hitScan(p1.getX(), p1.getY(), p2.getX(), p2.getY()); }
 
+	// Projection Code
+	/**
+	 * Takes a point in worldspace and projects it to the local coordinate system, including this shape's transformation.
+	 */
+	public Point projectLocally(Point p)
+	{
+		return (new Point(p.getX() - this.getX(), p.getY() - this.getY()));
+	}
+	/**
+	 * Takes an array of points in worldspace and projects them to the local coordinate system, including this shape's transformation.
+	 */
+	public Point[] projectLocally(Point[] points)
+	{
+		Point[] out = new Point[points.length];
+		for(int i = 0; i<points.length; i++)
+			out[i] = new Point(points[i].getX() - this.getX(), points[i].getY() - this.getY());
+		return out;
+	}
+	/**
+	 * Takes a point as if it were in this object's euclidian plane and projects it to the global plane.
+	 */
+	public Point projectToWorld(Point point)
+	{
+		return (new Point(point.getX() + this.getX(), point.getY() + this.getY()));
+	}
+	/**
+	 * Takes an array of points as if they were in this object's euclidian plane and projects them to the global plane.
+	 */
+	public Point[] projectToWorld(Point[] points)
+	{
+		Point out[] = new Point[points.length];
+		for(int i = 0; i<points.length; i++)
+			out[i] = new Point(points[i].getX() + this.getX(), points[i].getY() + this.getY());
+		return out;
+	}
+
+	// Point reference retrieval code
 	public Point getPointReferenceByIndex(int i)
 	{
 		return (vertices.get(i));
@@ -273,13 +331,13 @@ public class PolygonEntity extends AbstractEntity {
 	}
 	public Point getGlobalPoint(int i)
 	{
-		return( new Point(vertices.get(i).getX() + this.getX(), vertices.get(i).getY() + this.getY()));
+		return(projectToWorld(vertices.get(i)));
 	}
 	public ArrayList<Point> getAllGlobalPoints()
 	{
 		ArrayList<Point> out = new ArrayList<Point>();
 		for(Point v:vertices)
-			out.add(new Point(v.getX() + this.getX(), v.getY() + this.getY()));
+			out.add(projectToWorld(v));
 		return out;
 	}
 	public Point[] getAllGlobalPointsAsArray()
@@ -288,7 +346,7 @@ public class PolygonEntity extends AbstractEntity {
 		int i = 0;
 		for(Point v:vertices)
 		{
-			out[i] = new Point(v.getX() + this.getX(), v.getY() + this.getY());
+			out[i] = projectToWorld(v);
 			i++;
 		}
 		return out;
