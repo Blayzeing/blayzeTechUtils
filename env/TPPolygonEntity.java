@@ -1,7 +1,7 @@
 package classes.env;
 
 /**
- * A transformable *parentabl* polygon entity, it can have parents assigned to it.
+ * A transformable *parentable* polygon entity, it can have a parent assigned to it.
  */
 
 import java.util.ArrayList;
@@ -10,29 +10,20 @@ import java.awt.Graphics2D;
 import classes.graphics.SimpleDisplay;
 import classes.math.*;
 import classes.env.Environment;
-// Notes about this class.
-// I believe that it should have a parent, and that it should have a method to transform a set of coordinates and return them transformed to this entity's
-// euclidian plane. Then, for drawing, we could run a transform of it's vertices that would subsequently transform it's vertices based on it's transformation
-// matrix and position, then send those transformed vertices to it's parent for further transformation if it has a parent, finally returning a list of fully
-// transformed vertices ready for drawing globally.
-// The same would have to be done for contains and hitScan methods, although this would have to be done in reverse first, to get the contains and hitscan
-// points on the local plane and then forwards again in the case of hitscanning. Potential candidate method names would be projectToWorld and projectLocally,
-// both would take a list/array (the latter being more efficient) of Points and would do as described.
-//
-// This system may require a comprehensive two-way link to be made between two TPPolygonEntitys
 
 public class TPPolygonEntity extends TPolygonEntity {
-	// ArrayList of this TPPolygonEntity's children
-	private TPPolygonEntity parent = null;
+
+	//This TPPolygonEntity's parent
+	private PolygonEntity parent = null;
 
 	public TPPolygonEntity (double x, double y) { super(x,y); }
-	public TPPolygonEntity (double x, double y, TPPolygonEntity p) { super(x,y); parent = p; }
+	public TPPolygonEntity (double x, double y, PolygonEntity p) { super(x,y); parent = p; }
 	public TPPolygonEntity (double x, double y, StaticPoint[] ps) { super(x,y,ps); }
 	public TPPolygonEntity (double x, double y, ArrayList<StaticPoint> ps) { super(x,y,ps); }
-	public TPPolygonEntity (double x, double y, StaticPoint[] ps, TPPolygonEntity p) { super(x,y,ps); parent = p; }
-	public TPPolygonEntity (double x, double y, ArrayList<StaticPoint> ps, TPPolygonEntity p) { super(x,y,ps); parent = p; }
+	public TPPolygonEntity (double x, double y, StaticPoint[] ps, PolygonEntity p) { super(x,y,ps); parent = p; }
+	public TPPolygonEntity (double x, double y, ArrayList<StaticPoint> ps, PolygonEntity p) { super(x,y,ps); parent = p; }
 
-	public void setParent(TPPolygonEntity e)
+	public void setParent(PolygonEntity e)
 	{
 		if(e != this)
 			parent = e;
@@ -94,54 +85,45 @@ public class TPPolygonEntity extends TPolygonEntity {
 	public static void main(String[] args) throws InterruptedException
 	{
 		//initialTest();
-		parentingTest();
+		//parentingTest();
 		//containmentTest();
-		//hitscanTest();
+		hitscanTest();
 	}
 	public static void hitscanTest() throws InterruptedException
 	{
-		SimpleDisplay d = new SimpleDisplay(270,350,"Hitscan",true,true);
+		SimpleDisplay d = new SimpleDisplay(800,400,"Parenting",true,true);
 		Graphics2D g = d.getGraphics2D();
 		StaticPoint[] shape = new StaticPoint[]{new StaticPoint(35,0), new StaticPoint(0,9), new StaticPoint(0,-9)};
 		TPPolygonEntity[] bones = new TPPolygonEntity[15];
-		Environment env = new Environment();
 		for(int i = 0; i<bones.length; i++)
 		{
 			bones[i] = new TPPolygonEntity(shape[0].getX(),0,shape);
-			env.entities.add(bones[i]);
 			if(i-1>=0)
 				bones[i].setParent(bones[i-1]);
 			bones[i].setXscale(0.94);
 			bones[i].setYscale(0.9);
 		}
-		bones[0].setX(10);
-		bones[0].setY(350);
+		bones[0].setX(400);
+		bones[0].setY(400);
 		bones[0].setRotation(-Math.PI/2);
+		Environment env = new Environment(bones);
 
 		// Loop
-		g.setColor(Color.WHITE);
+		Ray ray1 = new Ray(new Point(20,200), new Point(780,340));
+		g.setColor(Color.BLACK);
+		int flip = 1;
 		while(true)
 		{
 			//Moving
 			for(int i = 1; i<bones.length; i++)
-				bones[i].setRotation(Math.min(Math.max(-Math.PI/3,  bones[i].getRotation()+Math.PI/500  ),Math.PI/3));
+				bones[i].setRotation(Math.min(Math.max(-Math.PI/3,  bones[i].getRotation()+flip*Math.PI/500  ),Math.PI/3));
+			if(bones[1].getRotation() == Math.PI/3 || bones[1].getRotation() == -Math.PI/3)
+				flip *= -1;
+			ray1.performHitScanOn(env);
 			//Drawing
-			d.fill(Color.BLACK);
-			DistancedHit d1 = env.hitScan(20,20,180,340);
-			if(d1.madeContact())
-			{
-				g.setColor(Color.RED);
-				g.drawLine(20,20,(int)d1.getX(),(int)d1.getY());
-				g.setColor(Color.GRAY);
-				g.drawLine((int)d1.getX(),(int)d1.getY(),180,340);
-			}else{
-				g.setColor(Color.GRAY);
-				g.drawLine(20,20,180,340);
-			}
-
-			g.setColor(Color.WHITE);
-			for(TPPolygonEntity b:bones)
-				b.draw(g);
+			d.fill(Color.WHITE);
+			ray1.draw(g);
+			env.draw(g);
 			d.repaint();
 			Thread.sleep(50);
 		}

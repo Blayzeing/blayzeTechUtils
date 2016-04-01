@@ -3,10 +3,11 @@ package classes.env;
 import classes.math.Point;
 import classes.math.StaticPoint;
 import classes.env.Hit;
+import classes.graphics.Drawable;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-public abstract class AbstractEntity extends Point{
+public abstract class AbstractEntity extends Point implements Drawable, HitScannable {
 	
 	public AbstractEntity(double x, double y)
 	{

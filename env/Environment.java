@@ -9,16 +9,16 @@ import java.util.*;
 import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 
-public class Environment {
+public class Environment implements HitScannable {
 		
 		public ArrayList<AbstractEntity> entities; //Perhaps use binary space partitioning to divide up this list for a faster load time on larger envs?
 
-		//public Environment (AbstractEntity[] e)
-		//{
-		//	entities = new ArrayList<AbstractEntity>();
-		//	for(AbstractEntity ent:e)
-		//		entities.add(ent);
-		//}
+		public Environment (AbstractEntity[] e)
+		{
+			entities = new ArrayList<AbstractEntity>();
+			for(AbstractEntity ent:e)
+				entities.add(ent);
+		}
 		public Environment (ArrayList<AbstractEntity> e)
 		{
 			entities = e;
@@ -82,6 +82,10 @@ public class Environment {
 					closest = h;
 			}
 			return closest;
+		}
+		public DistancedHit hitScan(StaticPoint p1, StaticPoint p2)
+		{
+			return(hitScan(p1.getX(),p1.getY(),p2.getX(),p2.getY()));
 		}
 
 		public boolean contains(double x, double y)
