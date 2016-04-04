@@ -20,7 +20,7 @@ public abstract class AbstractEntity extends Point implements Drawable, HitScann
 	 * @return	DistancedHit	true if collision made, x and y values are the collision position (if no collision made, x2 and y2 returned)
 	 */
 	public abstract DistancedHit hitScan(double x1, double y1, double x2, double y2);
-	public DistancedHit hitScan(Point p1, Point p2)
+	public DistancedHit hitScan(StaticPoint p1, StaticPoint p2)
 	{
 		return(hitScan(p1.getX(), p1.getY(),p2.getX(),p2.getY()));
 	}
