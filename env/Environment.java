@@ -112,6 +112,51 @@ public class Environment implements HitScannable {
 			return false;
 		}
 
+		/**
+		 * Returns an ArrayList of all entities that contain the given point.
+		 */
+		public ArrayList<AbstractEntity> getEntitiesAt(double x, double y)
+		{
+			ArrayList<AbstractEntity> ents = new ArrayList<AbstractEntity>();
+			int entSize = entities.size();
+			for(int i = 0; i<entSize; i++)
+			{
+				AbstractEntity thisEntity = entities.get(i);
+				if(thisEntity.contains(x,y))
+					ents.add(thisEntity);
+			}
+			return ents;
+		}
+		public ArrayList<AbstractEntity> getEntitiesAt(StaticPoint p)
+		{
+			return(getEntitiesAt(p.getX(), p.getY()));
+		}
+		// Might be worth making a 'getEntitiesAt' That takes a list of points
+
+		/**
+		 * Returns the first entity found at the given location, null if no entity found.
+		 */
+		public AbstractEntity getEntityAt(double x, double y)
+		{
+			int entSize = entities.size();
+			for(int i = 0; i<entSize; i++)
+			{
+				AbstractEntity thisEntity = entities.get(i);
+				if(thisEntity.contains(x,y))
+					return(thisEntity);
+			}
+			return null;
+		}
+		public AbstractEntity getEntityAt(StaticPoint p)
+		{
+			return getEntityAt(p.getX(), p.getY());
+		}
+
+		/**
+		 * Functions the same as hitScan but also contains a reference to the entity the scan hit.
+		 */
+		//public ReferencedDistancedHit referencedHitScan(double x1, double y1, double x2, double y2)
+		
 		public void draw(Graphics2D g)
 		{
 			for(AbstractEntity e : entities)
