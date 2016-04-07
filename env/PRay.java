@@ -68,12 +68,37 @@ public class PRay extends Ray {
 		g.setColor(bc);
 	}
 
+	/**
+	 * Returns an array of PRays arcing evenly between two angles.
+	 */
+	public static PRay[] makeSensorArray(int rayCount, Point center, double rayDistance, double startAngle, double endAngle, PolygonEntity parent)
+	{
+		PRay[] output = new PRay[Math.max(rayCount,0)];
+		if(rayCount>1)
+		{
+			double stepAmount = (endAngle-startAngle)/(rayCount-1);
+			for(int i = 0; i<rayCount; i++)
+			{
+				double currentAngle = startAngle + stepAmount*i;
+				output[i] = new PRay(center, new Point(center.getX() + Math.cos(currentAngle)*rayDistance, center.getY() + Math.sin(currentAngle)*rayDistance), parent);
+			}
+		}else if(rayCount == 1){
+			double midAngle = (startAngle + endAngle) * 0.5;
+			output[0] = new PRay(center, new Point(center.getX() + Math.cos(midAngle)*rayDistance, center.getY() + Math.sin(midAngle)*rayDistance), parent);
+		}
+		return output;
+	}
+	public static PRay[] makeSensorArray(int rayCount, Point center, double rayDistance, double startAngle, double endAngle)
+	{
+		return makeSensorArray(rayCount, center, rayDistance, startAngle, endAngle, null);
+	}
+
 	public static void main(String[] args) throws InterruptedException
 	{
 		SimpleDisplay d = new SimpleDisplay(800,400,"Parented Ray Casting",true,true);
 		Graphics2D g = d.getGraphics2D();
 		StaticPoint[] shape = new StaticPoint[]{new StaticPoint(35,0), new StaticPoint(0,9), new StaticPoint(0,-9)};
-		TPPolygonEntity[] bones = new TPPolygonEntity[30];
+		TPPolygonEntity[] bones = new TPPolygonEntity[10];
 		for(int i = 0; i<bones.length; i++)
 		{
 			bones[i] = new TPPolygonEntity(shape[0].getX(),0,shape);
@@ -86,9 +111,7 @@ public class PRay extends Ray {
 		bones[0].setY(400);
 		bones[0].setRotation(-Math.PI/2);
 		Environment env = new Environment(bones);
-		PRay ray1 = new PRay(new Point(36,0), new Point(400,0), bones[bones.length-1]);
-		PRay ray2 = new PRay(new Point(36,0), new Point(400,-80), bones[bones.length-1]);
-		PRay ray3 = new PRay(new Point(36,0), new Point(400,80), bones[bones.length-1]);
+		PRay[] rays = PRay.makeSensorArray(3, new Point(36,0), 364, -Math.PI/6, Math.PI/6, bones[bones.length-1]);
 
 		// Loop
 		g.setColor(Color.BLACK);
@@ -100,16 +123,14 @@ public class PRay extends Ray {
 				bones[i].setRotation(Math.min(Math.max(-Math.PI/3,  bones[i].getRotation()+flip*Math.PI/500  ),Math.PI/3));
 			if(bones[1].getRotation() == Math.PI/3 || bones[1].getRotation() == -Math.PI/3)
 				flip *= -1;
-			ray1.performHitScanOn(env);
-			ray2.performHitScanOn(env);
-			ray3.performHitScanOn(env);
+			for(PRay r:rays)
+				r.performHitScanOn(env);
 			//Drawing
-			System.out.println(ray1.getLastHit().getDistance());
+			System.out.println(rays[0].getLastHit().getDistance());
 			d.fill(Color.WHITE);
 			env.draw(g);
-			ray1.draw(g);
-			ray2.draw(g);
-			ray3.draw(g);
+			for(PRay r:rays)
+				r.draw(g);
 			d.repaint();
 			Thread.sleep(50);
 		}
