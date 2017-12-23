@@ -63,6 +63,7 @@ public class TPPolygonEntity extends TPolygonEntity {
 
 	//////////////////////// NOTE TO FUTURE BLAYZE: YOU CAN TOTALLY GET RID OF MOST OF THE STUFF ABOVE WITH A CALL TO SUPER.PROJECTTOWORLD.
 	/// Dear past Blayze, I've done that now. I'll test the speeds by removing them and adding them and timing the difference at some point. Make sure you do that future Blayze.
+	// Gee thanks past Blayze. I'll do that at some other point when I'm not tired. By the way, where does environment fit in here?
 
 
 	public Point[] projectLocally(Point[] points)
@@ -81,6 +82,8 @@ public class TPPolygonEntity extends TPolygonEntity {
 			out = parent.projectLocally(out);
 		return(super.projectLocally(out));
 	}
+
+	///////////////// TESTS:
 
 	public static void main(String[] args) throws InterruptedException
 	{

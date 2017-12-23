@@ -1,7 +1,7 @@
 package classes.agents;
 
 /**
- * A general class to construct an agent from that is based on a box-bounded entity.
+ * A general class to construct an agent that is based on a box-bounded entity.
  * Should be able to be created with a width, height and list of node points to act as sensors
  * Should have a 'duplicate' method that allows one to be made and defined, then duplicated many times.
  */

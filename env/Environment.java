@@ -1,5 +1,4 @@
 package classes.env;
-
 import classes.env.*;
 import classes.math.Point;
 import classes.env.nonpolyshapes.*;
@@ -83,11 +82,23 @@ public class Environment implements HitScannable {
 			}
 			return closest;
 		}
+		/**
+		 * Performs a hitScan on this environment.
+		 * Performs a hitScan on each element in this environment, and returns the shortest.
+		 * @param	p1	the start position of the ray
+		 * @param	p2	the end position of the ray
+		 */
 		public DistancedHit hitScan(StaticPoint p1, StaticPoint p2)
 		{
 			return(hitScan(p1.getX(),p1.getY(),p2.getX(),p2.getY()));
 		}
 
+		/**
+		 * Check if a point is within this environment.
+		 * Performs a check to see if the given point is within any of this environment's children.
+		 * @param	x	the x-position of the point.
+		 * @param	y	the y-position of the point.
+		 */
 		public boolean contains(double x, double y)
 		{
 			int entSize = entities.size();
@@ -96,6 +107,11 @@ public class Environment implements HitScannable {
 					return true;
 			return false;
 		}
+		/**
+		 * Check if a point is within this environment.
+		 * Performs a check to see if the given point is within any of this environment's children.
+		 * @param	p	The point
+		 */
 		public boolean contains( StaticPoint p) { return contains(p.getX(), p.getY()); }
 		public boolean contains(Point[] ps)
 		{
