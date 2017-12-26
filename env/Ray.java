@@ -42,7 +42,7 @@ public class Ray implements Drawable {
 	public void draw(Graphics2D g)
 	{
 		Color bc = g.getColor();
-		if(lastHit.madeContact())
+		if((lastHit != null) && lastHit.madeContact())
 		{
 			g.setColor(Color.RED);
 			g.drawLine((int)start.getX(), (int)start.getY(), (int)lastHit.getX(), (int)lastHit.getY());

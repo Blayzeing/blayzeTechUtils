@@ -55,7 +55,7 @@ public class PRay extends Ray {
 	{
 		Point[] projected = parent.projectToWorld(new Point[]{start, end});
 		Color bc = g.getColor();
-		if(lastHit.madeContact())
+		if((lastHit != null) && lastHit.madeContact())
 		{
 			g.setColor(Color.RED);
 			g.drawLine((int)projected[0].getX(), (int)projected[0].getY(), (int)lastHit.getX(), (int)lastHit.getY());
