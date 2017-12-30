@@ -129,7 +129,9 @@ public class PolygonEntity extends AbstractEntity {
 		// If the shape is actually an object...
 		if(localContains(x1,y1))// First check if the start point is inside the polygon, if so return a 0-length hitScan
 			return(new DistancedHit(true, x1, y1, 0));
-		Double shortestDistance = Math.hypot(x1-x2,y1-y2);
+		double dx = x1 - x2;
+		double dy = y1 - y2;
+		double shortestDistance = dx*dx+dy*dy;
 		double[] closestPoint = new double[]{x2,y2};
 		boolean hit = false;
 		Point lastPoint = vertices.get(vertices.size()-1);
@@ -139,7 +141,9 @@ public class PolygonEntity extends AbstractEntity {
 			double[] collision = MoarMath.lineSegmentIntersect(x1,y1,x2,y2,lastPoint.getX(),lastPoint.getY(),thisPoint.getX(),thisPoint.getY());
 			if(collision != null)
 			{
-				double distance = Math.hypot(x1-collision[0], y1-collision[1]);
+				dx = x1-collision[0];
+				dy = y1-collision[1];
+				double distance = dx*dx+dy*dy;
 				if(distance < shortestDistance)
 				{
 					shortestDistance = distance;
@@ -149,6 +153,7 @@ public class PolygonEntity extends AbstractEntity {
 			}
 			lastPoint = thisPoint;
 		}
+		shortestDistance = Math.sqrt(shortestDistance);
 		return(new DistancedHit(hit, closestPoint[0], closestPoint[1], shortestDistance));
 	}
 	public DistancedHit hitScan (Point p1, Point p2) { return hitScan(p1.getX(), p1.getY(), p2.getX(), p2.getY()); }
