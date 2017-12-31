@@ -95,6 +95,19 @@ public class PolygonEntity extends AbstractEntity {
 	/**
 	 * Tests to see how far a ray would go if sent between (x1,y2) and (x2,y2).
 	 */
+	//public DistancedHit hitScan(double x1, double y1, double x2, double y2)
+	//{
+	//	//First, localise the given points
+	//	Point[] localPoints = projectLocally(new Point[]{new Point(x1,y1), new Point(x2,y2)});
+	//	//Then perform the hitscan
+	//	DistancedHit localRes = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
+	//	//Then finally delocalise the returned hitscan and return it
+	//	Point endPoint = projectToWorld(new Point(localRes.getX(), localRes.getY()));//The final contact point
+	//	double outDistance = 0;
+	//	if(localRes.getDistance() != 0)
+	//		outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
+	//	return (new DistancedHit(localRes.madeContact(), endPoint.getX(), endPoint.getY(), outDistance));
+	//}
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		//First, localise the given points
@@ -102,7 +115,7 @@ public class PolygonEntity extends AbstractEntity {
 		//Then perform the hitscan
 		DistancedHit localRes = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
 		//Then finally delocalise the returned hitscan and return it
-		Point endPoint = projectToWorld(new Point(localRes.getX(), localRes.getY()));//The final contact point
+		Point endPoint = projectToWorld((Point)localRes);//The final contact point
 		double outDistance = 0;
 		if(localRes.getDistance() != 0)
 			outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
