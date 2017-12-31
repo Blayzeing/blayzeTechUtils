@@ -1,13 +1,13 @@
 package classes.env;
 
-import classes.math.StaticPoint;
+import classes.math.Point;
 
 /**
  * A class to store data created when a hit test of some kind is required to give feedback. Implementations of methods that return this
  * class should use the etiquettes outlined in the constructor method (see constructor)
  */
 
-public class Hit extends StaticPoint {
+public class Hit extends Point /*StaticPoint*/{
 	private boolean contact = false;
 	
 	/**

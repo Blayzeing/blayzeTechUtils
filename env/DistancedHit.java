@@ -31,6 +31,12 @@ public class DistancedHit extends Hit {
 		return distance;
 	}
 
+	// Added to allow for easier manipulation later down the line, conforming with the new method of extedning Hit from Point rather than StaticPoint and allowing it all to be edited
+	public void setDistance(double d)
+	{
+		distance = d;
+	}
+
 	public String toString()
 	{
 		return ("[DistancedHit] Contact?: " + madeContact() + "  x: " + getX() + "   y: " + getY() + "  d: " + distance);
