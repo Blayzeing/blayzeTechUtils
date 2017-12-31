@@ -22,11 +22,17 @@ public class Point extends StaticPoint {
 	{
 		this.y = y;
 	}
+	public void setXY(StaticPoint p)
+	{
+		this.x = p.getX();
+		this.y = p.getY();
+	}
 
 	public String toString()
 	{
 		return ("[Point] x: "+x+"  y: "+y);
 	}
+	/** Performs a deep copy of this point. */
 	public Point clone()
 	{
 		return (new Point(x,y));
