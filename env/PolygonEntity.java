@@ -102,7 +102,7 @@ public class PolygonEntity extends AbstractEntity {
 	//	//Then perform the hitscan
 	//	DistancedHit localRes = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
 	//	//Then finally delocalise the returned hitscan and return it
-	//	Point endPoint = projectToWorld(new Point(localRes.getX(), localRes.getY()));//The final contact point
+	//	Point endPoint = projectToWorld((Point)localRes);//The final contact point
 	//	double outDistance = 0;
 	//	if(localRes.getDistance() != 0)
 	//		outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
@@ -116,10 +116,16 @@ public class PolygonEntity extends AbstractEntity {
 		DistancedHit localRes = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
 		//Then finally delocalise the returned hitscan and return it
 		Point endPoint = projectToWorld((Point)localRes);//The final contact point
-		double outDistance = 0;
-		if(localRes.getDistance() != 0)
-			outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
-		return (new DistancedHit(localRes.madeContact(), endPoint.getX(), endPoint.getY(), outDistance));
+		//Convert localRes:        TODO: New distance could probably be calculated by taking the determinent of the matrix - maybe this should be used, and a projectToWorld(double scalar) should be made that takes advantage of it.
+		// Something like... projectLocally(new Point{(x1,y1), (x2,y2)});    Hit hit = localHitScan(localPoints[]....);    hit.projectToWorldUsing(PolygonEntity e); <-- This sets hit's data.
+
+		//double outDistance = 0;
+		//if(localRes.getDistance() != 0)
+		//	outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
+		//return (new DistancedHit(localRes.madeContact(), endPoint.getX(), endPoint.getY(), outDistance));
+		localRes.setXY(endPoint);
+		localRes.setDistance(Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1));
+		return localRes;
 	}
 
 	/**
