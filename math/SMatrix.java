@@ -34,6 +34,10 @@ public class SMatrix extends NMatrix{
 		// To break recursion
 		if(size == 1)
 			return elements[0][0];
+		// Optimisation for 2x2 matrices:
+		// Note: This optimisation has had little testing under limited environments.
+		if(size == 2)
+			return elements[0][0]*elements[1][1] - elements[0][1] * elements[1][0];
 		double output = 0;
 		for(int i = 0; i<size; i++)
 		{
