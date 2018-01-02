@@ -36,6 +36,7 @@ public class TPPolygonEntity extends TPolygonEntity {
 	}
 
 	// Redefining projection to counter for parenting
+	@Override
 	public Point[] projectToWorld(Point[] points)
 	{
 		/*Point[] out = new Point[points.length];
@@ -50,11 +51,20 @@ public class TPPolygonEntity extends TPolygonEntity {
 		else
 			return (parent.projectToWorld(out));
 	}
+	@Override
 	public Point projectToWorld(Point point)
 	{
 		//NMatrix m = transform.multiply(point.toVertMatrix());
 		//Point out = new Point(m.getElement(0,0) + this.getX(), m.getElement(0,1) + this.getY());
 		Point out = super.projectToWorld(point);
+		if(parent != null)
+			return (parent.projectToWorld(out));
+		return out;
+	}
+	@Override
+	public double projectToWorld(double scalar)
+	{
+		double out = super.projectToWorld(scalar);
 		if(parent != null)
 			return (parent.projectToWorld(out));
 		return out;
@@ -66,6 +76,7 @@ public class TPPolygonEntity extends TPolygonEntity {
 	// Gee thanks past Blayze. I'll do that at some other point when I'm not tired. By the way, where does environment fit in here?
 
 
+	@Override
 	public Point[] projectLocally(Point[] points)
 	{
 		Point[] out = new Point[points.length];
@@ -75,12 +86,20 @@ public class TPPolygonEntity extends TPolygonEntity {
 			out = parent.projectLocally(out);
 		return(super.projectLocally(out));
 	}
+	@Override
 	public Point projectLocally(Point point)
 	{
 		Point out = point.clone();
 		if(parent != null)
 			out = parent.projectLocally(out);
 		return(super.projectLocally(out));
+	}
+	@Override
+	public double projectLocally(double scalar)
+	{
+		if(parent != null)
+			scalar = parent.projectLocally(scalar);
+		return(super.projectLocally(scalar));
 	}
 
 	///////////////// TESTS:

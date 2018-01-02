@@ -32,9 +32,16 @@ public class DistancedHit extends Hit {
 	}
 
 	// Added to allow for easier manipulation later down the line, conforming with the new method of extedning Hit from Point rather than StaticPoint and allowing it all to be edited
-	public void setDistance(double d)
+	//public void setDistance(double d)
+	//{
+	//	distance = d;
+	//}
+
+	@Override
+	public void projectToWorldUsing(PolygonEntity e)
 	{
-		distance = d;
+		super.projectToWorldUsing(e);
+		this.distance = e.projectToWorld(this.distance);
 	}
 
 	public String toString()

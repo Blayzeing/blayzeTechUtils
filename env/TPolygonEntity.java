@@ -126,6 +126,14 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 		}
 		return out;
 	}
+	/**
+	 * Projects the scalar locally. WARNING: This method is untested, I feel like the transform should be used instead of the inverse, but all other code uses the inverse and it's been too long since I wrote it to remember why. TODO.
+	 */
+	@Override
+	public double projectLocally(double scalar)
+	{
+		return scalar * transformInverse.getDet();
+	}
 
 	@Override
 	public Point projectToWorld(Point point)
@@ -143,6 +151,11 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 			out[i] = super.projectToWorld(new Point(m.getElement(0,0), m.getElement(0,1)));
 		}
 		return out;
+	}
+	@Override
+	public double projectToWorld(double scalar)
+	{
+		return scalar * transform.getDet();
 	}
 
 	public static void main (String[] args) throws InterruptedException

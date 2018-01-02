@@ -95,37 +95,16 @@ public class PolygonEntity extends AbstractEntity {
 	/**
 	 * Tests to see how far a ray would go if sent between (x1,y2) and (x2,y2).
 	 */
-	//public DistancedHit hitScan(double x1, double y1, double x2, double y2)
-	//{
-	//	//First, localise the given points
-	//	Point[] localPoints = projectLocally(new Point[]{new Point(x1,y1), new Point(x2,y2)});
-	//	//Then perform the hitscan
-	//	DistancedHit localRes = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
-	//	//Then finally delocalise the returned hitscan and return it
-	//	Point endPoint = projectToWorld((Point)localRes);//The final contact point
-	//	double outDistance = 0;
-	//	if(localRes.getDistance() != 0)
-	//		outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
-	//	return (new DistancedHit(localRes.madeContact(), endPoint.getX(), endPoint.getY(), outDistance));
-	//}
+	//TODO: This and all hitscan things should return a Hit object, that should be cast to an appropriate type.
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		//First, localise the given points
 		Point[] localPoints = projectLocally(new Point[]{new Point(x1,y1), new Point(x2,y2)});
 		//Then perform the hitscan
-		DistancedHit localRes = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
+		Hit hit = localHitScan(localPoints[0].getX(), localPoints[0].getY(), localPoints[1].getX(), localPoints[1].getY());
 		//Then finally delocalise the returned hitscan and return it
-		Point endPoint = projectToWorld((Point)localRes);//The final contact point
-		//Convert localRes:        TODO: New distance could probably be calculated by taking the determinent of the matrix - maybe this should be used, and a projectToWorld(double scalar) should be made that takes advantage of it.
-		// Something like... projectLocally(new Point{(x1,y1), (x2,y2)});    Hit hit = localHitScan(localPoints[]....);    hit.projectToWorldUsing(PolygonEntity e); <-- This sets hit's data.
-
-		//double outDistance = 0;
-		//if(localRes.getDistance() != 0)
-		//	outDistance = Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1);
-		//return (new DistancedHit(localRes.madeContact(), endPoint.getX(), endPoint.getY(), outDistance));
-		localRes.setXY(endPoint);
-		localRes.setDistance(Math.hypot(endPoint.getX()-x1, endPoint.getY()-y1));
-		return localRes;
+		hit.projectToWorldUsing(this);
+		return (DistancedHit)hit;
 	}
 
 	/**
@@ -197,6 +176,14 @@ public class PolygonEntity extends AbstractEntity {
 		return out;
 	}
 	/**
+	 * Takes a scalar in worlspace and projects it into the local coordinate system, including this shape's transformation.
+	 */
+	public double projectLocally(double scalar)
+	{
+		//PolygonEntity does no scaling, so the scalar is unchanged.
+		return scalar;
+	}
+	/**
 	 * Takes a point as if it were in this object's euclidian plane and projects it to the global plane.
 	 */
 	public Point projectToWorld(Point point)
@@ -212,6 +199,14 @@ public class PolygonEntity extends AbstractEntity {
 		for(int i = 0; i<points.length; i++)
 			out[i] = new Point(points[i].getX() + this.getX(), points[i].getY() + this.getY());
 		return out;
+	}
+	/**
+	 * Takes a scalar as if it were in this object's euclidian plane and projects it to the global plane.
+	 */
+	public double projectToWorld(double scalar)
+	{
+		// There's no scaling done here, so just return the scalar.
+		return scalar;
 	}
 
 	// Point reference retrieval code
