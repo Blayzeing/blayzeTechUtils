@@ -32,4 +32,4 @@ public class ViewPortDisplay extends SimpleDisplay {
 		super(w,h,title,closeFlag,resizeFlag);
 	}
 
-	public 
+}

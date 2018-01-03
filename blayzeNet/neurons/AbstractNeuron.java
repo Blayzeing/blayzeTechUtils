@@ -1,5 +1,7 @@
 package classes.blayzeNet.neurons;
 
+import classes.math.*;
+
 public abstract class AbstractNeuron {
 	
 	private NVector inputs;
@@ -18,10 +20,7 @@ public abstract class AbstractNeuron {
 		return(1.0/(1.0 + Math.exp(inputs.dot(weights) * -1)));
 	}
 	
-	public abstract learn (double inputs[], double target)
-	{
-		
-	}
+	public abstract void learn (double inputs[], double target);
 
 	// GETTERS AND SETTERS
 	public void setLearningRate(double r)
@@ -38,5 +37,5 @@ public abstract class AbstractNeuron {
 	{
 		return(learningRate);
 	}
-	public abstract void setInput (int 
+	//public abstract void setInput (int 
 }

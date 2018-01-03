@@ -62,7 +62,7 @@ public class PolygonEntity extends AbstractEntity {
 	 * Local containment code.
 	 * This code assumes a shape with no translation ability (ie on this shape's local plane), and checks it's containment.
 	 */
-	private boolean localContains (double x, double y)
+	protected boolean localContains (double x, double y)
 	{
 		if(vertices.size() < 3)
 			return false;
@@ -108,9 +108,10 @@ public class PolygonEntity extends AbstractEntity {
 	}
 
 	/**
-	 * Runs a hitscan test within the local environment of the object, ignoring placement
+	 * Runs a hitscan test within the local environment of the object.
+	 * This is protected so that classes that inherit from this class can override it to add aditional functionality without having to re-write the hitScan methods.
 	 */
-	private DistancedHit localHitScan(double x1, double y1, double x2, double y2)
+	protected DistancedHit localHitScan(double x1, double y1, double x2, double y2)
 	{
 		// If the shape has no area
 		if(vertices.size() < 1)
