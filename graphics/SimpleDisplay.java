@@ -63,6 +63,10 @@ public class SimpleDisplay extends JFrame{
 			setResizable(true);
 	}
 
+	public BufferedImage getBufferedImageReference()
+	{
+		return canvas.getImageReference();
+	}
 	public Graphics2D getGraphics2D()
 	{
 		return (Graphics2D)canvas.getImageReference().createGraphics();
