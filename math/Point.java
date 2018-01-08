@@ -13,6 +13,10 @@ public class Point extends StaticPoint {
 	{
 		super(x,y);
 	}
+	public Point(double[] values)
+	{
+		super(values[0], values[1]);
+	}
 
 	public void setX(double x)
 	{

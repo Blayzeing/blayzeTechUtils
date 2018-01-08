@@ -14,6 +14,11 @@ import classes.math.NVector;
 		this.x = x;
 		this.y = y;
 	}
+	public StaticPoint(double[] values)
+	{
+		this.x = values[0];
+		this.y = values[1];
+	}
 	
 	public double getX()
 	{
