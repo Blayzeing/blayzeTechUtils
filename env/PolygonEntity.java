@@ -61,6 +61,7 @@ public class PolygonEntity extends AbstractEntity {
 	/**
 	 * Local containment code.
 	 * This code assumes a shape with no translation ability (ie on this shape's local plane), and checks it's containment.
+	 * TODO: Instead of using line segment intersection here, an infinitely long line that comes from the left and stops at the point. This might be faster.
 	 */
 	protected boolean localContains (double x, double y)
 	{
