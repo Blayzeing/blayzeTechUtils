@@ -151,6 +151,7 @@ public class Environment implements HitScannable {
 
 		/**
 		 * Returns the first entity found at the given location, null if no entity found.
+		 * This is faster than `getEntitiesAt`.
 		 */
 		public AbstractEntity getEntityAt(double x, double y)
 		{
