@@ -10,7 +10,8 @@ import java.awt.Color;
 
 /**
  * An environmental class that allows for the grouping of PolygonEntities.
- * Note that this class does not allow for rotation or scaling, that is implemented in TPolygonGroup.
+ * Note: This class does not allow for rotation or scaling, that is implemented in TPolygonGroup.
+ * Note: I don't think this class is used anymore. It's probably been superceded by the parentable objects.
  */
 public class PolygonGroup extends AbstractEntity {
 
