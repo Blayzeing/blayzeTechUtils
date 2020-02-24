@@ -36,7 +36,7 @@ A collection of additional math functions and helpers. Fairly fully-featured lig
 
 ### random/
 Random generators will be placed in here. Currently contains implementations of 2D Perlin noise - one is fixed 
-within a grid, and the other can be expanded "infinitely" - see (my post on dynamic background generation)[http://blayze.tech/viewPost.php?id=3]
+within a grid, and the other can be expanded "infinitely" - see [my post on dynamic background generation](http://blayze.tech/viewPost.php?id=3]=)
 to get behind my thinking for the infinite version.
 
 ### tri/
