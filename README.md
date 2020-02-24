@@ -13,7 +13,7 @@ I must've done something useful because I find myself often coming back to these
 I'm open-sourcing it now so that hopefully someone else may find it useful and because I don't want it to end up in a corner
 collecting dust - the last time I used it I was rather surprised to find that I couldn't remember all of it's features.
 
-It's suggested that other git-based projects that use this code include it as a (submodule)[https://git-scm.com/book/en/v2/Git-Tools-Submodules].
+It's suggested that other git-based projects that use this code include it as a [submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 This is how I do it and I try to retain backwards-compatability, but it also means that a pointer to an older version of the
 source will still point at that and not the later version. Feel free to email me if you release a project that uses it, and I'll
 add it to the (currently empty - I'm still working to upload other projects!) list :)
