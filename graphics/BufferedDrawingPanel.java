@@ -1,4 +1,4 @@
-package classes.graphics;
+package blayzeTechUtils.graphics;
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
 import java.awt.*;

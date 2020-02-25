@@ -1,6 +1,6 @@
-package classes.graphics;
+package blayzeTechUtils.graphics;
 
-import classes.math.Point;
+import blayzeTechUtils.math.Point;
 
 public class ViewPortDisplay extends SimpleDisplay {
 

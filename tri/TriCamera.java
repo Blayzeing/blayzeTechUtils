@@ -1,4 +1,4 @@
-package classes.tri;
+package blayzeTechUtils.tri;
 import java.awt.Graphics2D;
 public class TriCamera {
 	

@@ -1,6 +1,6 @@
-package classes.math;
+package blayzeTechUtils.math;
 
- import classes.math.StaticPoint;
+import blayzeTechUtils.math.StaticPoint;
 
 /**
  * An up-datable point in 2D space.

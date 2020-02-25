@@ -1,5 +1,5 @@
-package classes.blayzeNet.neurons;
-import classes.math.NVector;
+package blayzeTechUtils.blayzeNet.neurons;
+import blayzeTechUtils.math.NVector;
 import java.util.Date;
 
 /* This class differs from the LinearNeuron class as it uses a sigmoid function to wrap the input.

@@ -1,6 +1,6 @@
-package classes.math;
+package blayzeTechUtils.math;
 import java.util.Arrays;
-import classes.math.NVector;
+import blayzeTechUtils.math.NVector;
 /**
  * A Matrix class for N-by-M matrices
  */

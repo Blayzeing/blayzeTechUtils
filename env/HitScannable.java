@@ -1,6 +1,6 @@
-package classes.env;
+package blayzeTechUtils.env;
 
-import classes.math.StaticPoint;
+import blayzeTechUtils.math.StaticPoint;
 
 public interface HitScannable {
   /**

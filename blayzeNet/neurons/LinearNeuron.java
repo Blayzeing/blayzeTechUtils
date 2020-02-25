@@ -1,5 +1,5 @@
-package classes.blayzeNet.neurons;
-import classes.math.NVector;
+package blayzeTechUtils.blayzeNet.neurons;
+import blayzeTechUtils.math.NVector;
 import java.text.DecimalFormat;
 
 public class LinearNeuron

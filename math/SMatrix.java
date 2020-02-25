@@ -1,4 +1,4 @@
-package classes.math;
+package blayzeTechUtils.math;
 /**
  * A matrix class for square matrices
  */

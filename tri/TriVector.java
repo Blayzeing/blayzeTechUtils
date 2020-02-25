@@ -1,5 +1,5 @@
-package classes.tri;
-import classes.math.NVector;
+package blayzeTechUtils.tri;
+import blayzeTechUtils.math.NVector;
 public class TriVector extends NVector {
 	
 	public TriVector(double x, double y, double z)

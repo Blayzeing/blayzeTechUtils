@@ -1,7 +1,7 @@
-package classes.env;
+package blayzeTechUtils.env;
 
-import classes.env.*;
-import classes.math.*;
+import blayzeTechUtils.env.*;
+import blayzeTechUtils.math.*;
 
 /**
  * A class for spawning various common polygon entities.

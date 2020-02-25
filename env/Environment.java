@@ -1,11 +1,11 @@
-package classes.env;
-import classes.env.*;
-import classes.math.Point;
-import classes.env.nonpolyshapes.*;
-import classes.math.StaticPoint;
+package blayzeTechUtils.env;
+import blayzeTechUtils.env.*;
+import blayzeTechUtils.math.Point;
+import blayzeTechUtils.env.nonpolyshapes.*;
+import blayzeTechUtils.math.StaticPoint;
 import java.awt.Graphics2D;
 import java.util.*;
-import classes.graphics.SimpleDisplay;
+import blayzeTechUtils.graphics.SimpleDisplay;
 import java.awt.Color;
 
 public class Environment implements HitScannable {

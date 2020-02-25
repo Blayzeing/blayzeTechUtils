@@ -1,4 +1,4 @@
-package classes.env;
+package blayzeTechUtils.env;
 
 /**
  * A class to store ray casting information for hitScans.
@@ -6,10 +6,10 @@ package classes.env;
  * Implement hitScan methods that explicitly take Environments and run with exclusion objects and lists, also implement exclusion lists in Environment.
  */
 
-import classes.math.Point;
-import classes.env.AbstractEntity;
-import classes.env.DistancedHit;
-import classes.graphics.Drawable;
+import blayzeTechUtils.math.Point;
+import blayzeTechUtils.env.AbstractEntity;
+import blayzeTechUtils.env.DistancedHit;
+import blayzeTechUtils.graphics.Drawable;
 import java.awt.Color;
 import java.awt.Graphics2D;
 

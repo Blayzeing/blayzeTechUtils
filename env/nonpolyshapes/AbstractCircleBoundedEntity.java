@@ -1,9 +1,9 @@
-package classes.env.nonpolyshapes;
+package blayzeTechUtils.env.nonpolyshapes;
 
-import classes.env.AbstractEntity;
-import classes.env.DistancedHit;
-import classes.math.Point;
-import classes.graphics.SimpleDisplay;
+import blayzeTechUtils.env.AbstractEntity;
+import blayzeTechUtils.env.DistancedHit;
+import blayzeTechUtils.math.Point;
+import blayzeTechUtils.graphics.SimpleDisplay;
 import java.awt.Graphics2D;
 
 /**

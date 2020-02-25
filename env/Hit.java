@@ -1,7 +1,7 @@
-package classes.env;
+package blayzeTechUtils.env;
 
-import classes.math.StaticPoint;
-import classes.math.Point;
+import blayzeTechUtils.math.StaticPoint;
+import blayzeTechUtils.math.Point;
 
 /**
  * A class to store data created when a hit test of some kind is required to give feedback. Implementations of methods that return this

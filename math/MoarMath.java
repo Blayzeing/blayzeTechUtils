@@ -1,10 +1,10 @@
-package classes.math;
+package blayzeTechUtils.math;
 
 /**
  * A useful class for storing more mathematical functions.
  * Written by Blayze Millward
  */
- import classes.math.NVector;
+ import blayzeTechUtils.math.NVector;
 
 public class MoarMath
 {

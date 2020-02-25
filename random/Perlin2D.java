@@ -1,12 +1,11 @@
-package classes.random;
-import classes.math.*;
+package blayzeTechUtils.random;
+import blayzeTechUtils.math.*;
 import java.util.Random;
 import java.util.Hashtable;
 
 /**
  * An implementation of Perlin noise, as per wikipedia ( http://en.wikipedia.org/wiki/Perlin_noise ), Angel code ( http://www.angelcode.com/dev/perlin/perlin.html ),
  * and this paper by Ken Perlin: http://mrl.nyu.edu/~perlin/paper445.pdf (also worth a read for improving smoothness: http://webstaff.itn.liu.se/~stegu/TNM022-2005/perlinnoiselinks/perlin-noise-math-faq.html ).
- * This implementation was written by Blayze Millward, and is intended for educational purposes, please contact Blayze if you intend on using this outside of education ( http://squaresanimations.co.uk/pages/contact.html ).
  *
  * Changes to the algorithm outlined by Wikipedia include:
  * - Use of a seed and hashing to generate weight vectors on-the-fly, rather than in a grid in order to allow for 'infinite' generation

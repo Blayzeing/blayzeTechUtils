@@ -1,4 +1,4 @@
-package classes.blayzeNet.nuclei;
+package blayzeTechUtils.blayzeNet.nuclei;
 
 public abstract class AbstractLattice {
 	/**

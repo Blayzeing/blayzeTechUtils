@@ -1,4 +1,4 @@
-package classes.blayzeNet.nuclei;
+package blayzeTechUtils.blayzeNet.nuclei;
 
 public enum CrossoverMode {
 	ONE_POINT, TWO_POINT, UNIFORM, UNIFORM_MUTATION;

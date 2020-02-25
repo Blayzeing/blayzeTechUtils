@@ -1,9 +1,9 @@
-package classes.env;
+package blayzeTechUtils.env;
 
-import classes.env.PolygonEntity;
-import classes.math.Point;
-import classes.graphics.SimpleDisplay;
-import classes.math.StaticPoint;
+import blayzeTechUtils.env.PolygonEntity;
+import blayzeTechUtils.math.Point;
+import blayzeTechUtils.graphics.SimpleDisplay;
+import blayzeTechUtils.math.StaticPoint;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.awt.Color;

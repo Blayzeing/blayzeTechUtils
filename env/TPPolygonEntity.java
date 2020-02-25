@@ -1,4 +1,4 @@
-package classes.env;
+package blayzeTechUtils.env;
 
 /**
  * A transformable *parentable* polygon entity, it can have a parent assigned to it.
@@ -7,9 +7,9 @@ package classes.env;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import classes.graphics.SimpleDisplay;
-import classes.math.*;
-import classes.env.Environment;
+import blayzeTechUtils.graphics.SimpleDisplay;
+import blayzeTechUtils.math.*;
+import blayzeTechUtils.env.Environment;
 
 public class TPPolygonEntity extends TPolygonEntity {
 

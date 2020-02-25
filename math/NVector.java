@@ -1,6 +1,6 @@
-package classes.math;
+package blayzeTechUtils.math;
 import java.util.Arrays;
-import classes.math.NMatrix;
+import blayzeTechUtils.math.NMatrix;
 
 /**
  * A useful class for handling N-dimensional mathematical vectors, developed for use in neural networking by Blayze Millward.

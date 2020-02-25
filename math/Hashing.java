@@ -1,4 +1,4 @@
-package classes.math;
+package blayzeTechUtils.math;
 /**
  * A collection of hash mixing algorithms, as described by Thomas Wang in his
  * paper on integer hash functions: https://web.archive.org/web/20121102023700/http://www.concentric.net/~Ttwang/tech/inthash.htm

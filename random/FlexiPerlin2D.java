@@ -1,5 +1,5 @@
-package classes.random;
-import classes.random.Perlin2D;
+package blayzeTechUtils.random;
+import blayzeTechUtils.random.Perlin2D;
 
 /**
  * Extends the capabilities of the Perlin2D class to add easy scaling both vertically and horizontally.

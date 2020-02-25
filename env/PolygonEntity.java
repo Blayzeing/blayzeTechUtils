@@ -1,4 +1,4 @@
-package classes.env;
+package blayzeTechUtils.env;
 
 /**
  * An entity that has a polygon as a boundary.
@@ -7,13 +7,13 @@ package classes.env;
  */
 
 import java.awt.Graphics2D;
-import classes.env.AbstractEntity;
-import classes.math.Point;
-import classes.math.StaticPoint;
+import blayzeTechUtils.env.AbstractEntity;
+import blayzeTechUtils.math.Point;
+import blayzeTechUtils.math.StaticPoint;
 import java.util.ArrayList;
-import classes.env.DistancedHit;
-import classes.math.NVector;
-import classes.math.MoarMath;
+import blayzeTechUtils.env.DistancedHit;
+import blayzeTechUtils.math.NVector;
+import blayzeTechUtils.math.MoarMath;
 import classes.graphics.SimpleDisplay;
 import java.awt.Color;
 

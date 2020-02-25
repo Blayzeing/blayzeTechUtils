@@ -1,6 +1,6 @@
-package classes.env;
+package blayzeTechUtils.env;
 
-import classes.env.Environment;
+import blayzeTechUtils.env.Environment;
 
 public class ReferencingEnvironment extends Environment {
 	public ReferencingEnvironment()

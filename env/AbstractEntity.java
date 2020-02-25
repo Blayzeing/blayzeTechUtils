@@ -1,9 +1,9 @@
-package classes.env;
+package blayzeTechUtils.env;
 
-import classes.math.Point;
-import classes.math.StaticPoint;
-import classes.env.Hit;
-import classes.graphics.Drawable;
+import blayzeTechUtils.math.Point;
+import blayzeTechUtils.math.StaticPoint;
+import blayzeTechUtils.env.Hit;
+import blayzeTechUtils.graphics.Drawable;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 

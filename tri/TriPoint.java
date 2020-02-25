@@ -1,5 +1,5 @@
-package classes.tri;
-import classes.math.NVector;
+package blayzeTechUtils.tri;
+import blayzeTechUtils.math.NVector;
 import java.awt.Color;
 public class TriPoint extends TriVector{
 	

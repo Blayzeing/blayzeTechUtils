@@ -1,4 +1,4 @@
-package classes.graphics;
+package blayzeTechUtils.graphics;
 
 import java.awt.Graphics2D;
 

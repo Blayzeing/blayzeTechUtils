@@ -1,9 +1,9 @@
-package classes.env.nonpolyshapes;
+package blayzeTechUtils.env.nonpolyshapes;
 
-import classes.env.nonpolyshapes.AbstractCircleBoundedEntity;
-import classes.math.MoarMath;
-import classes.env.DistancedHit;
-import classes.graphics.SimpleDisplay;
+import blayzeTechUtils.env.nonpolyshapes.AbstractCircleBoundedEntity;
+import blayzeTechUtils.math.MoarMath;
+import blayzeTechUtils.env.DistancedHit;
+import blayzeTechUtils.graphics.SimpleDisplay;
 import java.awt.Color;
 import java.awt.Graphics2D;
 

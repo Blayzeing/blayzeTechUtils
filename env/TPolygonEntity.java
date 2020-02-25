@@ -1,4 +1,4 @@
-package classes.env;
+package blayzeTechUtils.env;
 
 /**
  * An entity that has rotation and scale properties, it's *transformable*.
@@ -10,10 +10,10 @@ package classes.env;
  * implementing that.
  */
 
-import classes.env.*;
-import classes.math.*;
+import blayzeTechUtils.env.*;
+import blayzeTechUtils.math.*;
 import java.util.ArrayList;
-import classes.graphics.SimpleDisplay;
+import blayzeTechUtils.graphics.SimpleDisplay;
 import java.awt.Color;
 import java.awt.Graphics2D;
 

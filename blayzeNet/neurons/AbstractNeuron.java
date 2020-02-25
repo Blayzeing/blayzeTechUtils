@@ -1,6 +1,6 @@
-package classes.blayzeNet.neurons;
+package blayzeTechUtils.blayzeNet.neurons;
 
-import classes.math.*;
+import blayzeTechUtils.math.*;
 
 public abstract class AbstractNeuron {
 	

@@ -1,6 +1,6 @@
-package classes.agents;
+package blayzeTechUtils.agents;
 
-import classes.env.nonpolyshapes.BoxBoundedEntity;
+import blayzeTechUtils.env.nonpolyshapes.BoxBoundedEntity;
 import java.util.ArrayList;
 
 /**

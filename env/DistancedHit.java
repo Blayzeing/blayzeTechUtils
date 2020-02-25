@@ -1,6 +1,6 @@
-package classes.env;
+package blayzeTechUtils.env;
 
-import classes.env.Hit;
+import blayzeTechUtils.env.Hit;
 
 
 /**

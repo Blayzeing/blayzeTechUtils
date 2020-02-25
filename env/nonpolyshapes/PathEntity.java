@@ -1,4 +1,4 @@
-package classes.nonpolyshapes.env;
+package blayzeTechUtils.nonpolyshapes.env;
 
 /**
  * An entity that consists of a (potentially lopped) path.
@@ -7,8 +7,8 @@ package classes.nonpolyshapes.env;
  */
 
 import java.util.ArrayList;
-import classes.env.*;
-import classes.math.*;
+import blayzeTechUtils.env.*;
+import blayzeTechUtils.math.*;
 import java.awt.Graphics2D;
 
 public class PathEntity extends AbstractEntity {

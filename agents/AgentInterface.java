@@ -1,4 +1,4 @@
-package classes.agents;
+package blayzeTechUtils.agents;
 
 public interface AgentInterface {
 	void actuate();

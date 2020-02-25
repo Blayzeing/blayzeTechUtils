@@ -1,12 +1,12 @@
-package classes.env;
+package blayzeTechUtils.env;
 
 /**
  * A *parentable* Ray, it can have a PolygonEntity parent assigned to it.
  */
 
-import classes.env.*;
-import classes.math.*;
-import classes.graphics.*;
+import blayzeTechUtils.env.*;
+import blayzeTechUtils.math.*;
+import blayzeTechUtils.graphics.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
 

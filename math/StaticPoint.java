@@ -1,11 +1,11 @@
-package classes.math;
-import classes.math.NVector;
+package blayzeTechUtils.math;
+import blayzeTechUtils.math.NVector;
 
 /**
  * A read-only point in 2D space.
  */
  
- public class StaticPoint {
+public class StaticPoint {
 	protected double x;
 	protected double y;
 	

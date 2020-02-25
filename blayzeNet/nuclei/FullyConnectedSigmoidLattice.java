@@ -1,4 +1,4 @@
-package classes.blayzeNet.nuclei;
+package blayzeTechUtils.blayzeNet.nuclei;
 
 /**
  * A fast, array-based network of sigmoid neurons.
@@ -6,13 +6,13 @@ package classes.blayzeNet.nuclei;
  * The network is modelled as a fully-connected nxm network of sigmoid neurons.
  */
  
- import classes.math.MoarMath;
+ import blayzeTechUtils.math.MoarMath;
  import java.util.Arrays;
- import classes.graphics.SimpleDisplay;
+ import blayzeTechUtils.graphics.SimpleDisplay;
  import java.awt.Graphics2D;
  import java.awt.Color;
- import classes.blayzeNet.nuclei.CrossoverMode;
- import classes.blayzeNet.nuclei.MutationMode;
+ import blayzeTechUtils.blayzeNet.nuclei.CrossoverMode;
+ import blayzeTechUtils.blayzeNet.nuclei.MutationMode;
 
 public class FullyConnectedSigmoidLattice {
 
