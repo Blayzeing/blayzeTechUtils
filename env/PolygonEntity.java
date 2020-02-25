@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import blayzeTechUtils.env.DistancedHit;
 import blayzeTechUtils.math.NVector;
 import blayzeTechUtils.math.MoarMath;
-import classes.graphics.SimpleDisplay;
+import blayzeTechUtils.graphics.SimpleDisplay;
 import java.awt.Color;
 
 public class PolygonEntity extends AbstractEntity {

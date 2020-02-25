@@ -1,4 +1,5 @@
 package blayzeTechUtils.graphics;
+
 import javax.swing.JFrame;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
