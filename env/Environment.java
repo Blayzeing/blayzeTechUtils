@@ -92,6 +92,28 @@ public class Environment implements HitScannable {
 		{
 			return(hitScan(p1.getX(),p1.getY(),p2.getX(),p2.getY()));
 		}
+		/**
+		 * Performs a hitScan on this environment, barring a single given element.
+		 * Performs a hitScan on each element in this environment, and returns the shortest.
+		 * @param	p1	the start position of the ray
+		 * @param	p2	the end position of the ray
+     * @param clip  the object to not be included in an environment hitscan
+		 */
+		public DistancedHit hitScan(StaticPoint p1, StaticPoint p2, AbstractEntity clip)
+		{
+			return(hitScan(p1.getX(),p1.getY(),p2.getX(),p2.getY(), clip));
+		}
+		/**
+		 * Performs a hitScan on this environment, barring a list of given elements.
+		 * Performs a hitScan on each element in this environment, and returns the shortest.
+		 * @param	p1	the start position of the ray
+		 * @param	p2	the end position of the ray
+     * @param clip  the list of objects to not be included in an environment hitscan
+		 */
+		public DistancedHit hitScan(StaticPoint p1, StaticPoint p2, ArrayList<AbstractEntity> clip)
+		{
+			return(hitScan(p1.getX(),p1.getY(),p2.getX(),p2.getY(), clip));
+		}
 
 		/**
 		 * Check if a point is within this environment.
