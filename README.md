@@ -1,4 +1,4 @@
-# tech.blayze
+# blayzeTechUtils
 A set of Java utilities for performing additional maths operations, 2D environmental work and more.
 
 **This toolset is currently in the process of being ported to GitHub. Much won't work.**
