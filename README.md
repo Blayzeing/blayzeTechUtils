@@ -16,7 +16,7 @@ collecting dust - the last time I used it I was rather surprised to find that I 
 It's suggested that other git-based projects that use this code include it as a [submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 This is how I do it and I try to retain backwards-compatability, but it also means that a pointer to an older version of the
 source will still point at that and not the later version. Feel free to email me if you release a project that uses it, and I'll
-add it to the (currently empty - I'm still working to upload other projects!) list :)
+add it to the list :)
 
 ## A rundown of what each folder contains:
 ### agents/
@@ -41,3 +41,6 @@ to get behind my thinking for the infinite version.
 
 ### tri/
 Originally a port of a 3D engine I wrote in AS3 [**incomplete and prone to change/deletion**]
+
+## List of projects using these utilities
+- [ShefBots Image Dewarper](https://github.com/ShefBots/spherical-360-dewarper)
