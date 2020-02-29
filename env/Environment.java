@@ -169,6 +169,22 @@ public class Environment implements HitScannable {
 		{
 			return(getEntitiesAt(p.getX(), p.getY()));
 		}
+		public ArrayList<AbstractEntity> getEntitiesAt(double x, double y, AbstractEntity clip)
+		{
+			ArrayList<AbstractEntity> ents = new ArrayList<AbstractEntity>();
+			int entSize = entities.size();
+			for(int i = 0; i<entSize; i++)
+			{
+				AbstractEntity thisEntity = entities.get(i);
+				if(thisEntity != clip && thisEntity.contains(x,y))
+					ents.add(thisEntity);
+			}
+			return ents;
+		}
+		public ArrayList<AbstractEntity> getEntitiesAt(StaticPoint p, AbstractEntity clip)
+		{
+			return(getEntitiesAt(p.getX(), p.getY(), clip));
+		}
 		// Might be worth making a 'getEntitiesAt' That takes a list of points
 
 		/**

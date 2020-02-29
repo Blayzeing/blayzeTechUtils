@@ -14,6 +14,13 @@ public class CircleBoundedEntity extends AbstractCircleBoundedEntity {
 		super(x,y,radius);
 	}
 
+	public boolean  contains(double x, double y)
+	{
+		double xd = getX()-x;
+		double yd = getY()-y;
+		return (xd*xd+yd*yd < getRadius()*getRadius());
+	}
+
 	public DistancedHit hitScan(double x1, double y1, double x2, double y2)
 	{
 		x1 -= this.getX();

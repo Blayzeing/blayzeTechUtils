@@ -374,6 +374,8 @@ public class PolygonEntity extends AbstractEntity {
 	}
 	public void draw(Graphics2D g)
 	{
+		if(vertices.size() < 2)
+			return;
 		Point last = getGlobalPoint(vertices.size()-1);
 		for (int i = 0; i<vertices.size(); i++)
 		{
