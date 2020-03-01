@@ -19,6 +19,16 @@ public class StaticPoint {
 		this.x = values[0];
 		this.y = values[1];
 	}
+	/**
+	 * Constructs a Point using the first two elements of an NVector.
+	 * Note that this could be achieved by using `new StaticPoint(nVector.toArray())`,
+	 * however this is more memory efficient and clips to the first two elements,
+	 * allowing larger NVectors to be used.
+	 */
+	public StaticPoint(NVector v)
+	{
+		this(v.getElement(0), v.getElement(1));
+	}
 	
 	public double getX()
 	{

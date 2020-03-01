@@ -1,5 +1,6 @@
 package blayzeTechUtils.math;
 
+import blayzeTechUtils.math.NVector;
 import blayzeTechUtils.math.StaticPoint;
 
 /**
@@ -16,6 +17,16 @@ public class Point extends StaticPoint {
 	public Point(double[] values)
 	{
 		super(values[0], values[1]);
+	}
+	/**
+	 * Constructs a Point using the first two elements of an NVector.
+	 * Note that this could be achieved by using `new Point(nVector.toArray())`,
+	 * however this is more memory efficient and clips to the first two elements,
+	 * allowing larger NVectors to be used.
+	 */
+	public Point(NVector v)
+	{
+		super(v);
 	}
 
 	public void setX(double x)
@@ -40,5 +51,11 @@ public class Point extends StaticPoint {
 	public Point clone()
 	{
 		return (new Point(x,y));
+	}
+
+	public static void main(String[] args)
+	{
+		Point test = new Point(new NVector(new double[]{5,4}));
+		System.out.println(test);
 	}
 }
