@@ -52,10 +52,4 @@ public class Point extends StaticPoint {
 	{
 		return (new Point(x,y));
 	}
-
-	public static void main(String[] args)
-	{
-		Point test = new Point(new NVector(new double[]{5,4}));
-		System.out.println(test);
-	}
 }
