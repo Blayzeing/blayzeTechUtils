@@ -47,6 +47,17 @@ public class TPolygonEntity extends PolygonEntity implements Transformable {
 		yScale = y;
 		createTransformMatrices();
 	}
+  /**
+   * Sets the scale of the polygon entity in both the x and y axes.
+   * Note: Use either getXscale() or getYscale() to get the scale when using
+   * this there is no "getScale()" method as the axes could be different.
+   * @param s the scale to set the polygon entity to
+   */
+  public void setScale (double s)
+  {
+    setXscale(s);
+    setYscale(s);
+  }
 	public void resetTransformation ()
 	{
 		yScale = 1;
