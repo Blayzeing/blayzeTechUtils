@@ -1,8 +1,6 @@
 # blayzeTechUtils
 A set of Java utilities for performing additional maths operations, 2D environmental work and more.
 
-**This toolset is currently in the process of being ported to GitHub. Much won't work.**
-
 The classes found in this repository are the results of my work in my free time predominantely in my first year of university.
 Initial created, if I remember correctly, for experimentation in (what I didn't realise was called) reinforcement learning it
 soon became a general collection of code for me to write to as I explored the Java language and different approaches to OOP
