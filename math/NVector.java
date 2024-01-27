@@ -42,6 +42,22 @@ public class NVector
 			return(Double.NaN);
 		}
 	}
+  public double getX()
+  {
+    return(this.getElement(0));
+  }
+  public double getY()
+  {
+    return(this.getElement(1));
+  }
+  public double getZ()
+  {
+    return(this.getElement(2));
+  }
+  public double getW()
+  {
+    return(this.getElement(3));
+  }
 	public int getLength()
 	{
 		return(length);
